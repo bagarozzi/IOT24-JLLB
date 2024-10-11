@@ -15,8 +15,8 @@
     - Difficulty factor on game time (decide values and step)
 
 ### Displaying on LCD:
-    - Welcome message
-    - Print difficulty?
-    - Go!
-    - Number to guess (time left?)
-    - "Good: score" OR "Game Over: score"
+- Welcome message
+- Print difficulty?
+- Go!
+- Number to guess (time left?)
+- "Good: score" OR "Game Over: score"
