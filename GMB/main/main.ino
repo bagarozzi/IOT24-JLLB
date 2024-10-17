@@ -109,10 +109,6 @@ void sleepState() {
   gamePhase = mainMenuState;
 }
 
-void startGameInterrupt() {
-  BTN_PRESSED[0] = true;
-}
-
 void wakeUpFunction() {}
 
 /* Interrupts functions: */
@@ -120,7 +116,7 @@ void wakeUpFunction() {}
 void setMainMenuInterrupts() {
   disableAllInterrupts();
   enableInterrupt(POT_PIN, setGameDifficulty, CHANGE); // enableInterrupt(uint8_t pinNumber, void (*userFunction)(void), uint8_t mode)
-  enableInterrupt(BTN_PIN[0], startGameInterrupt, RISING);
+  enableInterrupt(BTN_PIN[0], handleButton1, RISING);
 }
 
 void disableAllInterrupts() {
@@ -132,4 +128,25 @@ void disableAllInterrupts() {
 
 void setGameDifficulty() {
   gameDifficulty = getDifficulty(analogRead(potPin));
+}
+
+/* Handles for button's interrupts: */
+void handleButtonInterrupt(int buttonIndex) {
+  BTN_PRESSED[buttonIndex] = true;
+}
+
+void handleButton1() {
+  handleButtonInterrupt(0);
+}
+
+void handleButton2() {
+  handleButtonInterrupt(1);
+}
+
+void handleButton3() {
+  handleButtonInterrupt(2);
+}
+
+void handleButton4() {
+  handleButtonInterrupt(3);
 }
