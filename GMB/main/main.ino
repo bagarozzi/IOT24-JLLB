@@ -1,4 +1,7 @@
 #include <LiquidCrystal_I2C.h>
+#include <EnableInterrupt.h>
+#include <TimerOne.h>
+
 #include <Difficulty.h>
 #include <Printing.h>
 
@@ -7,9 +10,17 @@
 /* Number of columns: 20 rows: 4 */
 LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
 
+/* Arduino PIN definitions: */
+#define potPin A0
+
+/* Global variables: */
+float gameDifficulty = 0.8 // Defaults to "easy"
+
+
 void setup() {
   lcd.init();
   lcd.backlight();
+  enableInterrupt(potPin, potInterrupt, CHANGE); // enableInterrupt(uint8_t pinNumber, void (*userFunction)(void), uint8_t mode)
 }
 
 void loop() {
@@ -18,10 +29,13 @@ void loop() {
   lcd.print("Welcome to");
   lcd.setCursor(0, 3);
   lcd.print("\"Give me the binary\"");
-  delay(1000);
-  setDifficulty(map(analogRead(potPin), 0, 1023, 1, 4));
-  delay(1000);
+  /* TIMER 10s che aspetta e si va a letto */
+  
   lcd.clear();
+}
+
+void potInterrupt() {
+  gameDifficulty = setDifficulty(analogRead(potPin));
 }
 
 /*
