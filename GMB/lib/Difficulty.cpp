@@ -1,6 +1,6 @@
 #include "Difficulty.h"
 
-float setDifficulty(int potValue) {
+float getDifficulty(int potValue) {
     int difficultyLevel = map(potValue, 0, 1023, 1, 4);
     int difficultyFactor = 0;
     String textDifficulty = "";
