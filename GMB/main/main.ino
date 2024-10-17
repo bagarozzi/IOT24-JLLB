@@ -42,10 +42,6 @@ void loop() {
 
 }
 
-void potInterrupt() {
-  gameDifficulty = setDifficulty(analogRead(potPin));
-}
-
 void sleepState() {
   // vai a letto
 }
@@ -70,6 +66,9 @@ void endGameState() {
 
 }
 
+
+/* Interrupts functions: */
+
 void setMainMenuInterrupts() {
   disableAllInterrupts();
   enableInterrupt(potPin, potInterrupt, CHANGE); // enableInterrupt(uint8_t pinNumber, void (*userFunction)(void), uint8_t mode)
@@ -81,6 +80,10 @@ void disableAllInterrupts() {
     disableInterrupt(i);
   }
   disableInterrupt(A0);
+}
+
+void potInterrupt() {
+  gameDifficulty = setDifficulty(analogRead(potPin));
 }
 
 /*
