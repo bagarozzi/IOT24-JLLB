@@ -29,13 +29,19 @@ void loop() {
   lcd.print("Welcome to");
   lcd.setCursor(0, 3);
   lcd.print("\"Give me the binary\"");
-  /* TIMER 10s che aspetta e si va a letto */
-  
+  Timer1.initialize(10000);
+  Timer1.attachInterrupt(sleepGame);
+  /* Se il gioco è iniziato allora: 
+  Timer1.detachInterrupt() */
   lcd.clear();
 }
 
 void potInterrupt() {
   gameDifficulty = setDifficulty(analogRead(potPin));
+}
+
+void sleepGame() {
+  // vai a letto
 }
 
 /*
