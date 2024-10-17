@@ -24,6 +24,9 @@ LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
 #define L4_PIN 13
 #define RED_PIN 9
 
+#define SDA A4
+#define SCL A5
+
 /* Global variables: */
 float gameDifficulty = 0.8 // Defaults to "easy"
 
