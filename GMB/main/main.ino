@@ -1,4 +1,6 @@
 #include <LiquidCrystal_I2C.h>
+#include <Difficulty.h>
+#include <Printing.h>
 
 /* Wiring: SDA => A4, SCL => A5 */
 /* I2C address of the LCD: 0x27 */
@@ -9,6 +11,7 @@ void setup() {
   lcd.init();
   lcd.backlight();
 }
+
 void loop() {
   /* Set the cursor on the third column and first row. */
   lcd.setCursor(5, 1);
@@ -16,12 +19,12 @@ void loop() {
   lcd.setCursor(0, 3);
   lcd.print("\"Give me the binary\"");
   delay(1000);
-  difficulty();
+  setDifficulty(map(analogRead(potPin), 0, 1023, 1, 4));
   delay(1000);
   lcd.clear();
-
 }
 
+/*
 void difficulty() {
   int newDifficulty = 1; //map(analogRead(potPin), 0, 1023, 1, 4);
   switch (difficultyLevel) {
@@ -33,3 +36,4 @@ void difficulty() {
   lcd.setCursor(10, 3);
   lcd.print(newDifficulty);
 }
+*/
