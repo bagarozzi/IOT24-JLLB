@@ -1,4 +1,5 @@
-#include "Difficulty.h"
+#include "GameUtils.h"
+#include "Arduino.h"
 
 float getDifficulty(int potValue) {
     int difficultyLevel = map(potValue, 0, 1023, 1, 4);
