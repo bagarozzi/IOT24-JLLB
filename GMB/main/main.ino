@@ -16,22 +16,31 @@ LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
 #define SDA A4
 #define SCL A5
 
-int BTN_PIN[] = {2, 3, 4, 5};
-int LED_PIN[] = {10, 11, 12, 13, 9};
+int BTN_PIN[] = {5, 4, 3, 2};
+int LED_PIN[] = {13, 12, 11, 10};
+const int RED_PIN = 9;
+bool BTN_PRESSED[] = {false, false, false, false};
 
 /* Global variables: */
 float gameDifficulty = 0.8 // Defaults to "easy"
+int gameScore = 0;
+long matchDuraion = 10000;
 
 void (*gamePhase)(void) = mainMenuState();
 long elapsedTime = millis();
 long shutdownTime = 0;
 
-bool BTN_PRESSED[] = {false, false, false, false};
 #define BITSIZE 4
 int currentNumber = 0;
 bool currentBinaryNumber[BITSIZE] = {false, false, false, false};
 
+
 void setup() {
+  for(int i = 0; i < 4; i++) {
+    pinMode(LED_PIN[i], OUTPUT);
+    pinMode(BTN_PIN[i], INPUT);
+  }
+  pinMode(RED_PIN, OUTPUT);
   lcd.init();
   lcd.backlight();
   Timer1.initialize(10000);
@@ -62,7 +71,7 @@ void waitState() {
     gamePhase = sleepState;
   }
   else if(BTN_PRESSED[0]) {
-    gamePhase = matchState;
+    gamePhase = matchInit;
     BTN_PRESSED[0] = false;
   }
 }
@@ -72,16 +81,19 @@ void matchInit() {
   for (int i = 0; i < BITSIZE; i++) {
     currentBinaryNumber[BITSIZE - 1 - i] = (currentNumber & (1 << i)) ? true : false;
   }
+  matchDuraion = getMatchTime(gameDifficulty, gameScore);
+  resetInput();
+  gamePhase = matchState;
 }
 
 void matchState() {
-  matchInit();
-
-  gamePhase = endGameState;
+  matchDuration -= elapsedTime;
+  if (matchDuraion <= 0) {
+   gamePhase = endGameState; 
+  }
 }
 
 void endGameState() {
-  // Confronta i vettori
   bool corrispondono = true;
   for (int i = 0; i < BITSIZE; i++) {
     if (currentBinaryNumber[i] != BTN_PRESSED[i]) {
@@ -89,9 +101,28 @@ void endGameState() {
       break;
     }
   }
-  gamePhase = matchState;
-  
-  gamePhase = mainMenuState;
+  if (corrispondono) {
+    gameScore++;
+    lcd.setCursor(5, 1);
+    lcd.print("Good job!");
+    lcd.setCursor(0, 3);
+    // VEDERE SE FUNZIONA
+    lcd.print("Score: " + score);
+    gamePhase = matchInit;
+  }
+  else {
+    digitalWrite(RED_PIN, HIGH);
+    delay(1000);
+    digitalWrite(RED_PIN, LOW);
+    lcd.setCursor(5, 1);
+    lcd.print("Game over!");
+    lcd.setCursor(0, 3);
+    // VEDERE SE FUNZIONA
+    lcd.print("Final score: " + score);
+    gameScore = 0;
+    delay(10000);
+    gamePhase = mainMenuState;
+  }
 }
 
 /*
@@ -126,13 +157,26 @@ void disableAllInterrupts() {
   disableInterrupt(A0);
 }
 
+void resetInput() {
+  for(int i = 0; i < 4; i++) {
+    BTN_PRESSED[i] = false;
+    digitalWrite(BTN_PIN[i], LOW);
+  }
+}
+
 void setGameDifficulty() {
   gameDifficulty = getDifficulty(analogRead(potPin));
 }
 
 /* Handles for button's interrupts: */
 void handleButtonInterrupt(int buttonIndex) {
-  BTN_PRESSED[buttonIndex] = true;
+  BTN_PRESSED[buttonIndex] = !BTN_PRESSED[buttonIndex];
+  if (BTN_PRESSED[buttonIndex]) {
+    digitalWrite(BTN_PIN[buttonIndex], HIGH);
+  }
+  else {
+    digitalWrite(BTN_PIN[buttonIndex], LOW);
+  }
 }
 
 void handleButton1() {
