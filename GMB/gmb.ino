@@ -85,6 +85,7 @@ void waitState() {
   else if(BTN_PRESSED[0]) {
     gamePhase = matchInit;
     BTN_PRESSED[0] = false;
+    digitalWrite(LED_PIN[0], LOW);
   }
 }
 
