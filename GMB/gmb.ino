@@ -23,7 +23,6 @@ bool currentBinaryNumber[BITSIZE] = {false, false, false, false};
 bool BTN_PRESSED[] = {false, false, false, false};
 
 void setup() {
-  Serial.begin(9600);
   gamePhase = mainMenuState;
   for(int i = 0; i < 4; i++) {
     pinMode(LED_PIN[i], OUTPUT);
@@ -50,7 +49,6 @@ void mainMenuState() {
 }
 
 void waitState() {
-  Serial.println(shutdownTime);
   shutdownTime += elapsedTime;
   if(shutdownTime >= 10000) {
     gamePhase = sleepState;
