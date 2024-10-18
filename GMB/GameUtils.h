@@ -2,6 +2,8 @@
  * A library for calculating and showing the game's difficulty set by a potentiometer.
 */
 
+#pragma once
+
 float getDifficulty(int potValue);
 
 long getMatchTime(float difficulty, int score);
