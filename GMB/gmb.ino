@@ -4,7 +4,7 @@
 #include <avr/sleep.h>
 
 
-#include "Difficulty.h"
+#include "GameUtils.h"
 #include "Printing.h"
 
 /* Wiring: SDA => A4, SCL => A5 */
@@ -89,7 +89,7 @@ void waitState() {
 }
 
 void matchInit() {
-  currentNumber = random(0, 16);
+  currentNumber = getRandomNumber();
   for (int i = 0; i < BITSIZE; i++) {
     currentBinaryNumber[BITSIZE - 1 - i] = (currentNumber & (1 << i)) ? true : false;
   }

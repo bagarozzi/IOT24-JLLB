@@ -30,3 +30,7 @@ float getDifficulty(int potValue) {
 long getMatchTime(float difficulty, int score) {
     return 10000 - ((difficulty * score) * 1000);
 }
+
+int getRandomNumber() {
+    return random(0, 16);
+}
