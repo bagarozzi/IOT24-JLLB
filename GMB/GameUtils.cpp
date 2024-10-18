@@ -34,3 +34,9 @@ long getMatchTime(float difficulty, int score) {
 int getRandomNumber() {
     return random(0, 16);
 }
+
+void writeBinaryNumber(int number, bool* binaryNumber) {
+    for (int i = 0; i < 4; i++) {
+        binaryNumber[4 - 1 - i] = (number & (1 << i)) ? true : false;
+    }
+}
