@@ -9,3 +9,5 @@ long getMatchTime(float difficulty, int score);
 int getRandomNumber();
 
 void writeBinaryNumber(int number, bool* binaryNumber);
+
+bool checkGuess(bool* guessedNumber, bool* trueNumber);
