@@ -12,14 +12,20 @@
 float gameDifficulty = 0.8; // Defaults to "easy"
 int gameScore = 0;
 long matchDuration = 10000;
+int currentNumber = 0;
+bool currentBinaryNumber[BITSIZE] = {false, false, false, false};
+
+/* Architecture variables: */
 void (*gamePhase)(void);
 unsigned long elapsedTime = millis();
 unsigned long previousLoop = 0;
+
+/* Interrupt variables: */
 unsigned long shutdownTime = 0;
 unsigned int preReadPot = 0;
 unsigned long buttonPressedTime[4];
-int currentNumber = 0;
-bool currentBinaryNumber[BITSIZE] = {false, false, false, false};
+
+/* Array for pressed buttons: */
 bool BTN_PRESSED[] = {false, false, false, false};
 
 void setup() {
@@ -48,6 +54,10 @@ void mainMenuState() {
   gamePhase = waitState;
 }
 
+/** 
+ * The idle state of the main menu before sleeping or starting the match:
+ * 
+ */
 void waitState() {
   shutdownTime += elapsedTime;
   if(shutdownTime >= 10000) {
@@ -60,6 +70,9 @@ void waitState() {
   }
 }
 
+/** 
+ * Initialise the match: resets variables, sets the correct interrupts.
+ */
 void matchInit() {
   currentNumber = getRandomNumber();
   writeBinaryNumber(currentNumber, currentBinaryNumber);
@@ -69,6 +82,9 @@ void matchInit() {
   gamePhase = matchState;
 }
 
+/** 
+ * The match state in which the user plays.
+ */
 void matchState() {
   matchDuration -= elapsedTime;
   if (matchDuration <= 0) {
@@ -76,6 +92,9 @@ void matchState() {
   }
 }
 
+/** 
+ * The endgame state, the user is displayed the result. The game later continues automatically.
+ */
 void endGameState() {
   bool corrispondono = checkGuess(currentBinaryNumber, BTN_PRESSED);
   if (corrispondono) {
@@ -107,6 +126,5 @@ void sleepState() {
   sleep_mode();
   sleep_disable();
   shutdownTime = 0;
-  //previousLoop = millis();
   gamePhase = mainMenuState;
 }
