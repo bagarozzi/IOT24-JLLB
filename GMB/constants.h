@@ -16,4 +16,4 @@ const int LED_PIN[] = {13, 12, 11, 10};
 const int RED_PIN = 9;
 
 /* The LCD display: */
-LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
+const LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
