@@ -7,3 +7,5 @@ float getDifficulty(int potValue);
 long getMatchTime(float difficulty, int score);
 
 int getRandomNumber();
+
+void writeBinaryNumber(int number, bool* binaryNumber);

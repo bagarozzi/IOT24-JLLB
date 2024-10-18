@@ -90,9 +90,7 @@ void waitState() {
 
 void matchInit() {
   currentNumber = getRandomNumber();
-  for (int i = 0; i < BITSIZE; i++) {
-    currentBinaryNumber[BITSIZE - 1 - i] = (currentNumber & (1 << i)) ? true : false;
-  }
+  writeBinaryNumber(currentNumber, currentBinaryNumber);
   matchDuration = getMatchTime(gameDifficulty, gameScore);
   setMatchInterrupts();
   lcd.clear();
