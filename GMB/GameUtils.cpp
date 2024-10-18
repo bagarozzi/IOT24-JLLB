@@ -37,7 +37,7 @@ int getRandomNumber() {
 }
 
 void writeBinaryNumber(int number, bool* binaryNumber) {
-    for (int i = 0; i < 4; i++) {
-        binaryNumber[4 - 1 - i] = (number & (1 << i)) ? true : false;
+    for (int i = 0; i < BITSIZE; i++) {
+        binaryNumber[BITSIZE - 1 - i] = (number & (1 << i)) ? true : false;
     }
 }
