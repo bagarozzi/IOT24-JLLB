@@ -1,4 +1,3 @@
-#include <LiquidCrystal_I2C.h>
 #include <avr/sleep.h>
 
 #include "GameUtils.h"
@@ -8,7 +7,6 @@
 /* Wiring: SDA => A4, SCL => A5 */
 /* I2C address of the LCD: 0x27 */
 /* Number of columns: 20 rows: 4 */
-LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
 
 /* Match variables: */
 float gameDifficulty = 0.8; // Defaults to "easy"
@@ -32,8 +30,7 @@ void setup() {
     pinMode(BTN_PIN[i], INPUT);
   }
   pinMode(RED_PIN, OUTPUT);
-  lcd.init();
-  lcd.backlight();
+  setupLCD();
   elapsedTime = millis();
 }
 
@@ -48,11 +45,7 @@ void loop() {
  */
 void mainMenuState() {
   setMainMenuInterrupts();
-  lcd.clear();
-  lcd.setCursor(5, 1);
-  lcd.print("Welcome to");
-  lcd.setCursor(0, 3);
-  lcd.print("\"Give me the binary\"");
+  printMainMenu();
   gamePhase = waitState;
 }
 
@@ -91,12 +84,7 @@ void endGameState() {
   bool corrispondono = checkGuess(currentBinaryNumber, BTN_PRESSED);
   if (corrispondono) {
     gameScore++;
-    lcd.clear();
-    lcd.setCursor(5, 1);
-    lcd.print("Good job!");
-    lcd.setCursor(0, 3);
-    // VEDERE SE FUNZIONA
-    lcd.print((String)"Score: " + gameScore);
+    printWinningEndgame(gameScore);
     delay(1861);
     gamePhase = matchInit;
   }
@@ -104,12 +92,7 @@ void endGameState() {
     digitalWrite(RED_PIN, HIGH);
     delay(1000);
     digitalWrite(RED_PIN, LOW);
-    lcd.clear();
-    lcd.setCursor(5, 1);
-    lcd.print("Game over!");
-    lcd.setCursor(0, 3);
-    // VEDERE SE FUNZIONA
-    lcd.print((String)"Final score: " + gameScore);
+    printLosingEndgame(gameScore);
     gameScore = 0;
     delay(10000);
     gamePhase = mainMenuState;
