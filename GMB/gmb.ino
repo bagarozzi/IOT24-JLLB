@@ -93,13 +93,7 @@ void matchState() {
 }
 
 void endGameState() {
-  bool corrispondono = true;
-  for (int i = 0; i < BITSIZE; i++) {
-    if (currentBinaryNumber[i] != BTN_PRESSED[i]) {
-      corrispondono = false;
-      break;
-    }
-  }
+  bool corrispondono = checkGuess(currentBinaryNumber, BTN_PRESSED);
   if (corrispondono) {
     gameScore++;
     lcd.clear();

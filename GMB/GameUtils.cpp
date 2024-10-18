@@ -41,3 +41,12 @@ void writeBinaryNumber(int number, bool* binaryNumber) {
         binaryNumber[BITSIZE - 1 - i] = (number & (1 << i)) ? true : false;
     }
 }
+
+bool checkGuess(bool* guessedNumber, bool* trueNumber) {
+    for (int i = 0; i < BITSIZE; i++) {
+        if (guessedNumber[i] != trueNumber[i]) {
+        return false;
+        }
+    }
+    return true;
+}
