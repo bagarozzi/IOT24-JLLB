@@ -14,33 +14,35 @@ LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
 
 /* Arduino PIN definitions: */
 #define POT_PIN A0
-
 #define SDA A4
 #define SCL A5
+
 #define BITSIZE 4
 
 #define BUTTON_BOUNCING_TIME 100
 
+/* Button and LED PINs: */
 int BTN_PIN[] = {5, 4, 3, 2};
 int LED_PIN[] = {13, 12, 11, 10};
 const int RED_PIN = 9;
 bool BTN_PRESSED[] = {false, false, false, false};
 
-/* Global variables: */
+/* Match variables: */
 float gameDifficulty = 0.8; // Defaults to "easy"
 int gameScore = 0;
 long matchDuration = 10000;
 
 void (*gamePhase)(void);
+
 unsigned long elapsedTime = millis();
+unsigned long previousLoop = 0;
 unsigned long shutdownTime = 0;
 
 unsigned int preReadPot = 0;
+unsigned long buttonPressedTime[4];
 
 int currentNumber = 0;
 bool currentBinaryNumber[BITSIZE] = {false, false, false, false};
-
-unsigned long buttonPressedTime[4];
 
 void setup() {
   Serial.begin(9600);
@@ -54,8 +56,6 @@ void setup() {
   lcd.backlight();
   elapsedTime = millis();
 }
-
-unsigned long previousLoop = 0;
 
 void loop() {
   elapsedTime = millis() - previousLoop;
