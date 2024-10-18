@@ -6,26 +6,11 @@
 
 #include "GameUtils.h"
 #include "Printing.h"
-
+#include "constants.h"
 /* Wiring: SDA => A4, SCL => A5 */
 /* I2C address of the LCD: 0x27 */
 /* Number of columns: 20 rows: 4 */
 LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
-
-/* Arduino PIN definitions: */
-#define POT_PIN A0
-#define SDA A4
-#define SCL A5
-
-#define BITSIZE 4
-
-#define BUTTON_BOUNCING_TIME 100
-
-/* Button and LED PINs: */
-int BTN_PIN[] = {5, 4, 3, 2};
-int LED_PIN[] = {13, 12, 11, 10};
-const int RED_PIN = 9;
-bool BTN_PRESSED[] = {false, false, false, false};
 
 /* Match variables: */
 float gameDifficulty = 0.8; // Defaults to "easy"
