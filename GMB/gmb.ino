@@ -4,9 +4,6 @@
 #include "Printing.h"
 #include "constants.h"
 #include "GameInterrupt.h"
-/* Wiring: SDA => A4, SCL => A5 */
-/* I2C address of the LCD: 0x27 */
-/* Number of columns: 20 rows: 4 */
 
 /* Match variables: */
 float gameDifficulty = 0.8; // Defaults to "easy"
