@@ -123,7 +123,7 @@ void endGameState() {
     lcd.print("Good job!");
     lcd.setCursor(0, 3);
     // VEDERE SE FUNZIONA
-    lcd.print("Score: " + gameScore);
+    lcd.print((String)"Score: " + gameScore);
     delay(1861);
     gamePhase = matchInit;
   }
@@ -136,7 +136,7 @@ void endGameState() {
     lcd.print("Game over!");
     lcd.setCursor(0, 3);
     // VEDERE SE FUNZIONA
-    lcd.print("Final score: " + gameScore);
+    lcd.print((String)"Final score: " + gameScore);
     gameScore = 0;
     delay(10000);
     gamePhase = mainMenuState;
