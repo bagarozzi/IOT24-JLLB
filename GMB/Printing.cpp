@@ -13,18 +13,16 @@ void printMainMenu() {
     lcd.print("\"Give me the binary\"");
 }
 
-void printWinningEndgame(int gameScore) {
+void printMatch(int currentNumber) {
     lcd.clear();
-    lcd.setCursor(5, 1);
-    lcd.print("Good job!");
-    lcd.setCursor(0, 3);
-    lcd.print((String)"Score: " + gameScore);
+    lcd.setCursor(9, 2);
+    lcd.print(currentNumber);
 }
 
-void printLosingEndgame(int gameScore) {
+void printEndgame(int gameScore, String message) {
     lcd.clear();
     lcd.setCursor(5, 1);
-    lcd.print("Good job!");
+    lcd.print(message);
     lcd.setCursor(0, 3);
     lcd.print((String)"Score: " + gameScore);
 }

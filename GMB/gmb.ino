@@ -67,9 +67,7 @@ void matchInit() {
   writeBinaryNumber(currentNumber, currentBinaryNumber);
   matchDuration = getMatchTime(gameDifficulty, gameScore);
   setMatchInterrupts();
-  lcd.clear();
-  lcd.setCursor(9, 2);
-  lcd.print(currentNumber);
+  printMatch(currentNumber);
   gamePhase = matchState;
 }
 
@@ -84,7 +82,7 @@ void endGameState() {
   bool corrispondono = checkGuess(currentBinaryNumber, BTN_PRESSED);
   if (corrispondono) {
     gameScore++;
-    printWinningEndgame(gameScore);
+    printEndgame(gameScore, WINNING_MSG);
     delay(1861);
     gamePhase = matchInit;
   }
@@ -92,7 +90,7 @@ void endGameState() {
     digitalWrite(RED_PIN, HIGH);
     delay(1000);
     digitalWrite(RED_PIN, LOW);
-    printLosingEndgame(gameScore);
+    printEndgame(gameScore, LOSING_MSG);
     gameScore = 0;
     delay(10000);
     gamePhase = mainMenuState;

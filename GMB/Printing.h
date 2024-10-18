@@ -4,6 +4,6 @@ void setupLCD();
 
 void printMainMenu();
 
-void printWinningEndgame(int gameScore);
+void printMatch(int currentNumber);
 
-void printLosingEndgame(int gameScore);
+void printEndgame(int gameScore, String message);
