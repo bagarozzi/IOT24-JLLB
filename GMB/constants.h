@@ -17,3 +17,7 @@ const int RED_PIN = 9;
 
 /* The LCD display: */
 const LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
+
+/* Winning and losing messages: */
+#define WINNING_MSG "Good job!"
+#define LOSING_MSG "Better luck next time!"
