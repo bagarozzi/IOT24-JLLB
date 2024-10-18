@@ -1,9 +1,11 @@
 #include <LiquidCrystal_I2C.h>
 #include <EnableInterrupt.h>
 #include <TimerOne.h>
+#include <avr/sleep.h>
 
-#include "lib/Difficulty.h"
-#include "lib/Printing.h"
+
+#include "Difficulty.h"
+#include "Printing.h"
 
 /* Wiring: SDA => A4, SCL => A5 */
 /* I2C address of the LCD: 0x27 */
@@ -15,6 +17,9 @@ LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
 
 #define SDA A4
 #define SCL A5
+#define BITSIZE 4
+
+#define BUTTON_BOUNCING_TIME 100
 
 int BTN_PIN[] = {5, 4, 3, 2};
 int LED_PIN[] = {13, 12, 11, 10};
@@ -22,20 +27,24 @@ const int RED_PIN = 9;
 bool BTN_PRESSED[] = {false, false, false, false};
 
 /* Global variables: */
-float gameDifficulty = 0.8 // Defaults to "easy"
+float gameDifficulty = 0.8; // Defaults to "easy"
 int gameScore = 0;
-long matchDuraion = 10000;
+long matchDuration = 10000;
 
-void (*gamePhase)(void) = mainMenuState();
-long elapsedTime = millis();
-long shutdownTime = 0;
+void (*gamePhase)(void);
+unsigned long elapsedTime = millis();
+unsigned long shutdownTime = 0;
 
-#define BITSIZE 4
+unsigned int preReadPot = 0;
+
 int currentNumber = 0;
 bool currentBinaryNumber[BITSIZE] = {false, false, false, false};
 
+unsigned long buttonPressedTime[4];
 
 void setup() {
+  Serial.begin(9600);
+  gamePhase = mainMenuState;
   for(int i = 0; i < 4; i++) {
     pinMode(LED_PIN[i], OUTPUT);
     pinMode(BTN_PIN[i], INPUT);
@@ -43,13 +52,14 @@ void setup() {
   pinMode(RED_PIN, OUTPUT);
   lcd.init();
   lcd.backlight();
-  Timer1.initialize(10000);
-  Timer1.attachInterrupt(sleepGame);
   elapsedTime = millis();
 }
 
+unsigned long previousLoop = 0;
+
 void loop() {
-  elapsedTime = millis() - elapsedTime;
+  elapsedTime = millis() - previousLoop;
+  previousLoop = millis();
   gamePhase();
 }
 
@@ -58,6 +68,7 @@ void loop() {
  */
 void mainMenuState() {
   setMainMenuInterrupts();
+  lcd.clear();
   lcd.setCursor(5, 1);
   lcd.print("Welcome to");
   lcd.setCursor(0, 3);
@@ -66,6 +77,7 @@ void mainMenuState() {
 }
 
 void waitState() {
+  Serial.println(shutdownTime);
   shutdownTime += elapsedTime;
   if(shutdownTime >= 10000) {
     gamePhase = sleepState;
@@ -81,14 +93,17 @@ void matchInit() {
   for (int i = 0; i < BITSIZE; i++) {
     currentBinaryNumber[BITSIZE - 1 - i] = (currentNumber & (1 << i)) ? true : false;
   }
-  matchDuraion = getMatchTime(gameDifficulty, gameScore);
-  resetInput();
+  matchDuration = getMatchTime(gameDifficulty, gameScore);
+  setMatchInterrupts();
+  lcd.clear();
+  lcd.setCursor(9, 2);
+  lcd.print(currentNumber);
   gamePhase = matchState;
 }
 
 void matchState() {
   matchDuration -= elapsedTime;
-  if (matchDuraion <= 0) {
+  if (matchDuration <= 0) {
    gamePhase = endGameState; 
   }
 }
@@ -103,26 +118,30 @@ void endGameState() {
   }
   if (corrispondono) {
     gameScore++;
+    lcd.clear();
     lcd.setCursor(5, 1);
     lcd.print("Good job!");
     lcd.setCursor(0, 3);
     // VEDERE SE FUNZIONA
-    lcd.print("Score: " + score);
+    lcd.print("Score: " + gameScore);
+    delay(1861);
     gamePhase = matchInit;
   }
   else {
     digitalWrite(RED_PIN, HIGH);
     delay(1000);
     digitalWrite(RED_PIN, LOW);
+    lcd.clear();
     lcd.setCursor(5, 1);
     lcd.print("Game over!");
     lcd.setCursor(0, 3);
     // VEDERE SE FUNZIONA
-    lcd.print("Final score: " + score);
+    lcd.print("Final score: " + gameScore);
     gameScore = 0;
     delay(10000);
     gamePhase = mainMenuState;
   }
+  resetInput();
 }
 
 /*
@@ -130,13 +149,15 @@ void endGameState() {
  */
 void sleepState() {
   disableAllInterrupts();
-  for(int i = 0; i < 3; i++) {
+  for(int i = 0; i < 4; i++) {
     enableInterrupt(BTN_PIN[i], wakeUpFunction, RISING);
   }
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
   sleep_mode();
   sleep_disable();
+  shutdownTime = 0;
+  //previousLoop = millis();
   gamePhase = mainMenuState;
 }
 
@@ -150,6 +171,15 @@ void setMainMenuInterrupts() {
   enableInterrupt(BTN_PIN[0], handleButton1, RISING);
 }
 
+void setMatchInterrupts() {
+  disableAllInterrupts();
+  enableInterrupt(POT_PIN, setGameDifficulty, CHANGE); // enableInterrupt(uint8_t pinNumber, void (*userFunction)(void), uint8_t mode)
+  enableInterrupt(BTN_PIN[0], handleButton1, RISING);
+  enableInterrupt(BTN_PIN[1], handleButton2, RISING);
+  enableInterrupt(BTN_PIN[2], handleButton3, RISING);
+  enableInterrupt(BTN_PIN[3], handleButton4, RISING);
+}
+
 void disableAllInterrupts() {
   for (int i = 2; i < 13; i++) {
     disableInterrupt(i);
@@ -160,22 +190,29 @@ void disableAllInterrupts() {
 void resetInput() {
   for(int i = 0; i < 4; i++) {
     BTN_PRESSED[i] = false;
-    digitalWrite(BTN_PIN[i], LOW);
+    digitalWrite(LED_PIN[i], LOW);
   }
 }
 
 void setGameDifficulty() {
-  gameDifficulty = getDifficulty(analogRead(potPin));
+  unsigned int readPot = analogRead(POT_PIN);
+  if(readPot >= (preReadPot + 2) || readPot <= (preReadPot - 2))
+    gameDifficulty = getDifficulty(readPot);
 }
 
 /* Handles for button's interrupts: */
 void handleButtonInterrupt(int buttonIndex) {
-  BTN_PRESSED[buttonIndex] = !BTN_PRESSED[buttonIndex];
-  if (BTN_PRESSED[buttonIndex]) {
-    digitalWrite(BTN_PIN[buttonIndex], HIGH);
-  }
-  else {
-    digitalWrite(BTN_PIN[buttonIndex], LOW);
+  unsigned long currentTime = millis();
+
+  if (currentTime - buttonPressedTime[buttonIndex] > BUTTON_BOUNCING_TIME) {
+    buttonPressedTime[buttonIndex] = currentTime;
+    BTN_PRESSED[buttonIndex] = !BTN_PRESSED[buttonIndex];
+    if (BTN_PRESSED[buttonIndex]) {
+      digitalWrite(LED_PIN[buttonIndex], HIGH);
+    }
+    else {
+      digitalWrite(LED_PIN[buttonIndex], LOW);
+    }  
   }
 }
 
