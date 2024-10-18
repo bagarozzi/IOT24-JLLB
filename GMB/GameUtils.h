@@ -1,5 +1,5 @@
 /*
- * A library for calculating and showing the game's difficulty set by a potentiometer.
+ * A file for all the function related to the game. 
 */
 
 #pragma once
