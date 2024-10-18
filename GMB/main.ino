@@ -2,8 +2,8 @@
 #include <EnableInterrupt.h>
 #include <TimerOne.h>
 
-#include <Difficulty.h>
-#include <Printing.h>
+#include "lib/Difficulty.h"
+#include "lib/Printing.h"
 
 /* Wiring: SDA => A4, SCL => A5 */
 /* I2C address of the LCD: 0x27 */
