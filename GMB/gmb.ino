@@ -63,6 +63,9 @@ void waitState() {
     BTN_PRESSED[0] = false;
     digitalWrite(LED_PIN[0], LOW);
   }
+  else if(checkDifficulty()) {
+    gamePhase = mainMenuState;
+  }
 }
 
 /** 
