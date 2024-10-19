@@ -41,11 +41,6 @@ void disableAllInterrupts();
  */
 void resetInput();
 
-/** 
- * Sets the game difficulty after the potentiometer has been twisted.
- */
-void setGameDifficulty();
-
 /**
  * Follows a series of function to manage the interrupts of the four 
  * buttons.

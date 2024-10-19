@@ -10,7 +10,6 @@ extern void (*gamePhase)(void);
 
 extern void mainMenuState(void);
 
-unsigned int preReadPot = 100;
 unsigned long buttonPressedTime[4];
 
 /* Interrupts functions: */
@@ -19,7 +18,6 @@ void wakeUpFunction() {}
 
 void setMainMenuInterrupts() {
   disableAllInterrupts();
-  enableInterrupt(POT_PIN, setGameDifficulty, CHANGE); // enableInterrupt(uint8_t pinNumber, void (*userFunction)(void), uint8_t mode)
   enableInterrupt(BTN_PIN[0], handleButton1, RISING);
 }
 
@@ -48,15 +46,6 @@ void resetInput() {
   for(int i = 0; i < 4; i++) {
     BTN_PRESSED[i] = false;
     digitalWrite(LED_PIN[i], LOW);
-  }
-}
-
-void setGameDifficulty() {
-  unsigned int readPot = analogRead(POT_PIN);
-  if(readPot >= (preReadPot + 2) || readPot <= (preReadPot - 2)) {
-    preReadPot = readPot;
-    printDifficulty(getDifficulty(readPot));
-    gamePhase = mainMenuState;
   }
 }
 
