@@ -45,7 +45,7 @@ void loop() {
  */
 void mainMenuState() {
   setMainMenuInterrupts();
-  initFade();
+  initFading();
   printMainMenu();
   shutdownTime = 0;
   gamePhase = waitState;
@@ -57,7 +57,7 @@ void mainMenuState() {
  */
 void waitState() {
   shutdownTime += elapsedTime;
-  fade();
+  fading();
   if(shutdownTime >= 10000) {
     gamePhase = sleepState;
   }

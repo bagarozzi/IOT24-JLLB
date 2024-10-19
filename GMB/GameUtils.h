@@ -38,9 +38,9 @@ bool checkGuess(bool* guessedNumber, bool* trueNumber);
 /** 
  * Initialise the fading of the red LED.
  */
-void initFade();
+void initFading();
 
 /** 
  * Fades the red LED.
  */
-void fade();
+void fading();

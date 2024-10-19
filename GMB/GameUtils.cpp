@@ -84,7 +84,7 @@ void initFading() {
     analogWrite(RED_PIN, fadeIntensity);
 }
 
-void fade() {
+void fading() {
     fadeIntensity += fadeDelta;
     if (fadeIntensity >= 255) {
         fadeIntensity = 255;
