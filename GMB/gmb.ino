@@ -46,6 +46,7 @@ void loop() {
 void mainMenuState() {
   setMainMenuInterrupts();
   printMainMenu();
+  shutdownTime = 0;s
   gamePhase = waitState;
 }
 
