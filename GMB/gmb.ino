@@ -6,7 +6,7 @@
 #include "GameInterrupt.h"
 
 /* Match variables: */
-float gameDifficulty = 0.8; // Defaults to "easy"
+float gameDifficulty = 0.4; // Defaults to "easy"
 int gameScore = 0;
 long matchDuration = 10000;
 int currentNumber = 0;
