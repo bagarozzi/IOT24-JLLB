@@ -2,8 +2,14 @@
 
 #include "constants.h"
 #include "GameUtils.h"
+#include "Printing.h"
 #include "Arduino.h"
 #include <EnableInterrupt.h>
+
+
+extern void (*gamePhase)(void);
+
+extern void mainMenuState(void);
 
 /* Interrupts functions: */
 
@@ -45,8 +51,10 @@ void resetInput() {
 
 void setGameDifficulty() {
   unsigned int readPot = analogRead(POT_PIN);
-  if(readPot >= (preReadPot + 2) || readPot <= (preReadPot - 2))
-    gameDifficulty = getDifficulty(readPot);
+  if(readPot >= (preReadPot + 2) || readPot <= (preReadPot - 2)) {
+    printDifficulty(getDifficulty(readPot););
+    gamePhase = mainMenuState;
+  }
 }
 
 /* Handles for button's interrupts: */
