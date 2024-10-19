@@ -17,7 +17,6 @@ void setMainMenuInterrupts() {
 
 void setMatchInterrupts() {
   disableAllInterrupts();
-  enableInterrupt(POT_PIN, setGameDifficulty, CHANGE); // enableInterrupt(uint8_t pinNumber, void (*userFunction)(void), uint8_t mode)
   enableInterrupt(BTN_PIN[0], handleButton1, RISING);
   enableInterrupt(BTN_PIN[1], handleButton2, RISING);
   enableInterrupt(BTN_PIN[2], handleButton3, RISING);
