@@ -37,17 +37,14 @@ float getDifficulty(int potValue) {
 }
 
 bool checkDifficulty() {
-  unsigned int readPot = analogRead(POT_PIN);
-  if(readPot >= (preReadPot + 2) || readPot <= (preReadPot - 2)) {
-    preReadPot = readPot;
+    unsigned int readPot = analogRead(POT_PIN);
     float newGameDifficulty = getDifficulty(readPot);
     if(newGameDifficulty == gameDifficulty) {
-      gameDifficulty = newGameDifficulty;
-      printDifficulty(gameTextDifficulty);
-      delay(1861);
-      return true;
+        gameDifficulty = newGameDifficulty;
+        printDifficulty(gameTextDifficulty);
+        delay(1861);
+        return true;
     }
-  }
   return false;
 }
 
