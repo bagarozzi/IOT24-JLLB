@@ -12,6 +12,8 @@ extern float gameDifficulty;
 
 unsigned int preReadPot = 100;
 String gameTextDifficulty = "";
+int fadeIntensity;
+int fadeDelta;
 
 float getDifficulty(int potValue) {
     int difficultyLevel = map(potValue, 0, 1023, 1, 5);
@@ -74,4 +76,23 @@ bool checkGuess(bool* guessedNumber, bool* trueNumber) {
         }
     }
     return true;
+}
+
+void initFading() {
+    fadeIntensity = 0;
+    fadeDelta = 5;
+    analogWrite(RED_PIN, fadeIntensity);
+}
+
+void fade() {
+    fadeIntensity += fadeDelta;
+    if (fadeIntensity >= 255) {
+        fadeIntensity = 255;
+        fadeDelta = -5;
+    }
+    else if (fadeIntensity <= 0) {
+        fadeIntensity = 0;
+        fadeDelta = 5;
+    }
+    analogWrite(RED_PIN, fadeIntensity);
 }
