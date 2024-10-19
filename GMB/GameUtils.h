@@ -34,3 +34,7 @@ void writeBinaryNumber(int number, bool* binaryNumber);
  * are equal or not.
  */
 bool checkGuess(bool* guessedNumber, bool* trueNumber);
+
+void initFade();
+
+void fade();
