@@ -16,7 +16,7 @@ void setDifficulty();
 /** 
  * Returns the match time given the difficulty of the match and the current score.
  */
-long getMatchTime(float difficulty, int score);
+long getMatchTime(int score);
 
 /** 
  * Returns a random number between 0 and 15 (inclusive).
