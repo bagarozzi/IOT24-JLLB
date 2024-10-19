@@ -24,7 +24,6 @@ float getDifficulty(int potValue) {
             textDifficulty = "Easy";
             break;
     }
-    /* CHIAMARE FUNZIONE STAMPA NOSTRA LIBRERIA PASSANDO TEXT DIFFICULTY */
     return difficultyFactor;
 }
 
