@@ -34,3 +34,7 @@ void printDifficulty(String difficulty) {
     lcd.setCursor(8, 2);
     lcd.print(difficulty);
 }
+
+void clearDisplay() {
+    lcd.clear();
+}

@@ -20,5 +20,12 @@ void printMatch(int currentNumber);
  */
 void printEndgame(int gameScore, String message);
 
-
+/**
+ * Prints the difficulty along with a message about it.
+ */
 void printDifficulty(String difficulty);
+
+/** 
+ * Clears the display from what's written on it.
+ */
+void clearDisplay();
