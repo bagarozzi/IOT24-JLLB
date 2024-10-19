@@ -95,4 +95,5 @@ void fading() {
         fadeDelta = 5;
     }
     analogWrite(RED_PIN, fadeIntensity);
+    delay(10);
 }
