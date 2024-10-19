@@ -10,7 +10,7 @@ extern void (*gamePhase)(void);
 
 extern void mainMenuState(void);
 
-unsigned long buttonPressedTime[4];
+unsigned long buttonPressedTime[BITSIZE];
 
 /* Interrupts functions: */
 
@@ -30,20 +30,22 @@ void setMatchInterrupts() {
 }
 
 void setSleepInterrupts() {
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < BITSIZE; i++) {
         enableInterrupt(BTN_PIN[i], wakeUpFunction, RISING);
     }
 }
 
 void disableAllInterrupts() {
-  for (int i = 2; i < 13; i++) {
-    disableInterrupt(i);
+  for (int i = 0; i < BITSIZE; i++) {
+    disableInterrupt(LED_PIN[i]);
   }
-  disableInterrupt(A0);
+  disableInterrupt(POT_PIN);
+  disableInterrupt(RED_PIN);
+  
 }
 
 void resetInput() {
-  for(int i = 0; i < 4; i++) {
+  for(int i = 0; i < BITSIZE; i++) {
     BTN_PRESSED[i] = false;
     digitalWrite(LED_PIN[i], LOW);
   }

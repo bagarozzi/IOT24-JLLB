@@ -8,7 +8,7 @@
 /* The bit size of the number to guess: */
 #define BITSIZE 4
 
-#define BUTTON_BOUNCING_TIME 100
+#define BUTTON_BOUNCING_TIME 150
 
 /* Button and LED PINs: */
 const int BTN_PIN[] = {5, 4, 3, 2};

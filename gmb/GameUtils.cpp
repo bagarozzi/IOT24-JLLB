@@ -5,8 +5,17 @@
 
 #define EASY 0.4
 #define MEDIUM 0.5
-#define HARD 0.6
-#define EXTREME 0.75
+#define HARD 0.7
+#define EXTREME 0.8
+
+#define MATCH_TIME 10000
+#define MILLIS_TO_SECOND 1000
+
+#define MAX_NUMBER 15
+
+#define FADE_DELTA 5
+#define MIN_FADE_INTENSITY 0
+#define MAX_FADE_INTENSITY 255
 
 extern float gameDifficulty;
 
@@ -49,18 +58,18 @@ bool checkDifficulty() {
     if(newGameDifficulty != gameDifficulty) {
         gameDifficulty = newGameDifficulty;
         printDifficulty(gameTextDifficulty);
-        delay(1861);
+        delay(2000);
         return true;
     }
     return false;
 }
 
 long getMatchTime(int score) {
-    return 10000 - ((gameDifficulty * score) * 1000);
+    return MATCH_TIME - ((gameDifficulty * score) * MILLIS_TO_SECOND);
 }
 
 int getRandomNumber() {
-    return random(16);
+    return random(MAX_NUMBER + 1);
 }
 
 void writeBinaryNumber(int number, bool* binaryNumber) {
@@ -79,20 +88,20 @@ bool checkGuess(bool* guessedNumber, bool* trueNumber) {
 }
 
 void initFading() {
-    fadeIntensity = 0;
-    fadeDelta = 5;
+    fadeIntensity = MIN_FADE_INTENSITY;
+    fadeDelta = FADE_DELTA;
     analogWrite(RED_PIN, fadeIntensity);
 }
 
 void fading() {
     fadeIntensity += fadeDelta;
-    if (fadeIntensity >= 255) {
-        fadeIntensity = 255;
-        fadeDelta = -5;
+    if (fadeIntensity >= MAX_FADE_INTENSITY) {
+        fadeIntensity = MAX_FADE_INTENSITY;
+        fadeDelta = -FADE_DELTA;
     }
-    else if (fadeIntensity <= 0) {
-        fadeIntensity = 0;
-        fadeDelta = 5;
+    else if (fadeIntensity <= MIN_FADE_INTENSITY) {
+        fadeIntensity = MIN_FADE_INTENSITY;
+        fadeDelta = FADE_DELTA;
     }
     analogWrite(RED_PIN, fadeIntensity);
     delay(10);

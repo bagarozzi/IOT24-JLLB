@@ -9,8 +9,14 @@
  */
 float getDifficulty(int potValue);
 
+/** 
+ * Checks if the difficulty has changed and updates it.
+ */
 bool checkDifficulty();
 
+/** 
+ * Sets the difficulty of the game.
+ */
 void setDifficulty();
 
 /** 

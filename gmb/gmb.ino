@@ -25,7 +25,6 @@ bool BTN_PRESSED[] = {false, false, false, false};
 
 void setup() {
   gamePhase = mainMenuState;
-  Serial.begin(9600);
   for(int i = 0; i < 4; i++) {
     pinMode(LED_PIN[i], OUTPUT);
     pinMode(BTN_PIN[i], INPUT);
@@ -39,7 +38,6 @@ void setup() {
 void loop() {
   elapsedTime = millis() - previousLoop;
   previousLoop = millis();
-  Serial.println(gameDifficulty);
   gamePhase();
 }
 
@@ -104,7 +102,7 @@ void endGameState() {
   if (corrispondono) {
     gameScore++;
     printEndgame(gameScore, WINNING_MSG);
-    delay(1861);
+    delay(2000);
     gamePhase = matchInit;
   }
   else {
