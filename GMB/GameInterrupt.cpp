@@ -6,7 +6,6 @@
 #include "Arduino.h"
 #include <EnableInterrupt.h>
 
-
 extern void (*gamePhase)(void);
 
 extern void mainMenuState(void);
@@ -52,7 +51,7 @@ void resetInput() {
 void setGameDifficulty() {
   unsigned int readPot = analogRead(POT_PIN);
   if(readPot >= (preReadPot + 2) || readPot <= (preReadPot - 2)) {
-    printDifficulty(getDifficulty(readPot););
+    printDifficulty(getDifficulty(readPot));
     gamePhase = mainMenuState;
   }
 }
