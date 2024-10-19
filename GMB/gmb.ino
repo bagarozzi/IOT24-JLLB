@@ -19,7 +19,7 @@ unsigned long previousLoop = 0;
 
 /* Interrupt variables: */
 unsigned long shutdownTime = 0;
-unsigned int preReadPot = 0;
+unsigned int preReadPot = 100;
 unsigned long buttonPressedTime[4];
 
 /* Array for pressed buttons: */
