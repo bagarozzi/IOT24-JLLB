@@ -10,6 +10,9 @@ extern void (*gamePhase)(void);
 
 extern void mainMenuState(void);
 
+unsigned int preReadPot = 100;
+unsigned long buttonPressedTime[4];
+
 /* Interrupts functions: */
 
 void wakeUpFunction() {}
@@ -51,6 +54,7 @@ void resetInput() {
 void setGameDifficulty() {
   unsigned int readPot = analogRead(POT_PIN);
   if(readPot >= (preReadPot + 2) || readPot <= (preReadPot - 2)) {
+    preReadPot = readPot;
     printDifficulty(getDifficulty(readPot));
     gamePhase = mainMenuState;
   }
