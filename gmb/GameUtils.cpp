@@ -21,20 +21,20 @@ float getDifficulty(int potValue) {
     switch (difficultyLevel) {
         case 1:
             gameTextDifficulty = "Easy";
-            return EXTREME;
+            return EASY;
             break;
         case 2:
             gameTextDifficulty = "Medium";
-            return HARD;
+            return MEDIUM;
             break;
         case 3:
             gameTextDifficulty = "Hard";
-            return MEDIUM;
+            return HARD;
             break;
         case 4:
         case 5:
             gameTextDifficulty = "Extreme";
-            return EASY;
+            return EXTREME;
             break;
         default:
             gameTextDifficulty = "Easy";
