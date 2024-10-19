@@ -18,18 +18,22 @@ float getDifficulty(int potValue) {
     String textDifficulty = "";
     switch (difficultyLevel) {
         case 1:
-            gameTextDifficulty = "Extreme";
+            gameTextDifficulty = "Easy";
             return EXTREME;
             break;
         case 2:
-            gameTextDifficulty = "Hard";
+            gameTextDifficulty = "Medium";
             return HARD;
             break;
         case 3:
-            gameTextDifficulty = "Medium";
+            gameTextDifficulty = "Hard";
             return MEDIUM;
             break;
         case 4:
+            gameTextDifficulty = "Extreme";
+            return EASY;
+            break;
+        default:
             gameTextDifficulty = "Easy";
             return EASY;
             break;
@@ -39,13 +43,13 @@ float getDifficulty(int potValue) {
 bool checkDifficulty() {
     unsigned int readPot = analogRead(POT_PIN);
     float newGameDifficulty = getDifficulty(readPot);
-    if(newGameDifficulty == gameDifficulty) {
+    if(newGameDifficulty != gameDifficulty) {
         gameDifficulty = newGameDifficulty;
         printDifficulty(gameTextDifficulty);
         delay(1861);
         return true;
     }
-  return false;
+    return false;
 }
 
 long getMatchTime(float difficulty, int score) {
