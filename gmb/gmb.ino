@@ -77,7 +77,7 @@ void waitState() {
 void matchInit() {
   currentNumber = getRandomNumber();
   writeBinaryNumber(currentNumber, currentBinaryNumber);
-  matchDuration = getMatchTime(gameDifficulty, gameScore);
+  matchDuration = getMatchTime(gameScore);
   setMatchInterrupts();
   printMatch(currentNumber);
   gamePhase = matchState;

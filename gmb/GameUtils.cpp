@@ -55,8 +55,8 @@ bool checkDifficulty() {
     return false;
 }
 
-long getMatchTime(float difficulty, int score) {
-    return 10000 - ((difficulty * score) * 1000);
+long getMatchTime(int score) {
+    return 10000 - ((gameDifficulty * score) * 1000);
 }
 
 int getRandomNumber() {
