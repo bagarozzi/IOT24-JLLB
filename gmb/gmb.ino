@@ -33,6 +33,7 @@ void setup() {
   pinMode(RED_PIN, OUTPUT);
   setupLCD();
   elapsedTime = millis();
+  randomSeed(analogRead(A3));
 }
 
 void loop() {
