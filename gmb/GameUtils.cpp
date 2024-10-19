@@ -60,7 +60,7 @@ long getMatchTime(int score) {
 }
 
 int getRandomNumber() {
-    return random(0, 16);
+    return random(16);
 }
 
 void writeBinaryNumber(int number, bool* binaryNumber) {
