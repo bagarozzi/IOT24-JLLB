@@ -14,7 +14,7 @@ unsigned int preReadPot = 100;
 String gameTextDifficulty = "";
 
 float getDifficulty(int potValue) {
-    int difficultyLevel = map(potValue, 0, 1023, 1, 4);
+    int difficultyLevel = map(potValue, 0, 1023, 1, 5);
     String textDifficulty = "";
     switch (difficultyLevel) {
         case 1:
@@ -30,6 +30,7 @@ float getDifficulty(int potValue) {
             return MEDIUM;
             break;
         case 4:
+        case 5:
             gameTextDifficulty = "Extreme";
             return EASY;
             break;
