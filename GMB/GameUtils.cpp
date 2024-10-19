@@ -2,29 +2,30 @@
 #include "Arduino.h"
 #include "constants.h"
 
-float getDifficulty(int potValue) {
+extern float gameDifficulty;
+
+String getDifficulty(int potValue) {
     int difficultyLevel = map(potValue, 0, 1023, 1, 4);
-    int difficultyFactor = 0;
     String textDifficulty = "";
     switch (difficultyLevel) {
         case 1:
-            difficultyFactor = 0.75;
+            gameDifficulty = 0.75;
             textDifficulty = "Extreme";
             break;
         case 2:
-            difficultyFactor = 0.6;
+            gameDifficulty = 0.6;
             textDifficulty = "Hard";
             break;
         case 3:
-            difficultyFactor = 0.5;
+            gameDifficulty = 0.5;
             textDifficulty = "Medium";
             break;
         case 4:
-            difficultyFactor = 0.4;
+            gameDifficulty = 0.4;
             textDifficulty = "Easy";
             break;
     }
-    return difficultyFactor;
+    return textDifficulty;
 }
 
 long getMatchTime(float difficulty, int score) {
