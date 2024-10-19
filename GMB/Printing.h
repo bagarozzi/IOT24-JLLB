@@ -21,4 +21,4 @@ void printMatch(int currentNumber);
 void printEndgame(int gameScore, String message);
 
 
-void printDifficulty(int difficulty);
+void printDifficulty(String difficulty);
