@@ -35,6 +35,12 @@ void writeBinaryNumber(int number, bool* binaryNumber);
  */
 bool checkGuess(bool* guessedNumber, bool* trueNumber);
 
+/** 
+ * Initialise the fading of the red LED.
+ */
 void initFade();
 
+/** 
+ * Fades the red LED.
+ */
 void fade();
