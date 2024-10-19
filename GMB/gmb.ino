@@ -116,6 +116,7 @@ void endGameState() {
 void sleepState() {
   disableAllInterrupts();
   setSleepInterrupts();
+  clearDisplay();
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
   sleep_mode();
