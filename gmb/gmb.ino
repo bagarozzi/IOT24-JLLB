@@ -99,6 +99,7 @@ void matchState() {
  */
 void endGameState() {
   bool corrispondono = checkGuess(currentBinaryNumber, BTN_PRESSED);
+  resetInput();
   if (corrispondono) {
     gameScore++;
     printEndgame(gameScore, WINNING_MSG);
@@ -114,7 +115,6 @@ void endGameState() {
     delay(10000);
     gamePhase = mainMenuState;
   }
-  resetInput();
 }
 
 /*
