@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Arduino.h"
+#include "constants.h"
+
 /** 
  * Returns the difficulty of the game given the value of the
  * potentiometer. 

@@ -1,6 +1,4 @@
 #include "GameUtils.h"
-#include "Arduino.h"
-#include "constants.h"
 
 extern float gameDifficulty;
 
