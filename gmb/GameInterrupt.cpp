@@ -47,6 +47,7 @@ void resetInput() {
     BTN_PRESSED[i] = false;
     digitalWrite(LED_PIN[i], LOW);
   }
+  digitalWrite(RED_PIN, LOW);
 }
 
 /* Handles for button's interrupts: */
