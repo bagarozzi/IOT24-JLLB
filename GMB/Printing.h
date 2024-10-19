@@ -19,3 +19,6 @@ void printMatch(int currentNumber);
  * Prints the endgame message with the current score.
  */
 void printEndgame(int gameScore, String message);
+
+
+void printDifficulty(int difficulty);

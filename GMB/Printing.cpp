@@ -21,8 +21,16 @@ void printMatch(int currentNumber) {
 
 void printEndgame(int gameScore, String message) {
     lcd.clear();
-    lcd.setCursor(5, 1);
+    lcd.setCursor(0, 1);
     lcd.print(message);
     lcd.setCursor(0, 3);
     lcd.print((String)"Score: " + gameScore);
+}
+
+void printDifficulty(String difficulty) {
+    lcd.clear();
+    lcd.setCursor(0, 1);
+    lcd.print("Game difficulty: ");
+    lcd.setCursor(8, 2);
+    lcd.print(difficulty);
 }
