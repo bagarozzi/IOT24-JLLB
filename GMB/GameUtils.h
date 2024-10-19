@@ -7,7 +7,11 @@
  * Returns the difficulty of the game given the value of the
  * potentiometer. 
  */
-String getDifficulty(int potValue);
+float getDifficulty(int potValue);
+
+bool checkDifficulty();
+
+void setDifficulty();
 
 /** 
  * Returns the match time given the difficulty of the match and the current score.

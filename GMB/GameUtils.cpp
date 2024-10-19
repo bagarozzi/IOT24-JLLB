@@ -1,29 +1,54 @@
 #include "GameUtils.h"
 
+#include "constants.h"
+#include "Printing.h"
+
+#define EASY 0.4
+#define MEDIUM 0.5
+#define HARD 0.6
+#define EXTREME 0.75
+
 extern float gameDifficulty;
 
-String getDifficulty(int potValue) {
+unsigned int preReadPot = 100;
+String gameTextDifficulty = "";
+
+float getDifficulty(int potValue) {
     int difficultyLevel = map(potValue, 0, 1023, 1, 4);
     String textDifficulty = "";
     switch (difficultyLevel) {
         case 1:
-            gameDifficulty = 0.75;
-            textDifficulty = "Extreme";
+            gameTextDifficulty = "Extreme";
+            return EXTREME;
             break;
         case 2:
-            gameDifficulty = 0.6;
-            textDifficulty = "Hard";
+            gameTextDifficulty = "Hard";
+            return HARD;
             break;
         case 3:
-            gameDifficulty = 0.5;
-            textDifficulty = "Medium";
+            gameTextDifficulty = "Medium";
+            return MEDIUM;
             break;
         case 4:
-            gameDifficulty = 0.4;
-            textDifficulty = "Easy";
+            gameTextDifficulty = "Easy";
+            return EASY;
             break;
     }
-    return textDifficulty;
+}
+
+bool checkDifficulty() {
+  unsigned int readPot = analogRead(POT_PIN);
+  if(readPot >= (preReadPot + 2) || readPot <= (preReadPot - 2)) {
+    preReadPot = readPot;
+    float newGameDifficulty = getDifficulty(readPot);
+    if(newGameDifficulty == gameDifficulty) {
+      gameDifficulty = newGameDifficulty;
+      printDifficulty(gameTextDifficulty);
+      delay(1861);
+      return true;
+    }
+  }
+  return false;
 }
 
 long getMatchTime(float difficulty, int score) {
