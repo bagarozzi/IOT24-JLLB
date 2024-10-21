@@ -3,20 +3,6 @@
 #include "constants.h"
 #include "Printing.h"
 
-#define EASY 0.4
-#define MEDIUM 0.5
-#define HARD 0.7
-#define EXTREME 0.8
-
-#define MATCH_TIME 10000
-#define MILLIS_TO_SECOND 1000
-
-#define MAX_NUMBER 15
-
-#define FADE_DELTA 5
-#define MIN_FADE_INTENSITY 0
-#define MAX_FADE_INTENSITY 255
-
 extern float gameDifficulty;
 
 unsigned int preReadPot = 100;
