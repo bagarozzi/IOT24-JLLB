@@ -1,3 +1,7 @@
+/**
+ * Autori: Federico Bagattoni, Jacopo Turchi, Luca Ponseggi, Luca Venturini
+ * Titolo: Basic microcontroller programming: Give Me the Binary!
+ */
 #include <avr/sleep.h>
 
 #include "GameUtils.h"
