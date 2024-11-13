@@ -1,0 +1,2 @@
+#include "SmartWasteBin.h"
+
