@@ -15,6 +15,26 @@ class SmartWasteBin {
         SmartWasteBin(); 
         void init();
 
+        // Methods for user detection
+        void userDetected();
+        bool isUserDetected();
+        void userGone();
+        bool isUserGone();
+        void readyToOpen();
+        bool isReadyToOpen();
+
+        // Methods for disposing:
+        void binOpen();
+        bool isBinOpen();
+        bool isDisposingDone();
+
+        // Methods for maintenance:
+        void problemDetected(); // sets the state to MAINTENANCE
+        void setActuatorsInMaintenance(); // sets the system in maintenance mode, red light and closes lid
+        bool isInMaintenance();
+        bool isMaintenanceCompleted();
+
+        // Methods for sleeping
         void prepareForSleep();
         void wakeUp();
 
@@ -27,8 +47,11 @@ class SmartWasteBin {
 
         enum {
             IDLE,
-            BIN_OPEN
-            // and so on
+            USER_DETECTED,
+            USER_GONE,
+            READY_TO_OPEN,
+            OPEN,
+            MAINTENANCE
         } state; 
 
         Led* Led1;
