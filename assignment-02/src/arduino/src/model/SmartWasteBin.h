@@ -12,25 +12,25 @@ class SmartWasteBin {
 
     public:
 
-    SmartWasteBin(); 
-    void init();
+        SmartWasteBin(); 
+        void init();
 
 
     private:
 
-    enum {
-        IDLE,
-        BIN_OPEN
-        // and so on
-    } state; 
+        enum {
+            IDLE,
+            BIN_OPEN
+            // and so on
+        } state; 
 
-    Led* Led1;
-    Led* Led2;
+        Led* Led1;
+        Led* Led2;
 
-    Sonar* Sonar;
-    Pir* Pir;
-    TempSensor* TempSensor;
-    ServoMotor* CoverMotor;  
+        Sonar* Sonar;
+        Pir* Pir;
+        TempSensor* TempSensor;
+        ServoMotor* CoverMotor;  
 };
 
 #endif
