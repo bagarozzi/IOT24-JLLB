@@ -10,7 +10,7 @@
 
 ## Jobs:
 
-- [ ] Main task e architettura: mixed
+- [x] Main task e architettura: mixed
 
 - [ ] Telemetry e Temperature check: Baga
 
