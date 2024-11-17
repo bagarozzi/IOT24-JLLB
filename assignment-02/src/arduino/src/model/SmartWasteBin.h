@@ -2,10 +2,19 @@
 #define __SMART_WASTE_BIN__
 
 #include <Arduino.h>
+#include "Led.h"
+#include "Sonar.h"
+#include "Pir.h"
+#include "TempSensor.h"
+#include "servo_motor.h"
 
 class SmartWasteBin {
 
-    public: 
+    public:
+
+    SmartWasteBin(); 
+    void init();
+
 
     private:
 
@@ -14,6 +23,14 @@ class SmartWasteBin {
         BIN_OPEN
         // and so on
     } state; 
+
+    Led* Led1;
+    Led* Led2;
+
+    Sonar* Sonar;
+    Pir* Pir;
+    TempSensor* TempSensor;
+    ServoMotor* CoverMotor;  
 };
 
 #endif
