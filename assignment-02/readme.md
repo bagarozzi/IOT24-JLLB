@@ -14,7 +14,7 @@
 
 - [ ] Telemetry e Temperature check: Baga
 
-- [ ] User detection e DisplayService: mixed
+- [ ] User detection e DisplayService: mixed (turbo x user)
 
 - [ ] Waste disposal: Turbo
 
