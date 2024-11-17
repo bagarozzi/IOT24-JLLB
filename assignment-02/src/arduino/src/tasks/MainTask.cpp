@@ -1,5 +1,7 @@
 #include "MainTask.h"
 #include "Arduino.h"
+#include "config.h"
+#include <avr/sleep.h>
 
 MainTask::MainTask() {
     wasteBin = new SmartWasteBin();
@@ -10,10 +12,24 @@ void MainTask::tick() {
     switch (state) {
         case WAITING_FOR_USER:
             // logOnce("Waiting for user");
-            // Handle WAITING_FOR_USER state
+            if(wasteBin->samplePresence()) {
+                setState(USER_DETECTED);
+            }
+            else if(elapsedTimeInState() > SLEEP_TIMEOUT) {
+                setState(SLEEPING);
+            }
             break;
         case SLEEPING:
-            // Handle SLEEPING state
+            // logOnce("Sleeping");
+            wasteBin->prepareForSleep();
+            // TODO: user console prepare sleep
+            delay(100);
+            set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+            sleep_enable();
+            sleep_mode();
+            wasteBin->wakeUp();
+            // TODO: user console wake up
+            setState(WAITING_FOR_USER);
             break;
         case USER_DETECTED:
             // Handle USER_DETECTED state
