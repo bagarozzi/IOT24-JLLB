@@ -39,9 +39,9 @@ class SmartWasteBin {
         void wakeUp();
 
         // Methods for interacting with sensors and actuators: 
-        bool sampleTemperature();
-        bool sampleDistance();
-        bool samplePresence();
+        void sampleTemperature();
+        void sampleDistance();
+        void samplePresence();
 
     private:
 
