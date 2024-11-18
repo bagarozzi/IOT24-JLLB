@@ -18,12 +18,15 @@ class TelemetryTask : public Task {
 
     private:
         void setState(int state);
+        long elapsedTimeInState();
         // TODO: void logOnce
         
         enum {
             IDLE,
             SENDING
         } state;
+        long stateTimeStamp;
+        bool justEntered;
 
         SmartWasteBin* wasteBin;
         // userconsole* uCons;
