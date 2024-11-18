@@ -12,7 +12,6 @@
  * 
  *                     [statuscode]:[level]:[temperature]
  * 
- * @author Federico Bagattoni
  */
 class TelemetryTask : public Task {
     
