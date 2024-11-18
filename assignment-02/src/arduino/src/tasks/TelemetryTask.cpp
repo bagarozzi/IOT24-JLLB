@@ -1,4 +1,5 @@
 #include "tasks/TelemetryTask.h"
+#include <Arduino.h>
 #include "config.h"
 
 void TelemetryTask::tick() {
@@ -10,7 +11,7 @@ void TelemetryTask::tick() {
             break;
         case SENDING:
             int statusCode = 0;
-            
+            String message = String(wasteBin->getCurrentLevel()) + ":" + String(wasteBin->getCurrentTemperature());
             // MSG service send telemetry;
             setState(IDLE);
             break;
