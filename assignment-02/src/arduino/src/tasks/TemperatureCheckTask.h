@@ -17,7 +17,8 @@ class TemperatureCheckTask : public Task {
         void logOnce(const String& message);
 
         enum {
-            CHECKING, 
+            CHECKING,
+            PANIC,
             IDLE
         } state;
 
@@ -25,7 +26,6 @@ class TemperatureCheckTask : public Task {
 
         long stateTimeStamp;
         bool justEnteredState;
-
 
 };
 
