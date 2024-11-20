@@ -15,7 +15,7 @@ class MainTask : public Task {
 
         void setState(int state);
         long elapsedTimeInState();
-        // TODO: LogOnce() method
+        void logOnce(String& message);
 
         enum {
             WAITING_FOR_USER,

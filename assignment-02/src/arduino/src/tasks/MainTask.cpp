@@ -2,6 +2,7 @@
 #include "Arduino.h"
 #include "config.h"
 #include <avr/sleep.h>
+#include "kernel/Logger.h"
 
 MainTask::MainTask() {
     wasteBin = new SmartWasteBin();
@@ -91,4 +92,11 @@ void MainTask::setState(int s) {
 
 long MainTask::elapsedTimeInState() {
     return millis() - stateTimeStamp;
+}
+
+void MainTask::logOnce(String& message) {
+    if(justEnteredState) {
+        Logger.log(message);
+        justEnteredState = false;
+    }
 }
