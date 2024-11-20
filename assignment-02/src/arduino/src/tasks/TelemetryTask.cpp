@@ -1,15 +1,18 @@
 #include "tasks/TelemetryTask.h"
 #include <Arduino.h>
 #include "config.h"
+#include "kernel/Logger.h"
 
 void TelemetryTask::tick() {
     switch (state) {
         case IDLE:
+            logOnce(F("[telm]: Idle"));
             if(elapsedTimeInState() > TELEMETRY_TIMEOUT) {
                 setState(SENDING);
             }
             break;
         case SENDING:
+            logOnce(F("[telm]: Sending data..."));
             int statusCode = 0;
             String message = String(wasteBin->getCurrentLevel()) + ":" + String(wasteBin->getCurrentTemperature());
             // MSG service send telemetry;
@@ -26,4 +29,12 @@ void TelemetryTask::setState(int s) {
 
 long TelemetryTask::elapsedTimeInState() {
     return millis() - stateTimeStamp;
+}
+
+void TelemetryTask::logOnce(const String& message) {
+    if(justEntered) {
+        Logger.log(message);
+        justEntered = false;
+    }
+
 }
