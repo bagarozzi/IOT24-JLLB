@@ -12,7 +12,7 @@ MainTask::MainTask() {
 void MainTask::tick() {
     switch (state) {
         case WAITING_FOR_USER:
-            // logOnce("Waiting for user");
+            logOnce(F("[main]: Waiting for user"));
             if(wasteBin->isUserDetected()) {
                 // TODO: user console turn on display
                 // TODO: user console welcome message
@@ -24,7 +24,7 @@ void MainTask::tick() {
             }
             break;
         case SLEEPING:
-            // TODO: logOnce("Sleeping");
+            logOnce(F("[main]: No user found, going to sleep"));
             wasteBin->prepareForSleep();
             // TODO: user console prepare sleep
             delay(100);
@@ -36,7 +36,7 @@ void MainTask::tick() {
             setState(WAITING_FOR_USER);
             break;
         case USER_DETECTED:
-            // TODO: logOnce("User detected");
+            logOnce("[main]: User detected");
             if(wasteBin->isReadyToOpen()) {
                 // TODO: user console ready to open
                 setState(BIN_OPENING);
@@ -47,14 +47,14 @@ void MainTask::tick() {
             }
             break;
         case BIN_OPENING:
-            // TODO: logOnce("Bin opening");
+            logOnce("[main]: Opening bin");
             if(wasteBin->isBinOpen()) {
                 // TODO: logOnce("Bin open");
                 setState(DISPOSING);
             }
             break;
         case DISPOSING:
-            // logOnce("Disposing...");
+            logOnce("[main]: Disposing");
             if(wasteBin->isDisposingDone()) {
                 // logOnce("Disposing done");
                 setState(BIN_CLOSING);
@@ -70,7 +70,7 @@ void MainTask::tick() {
             }
             break;
         case BIN_CLOSING:
-            // TODO: logOnce("Bin closing");
+            logOnce("Bin closing");
             if(wasteBin->isBinOpen()) {
                 // TODO: logOnce("Bin closed");
                 setState(WAITING_FOR_USER);
@@ -94,7 +94,7 @@ long MainTask::elapsedTimeInState() {
     return millis() - stateTimeStamp;
 }
 
-void MainTask::logOnce(String& message) {
+void MainTask::logOnce(const String& message) {
     if(justEnteredState) {
         Logger.log(message);
         justEnteredState = false;

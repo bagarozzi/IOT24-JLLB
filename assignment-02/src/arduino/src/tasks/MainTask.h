@@ -15,7 +15,7 @@ class MainTask : public Task {
 
         void setState(int state);
         long elapsedTimeInState();
-        void logOnce(String& message);
+        void logOnce(const String& message);
 
         enum {
             WAITING_FOR_USER,
