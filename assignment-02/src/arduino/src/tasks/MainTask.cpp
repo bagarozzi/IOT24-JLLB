@@ -12,7 +12,7 @@ void MainTask::tick() {
     switch (state) {
         case WAITING_FOR_USER:
             // logOnce("Waiting for user");
-            if(wasteBin->samplePresence()) {
+            if(wasteBin->isUserDetected()) {
                 // TODO: user console turn on display
                 // TODO: user console welcome message
                 wasteBin->userDetected();
