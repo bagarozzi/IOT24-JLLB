@@ -22,7 +22,7 @@ class TelemetryTask : public Task {
     private:
         void setState(int state);
         long elapsedTimeInState();
-        // TODO: void logOnce
+        void logOnce(const String& message);
         
         enum {
             IDLE,
