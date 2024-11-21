@@ -21,7 +21,7 @@ void TemperatureCheckTask::tick() {
             if (wasteBin->getCurrentTemperature() > TEMPERATURE_CHECK_MAXTEMP) {
                 if (elapsedTimeInState() >= TEMPERATURE_CHECK_MAXTIME) {
                     //wasteBin->setTemperatureAlarm(true);
-                    setState(IDLE);
+                    setState(PANIC);
                 }
             }
             else {
