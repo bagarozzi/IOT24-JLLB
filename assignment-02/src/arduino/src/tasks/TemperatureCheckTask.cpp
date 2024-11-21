@@ -3,6 +3,12 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
+enum State {
+    IDLE,
+    CHECKING,
+    PANIC
+};
+
 TemperatureCheckTask::TemperatureCheckTask(SmartWasteBin* smartWasteBin) {
     this->wasteBin = smartWasteBin;
     this->state = IDLE;
@@ -37,7 +43,7 @@ void TemperatureCheckTask::tick() {
     }
 }
 
-void TemperatureCheckTask::setState(int state) {
+void TemperatureCheckTask::setState(State state) {
     this->state = state;
     this->stateTimeStamp = millis();
     this->justEnteredState = true;

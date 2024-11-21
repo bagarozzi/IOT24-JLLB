@@ -12,15 +12,15 @@ class TemperatureCheckTask : public Task {
 
     private: 
 
-        void setState(int state);
+        enum State {
+            IDLE,
+            CHECKING,
+            PANIC
+        } state;
+
+        void setState(State state);
         long elapsedTimeInState();
         void logOnce(const String& message);
-
-        enum {
-            CHECKING,
-            PANIC,
-            IDLE
-        } state;
 
         SmartWasteBin* wasteBin;
 
