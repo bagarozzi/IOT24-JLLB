@@ -20,14 +20,16 @@ class TelemetryTask : public Task {
         void tick();
 
     private:
-        void setState(int state);
-        long elapsedTimeInState();
-        void logOnce(const String& message);
-        
-        enum {
+
+        enum State {
             IDLE,
             SENDING
         } state;
+
+        void setState(State state);
+        long elapsedTimeInState();
+        void logOnce(const String& message);
+    
         long stateTimeStamp;
         bool justEntered;
 

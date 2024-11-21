@@ -21,7 +21,7 @@ void TelemetryTask::tick() {
     }
 }
 
-void TelemetryTask::setState(int s) {
+void TelemetryTask::setState(State s) {
     state = s;
     stateTimeStamp = millis();
     justEntered = true;
