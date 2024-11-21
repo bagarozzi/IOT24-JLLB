@@ -11,12 +11,8 @@ class WasteDisposalTask : public Task {
         void tick();
 
     private:
-        void setState(int state);
-        long elapsedTimeInState();
-        void logOnce(const String& message);
-        // TODO: LogOnce() method
 
-        enum {
+        enum State {
             IDLE,
             BIN_OPENING,
             WAITING_FOR_DISPOSAL,
@@ -24,6 +20,11 @@ class WasteDisposalTask : public Task {
             BIN_CLOSING,
             IN_MAINTENANCE
         } state;
+
+        void setState(State state);
+        long elapsedTimeInState();
+        void logOnce(const String& message);
+        // TODO: LogOnce() method
 
         SmartWasteBin* wasteBin;
 
