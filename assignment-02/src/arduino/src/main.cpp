@@ -1,18 +1,17 @@
 #include <Arduino.h>
+#include "model/SmartWasteBin.h"
+#include "kernel/Scheduler.h"
+#include "config.h"
 
-// put function declarations here:
-int myFunction(int, int);
+Scheduler scheduler;
+
+SmartWasteBin* wasteBin = new SmartWasteBin();
+// UserConsole* uCons = new UserConsoler();
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  scheduler.init(BASE_PERIOD);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  scheduler.schedule();
 }
