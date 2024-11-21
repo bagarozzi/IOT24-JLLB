@@ -12,7 +12,7 @@
 
 - [x] Main task e architettura: mixed
 
-- [ ] Telemetry e Temperature check: Baga
+- [ ] Telemetry e [x] Temperature check: Baga
 
 - [ ] User detection e DisplayService: mixed (turbo x user)
 
