@@ -4,8 +4,8 @@
 #include <avr/sleep.h>
 #include "kernel/Logger.h"
 
-MainTask::MainTask() {
-    wasteBin = new SmartWasteBin();
+MainTask::MainTask(SmartWasteBin* wasteBin) {
+    this->wasteBin = wasteBin;
     setState(WAITING_FOR_USER);
 }
 

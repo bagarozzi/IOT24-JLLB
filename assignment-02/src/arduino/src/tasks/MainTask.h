@@ -8,7 +8,7 @@ class MainTask : public Task {
 
     public:
 
-        MainTask();
+        MainTask(SmartWasteBin* wasteBin);
         void tick();
 
     private:
