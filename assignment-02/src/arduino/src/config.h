@@ -5,9 +5,14 @@
 #ifndef __CONFIG__
 #define __CONFIG__
 
-// System timing and configuration
+// Scheduler's timing configuration:
+#define BASE_PERIOD 100
+
+// System timing and configuration:
 #define SLEEP_TIMEOUT 10000
 #define LID_OPEN_TIMEOUT 120000
+
+// Telemtry task's timing configuration:
 #define TELEMETRY_TIMEOUT 500
 
 // Temperature check task's timing configuration: 
