@@ -13,11 +13,7 @@ class MainTask : public Task {
 
     private:
 
-        void setState(int state);
-        long elapsedTimeInState();
-        void logOnce(const String& message);
-
-        enum {
+        enum State {
             WAITING_FOR_USER,
             SLEEPING,
             USER_DETECTED,
@@ -26,6 +22,10 @@ class MainTask : public Task {
             DISPOSING,
             BIN_CLOSING
         } state;
+
+        void setState(State state);
+        long elapsedTimeInState();
+        void logOnce(const String& message);
 
         SmartWasteBin* wasteBin;
 

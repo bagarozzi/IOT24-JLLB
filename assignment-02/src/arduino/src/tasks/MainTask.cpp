@@ -91,7 +91,7 @@ void MainTask::tick() {
 
 }
 
-void MainTask::setState(int s) {
+void MainTask::setState(State s) {
     state = s;
     stateTimeStamp = millis();
     justEnteredState = true;
