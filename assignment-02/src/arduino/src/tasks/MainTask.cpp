@@ -10,6 +10,11 @@ MainTask::MainTask() {
 }
 
 void MainTask::tick() {
+    //TODO: pensa se questo controllo funzione utility e le task in cui va messo
+    /* Checks if the temperature made the bin be in maintenence */
+    if (wasteBin->isInMaintenance()) {
+        setState(IN_MAINTENANCE);
+    }
     switch (state) {
         case WAITING_FOR_USER:
             logOnce(F("[main]: Waiting for user"));
@@ -37,6 +42,7 @@ void MainTask::tick() {
             break;
         case USER_DETECTED:
             logOnce("[main]: User detected");
+            //TODO: chiamata sample distanza per valutare la distanza, se > di un tot isUserGone ritorna true
             if(wasteBin->isReadyToOpen()) {
                 // TODO: user console ready to open
                 setState(BIN_OPENING);
@@ -50,6 +56,7 @@ void MainTask::tick() {
             logOnce("[main]: Opening bin");
             if(wasteBin->isBinOpen()) {
                 // TODO: logOnce("Bin open");
+                wasteBin->readyForDisposal();
                 setState(DISPOSING);
             }
             break;
@@ -64,15 +71,15 @@ void MainTask::tick() {
                 setState(IN_MAINTENANCE);
             }
             break;
-        case IN_MAINTENANCE:
-            if(wasteBin->isMaintenanceCompleted()) {
+        case BIN_CLOSING:
+            logOnce("[main]: Bin closing");
+            if(wasteBin->isBinClosed()) {
                 setState(WAITING_FOR_USER);
             }
             break;
-        case BIN_CLOSING:
-            logOnce("Bin closing");
-            if(wasteBin->isBinOpen()) {
-                // TODO: logOnce("Bin closed");
+        case IN_MAINTENANCE:
+            logOnce("[main]: In maintenance");
+            if(wasteBin->isMaintenanceCompleted()) {
                 setState(WAITING_FOR_USER);
             }
             break;
