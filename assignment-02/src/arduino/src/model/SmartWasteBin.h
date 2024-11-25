@@ -38,6 +38,8 @@ class SmartWasteBin {
         void closingCompleted(); // sets the state to CLOSED
         bool isBinClosed(); // checks if the state is CLOSED
 
+        bool isFull(); // checks if the bin is full (getCurrentLevel() > MAX_LEVEL)
+
         // Methods for maintenance:
         void problemDetected(); // sets the state to MAINTENANCE
         void setActuatorsInMaintenance(); // sets the system in maintenance mode, red light and closes lid

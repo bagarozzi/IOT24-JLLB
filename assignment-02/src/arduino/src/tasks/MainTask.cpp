@@ -77,7 +77,7 @@ void MainTask::tick() {
                 setState(WAITING_FOR_USER);
             }
             break;
-        case IN_MAINTENANCE:
+        case IN_MAINTENANCE: //TODO: gestire chiusura bin
             logOnce("[main]: In maintenance");
             if(wasteBin->isMaintenanceCompleted()) {
                 setState(WAITING_FOR_USER);

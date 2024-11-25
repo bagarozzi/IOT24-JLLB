@@ -40,16 +40,16 @@ void WasteDisposalTask::tick() {
             break;
         case DISPOSING:
             logOnce("[Disposal]: Disposing");
-            // se il tempo di disposizione è finito o se è stato premuto il bottone di chiusura
-            if (elapsedTimeInState() > DISPOSAL_TIME || wasteBin->isReadyToClose()) {
+            if (wasteBin->isFull()) {
+                //TODO: chiudi e maintenance
+                wasteBin->problemDetected();
+                setState(IN_MAINTENANCE);
+            } // se il tempo di disposizione è finito o se è stato premuto il bottone di chiusura
+            else if (elapsedTimeInState() > DISPOSAL_TIME || wasteBin->isReadyToClose()){
                 wasteBin->disposalCompleted();
                 wasteBin->closeBin();
                 setState(BIN_CLOSING);
             }
-            else if (wasteBin->isFull()){
-                //TODO:
-            }
-            
             break;
         case BIN_CLOSING:
             logOnce("[Disposal]: Closing bin");
@@ -59,7 +59,7 @@ void WasteDisposalTask::tick() {
             }
             break;
         case IN_MAINTENANCE:
-            logOnce("[Disposal]: In maintenance");
+            logOnce("[Disposal]: The bin is full, maintenance needed");
             if (wasteBin->isMaintenanceCompleted()) {
                 setState(IDLE);
             }
