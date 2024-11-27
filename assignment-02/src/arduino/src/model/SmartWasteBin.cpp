@@ -127,3 +127,17 @@ void SmartWasteBin::prepareForSleep() {
 void SmartWasteBin::wakeUp() {
 
 }
+
+// Methods for interacting with sensors and actuators: 
+
+double SmartWasteBin::getCurrentLevel() {
+    return sonar->getDistance();
+}
+
+double SmartWasteBin::getCurrentTemperature() {
+    return tempSensor->getTemperature();
+}
+
+bool SmartWasteBin::isSomeonePresent() {
+    return pir->isDetected();
+}
