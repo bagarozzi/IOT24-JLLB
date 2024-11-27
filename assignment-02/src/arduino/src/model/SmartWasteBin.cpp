@@ -66,3 +66,23 @@ void SmartWasteBin::disposalCompleted() {
 bool SmartWasteBin::isDisposingDone() {
     return this->state == DISPOSAL_COMPLETED;
 }
+
+void SmartWasteBin::readyToClose() {
+    setState(READY_TO_CLOSE);
+}
+
+bool SmartWasteBin::isReadyToClose() {
+    return this->state == READY_TO_CLOSE;
+}
+
+void SmartWasteBin::closeBin() {
+    // servo close bin
+}
+
+void SmartWasteBin::closingCompleted() {
+    setState(CLOSED);
+}
+
+bool SmartWasteBin::isBinClosed() {
+    return this->state == CLOSED;
+}
