@@ -60,7 +60,7 @@ class SmartWasteBin {
 
     private:
 
-        enum {
+        enum State {
             IDLE,
             USER_DETECTED,
             USER_GONE,
