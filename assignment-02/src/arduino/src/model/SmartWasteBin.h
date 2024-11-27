@@ -74,6 +74,8 @@ class SmartWasteBin {
             MAINTENANCE
         } state; 
 
+        void setState(State state);
+
         Led* Led1;
         Led* Led2;
 
