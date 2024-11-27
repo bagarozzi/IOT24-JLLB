@@ -20,6 +20,9 @@
 #define TEMPERATURE_CHECK_MAXTIME 5000 // If the temp. goes "MAXTEMP" for 5 seconds
 #define TEMPERATURE_CHECK_MAXTEMP 40 // The maximum temperature allowed
 
+// Waste bin level check:
+#define MAX_LEVEL 10 // The maximum level of the waste bin
+
 // PINs
 
 #endif

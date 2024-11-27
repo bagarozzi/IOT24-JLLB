@@ -1,4 +1,5 @@
 #include "SmartWasteBin.h"
+#include "config.h"
 
 SmartWasteBin::SmartWasteBin() {
 }
@@ -85,4 +86,8 @@ void SmartWasteBin::closingCompleted() {
 
 bool SmartWasteBin::isBinClosed() {
     return this->state == CLOSED;
+}
+
+bool SmartWasteBin::isFull() {
+    return this->getCurrentLevel() > MAX_LEVEL;
 }
