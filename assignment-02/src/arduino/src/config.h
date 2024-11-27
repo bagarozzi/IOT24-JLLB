@@ -25,7 +25,7 @@
 
 // PINs configuration:
 #define LED1_PIN 3
-#define LED3_PIN 2
+#define LED2_PIN 2
 #define SONAR_ECHO_PIN 9
 #define SONAR_TRIG_PIN 10
 #define PIR_PIN A3
