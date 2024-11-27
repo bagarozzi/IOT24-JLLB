@@ -7,3 +7,7 @@ void SmartWasteBin::init() {
     
     state = IDLE;
 }
+
+void SmartWasteBin::setState(State s) {
+    state = s;
+}
