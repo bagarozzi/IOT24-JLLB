@@ -109,3 +109,13 @@ bool SmartWasteBin::isInMaintenance() {
 bool SmartWasteBin::isMaintenanceCompleted() {
     return false;
 }
+
+// Methods for sleeping
+
+void SmartWasteBin::prepareForSleep() {
+
+}
+
+void SmartWasteBin::wakeUp() {
+
+}
