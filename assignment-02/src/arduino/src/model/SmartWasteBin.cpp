@@ -91,3 +91,21 @@ bool SmartWasteBin::isBinClosed() {
 bool SmartWasteBin::isFull() {
     return this->getCurrentLevel() > MAX_LEVEL;
 }
+
+// Methods for maintenance:
+
+void SmartWasteBin::problemDetected() {
+
+}
+
+void SmartWasteBin::setActuatorsInMaintenance() {
+
+}
+
+bool SmartWasteBin::isInMaintenance() {
+    return this->state == MAINTENANCE;
+}
+
+bool SmartWasteBin::isMaintenanceCompleted() {
+    return false;
+}
