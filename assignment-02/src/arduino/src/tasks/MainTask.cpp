@@ -18,6 +18,7 @@ void MainTask::tick() {
     switch (state) {
         case WAITING_FOR_USER:
             logOnce(F("[main]: Waiting for user"));
+            // userDetectionTask->setActive(true);
             if(wasteBin->isUserDetected()) {
                 // TODO: user console turn on display
                 // TODO: user console welcome message
@@ -41,9 +42,10 @@ void MainTask::tick() {
             break;
         case USER_DETECTED:
             logOnce("[main]: User detected");
-            //TODO: chiamata sample distanza per valutare la distanza, se > di un tot isUserGone ritorna true
+            // la userDetectionTask setta a ReadyToOpen il Bidone
             if(wasteBin->isReadyToOpen()) {
                 // TODO: user console ready to open
+                // userDetectionTask->setActive(false);
                 setState(BIN_OPENING);
             }
             else if(wasteBin->isUserGone()) {
