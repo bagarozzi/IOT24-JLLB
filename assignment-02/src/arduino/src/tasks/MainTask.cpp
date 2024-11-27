@@ -21,7 +21,6 @@ void MainTask::tick() {
             if(wasteBin->isUserDetected()) {
                 // TODO: user console turn on display
                 // TODO: user console welcome message
-                wasteBin->userDetected();
                 setState(USER_DETECTED);
             }
             else if(elapsedTimeInState() > SLEEP_TIMEOUT) {
