@@ -1,11 +1,19 @@
 #include "SmartWasteBin.h"
 #include "config.h"
+#include <kernel/Logger.h>
 
 SmartWasteBin::SmartWasteBin() {
 }
 
 void SmartWasteBin::init() {
-    
+    led1 = new Led(LED1_PIN);
+    led2 = new Led(LED2_PIN);
+    sonar = new Sonar(SONAR_TRIG_PIN, SONAR_ECHO_PIN, 10000);
+    pir = new Pir(PIR_PIN);
+
+    Logger.log("Calibrating sensor in the waste bin...");
+    pir->calibrate();
+
     state = IDLE;
 }
 
