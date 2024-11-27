@@ -76,13 +76,13 @@ class SmartWasteBin {
 
         void setState(State state);
 
-        led* Led1; // Green LED
-        led* Led2; // Red LED
+        Led* led1; // Green LED
+        Led* led2; // Red LED
 
-        sonar* Sonar;
-        pir* Pir;
-        tempSensor* TempSensor;
-        servoMotor* CoverMotor;  
+        Sonar* sonar;
+        Pir* pir;
+        TempSensor* tempSensor;
+        ServoMotor* coverMotor;  
 };
 
 #endif
