@@ -36,3 +36,33 @@ void SmartWasteBin::readyToOpen() {
 bool SmartWasteBin::isReadyToOpen() {
     return this->state == READY_TO_OPEN;
 }
+
+// Methods for disposing:
+
+void SmartWasteBin::openBin() {
+    // servo open bin
+}
+
+void SmartWasteBin::openingCompleted() {
+    setState(OPENED);
+}
+
+bool SmartWasteBin::isBinOpen() {
+    return this->state == OPENED;
+}
+
+void SmartWasteBin::readyForDisposal() {
+    setState(READY_FOR_DISPOSAL);
+}
+
+bool SmartWasteBin::isReadyForDisposal() {
+    return this->state == READY_FOR_DISPOSAL;
+}
+
+void SmartWasteBin::disposalCompleted() {
+    setState(DISPOSAL_COMPLETED);
+}
+
+bool SmartWasteBin::isDisposingDone() {
+    return this->state == DISPOSAL_COMPLETED;
+}
