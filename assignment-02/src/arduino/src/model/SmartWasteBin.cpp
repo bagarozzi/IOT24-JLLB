@@ -14,6 +14,9 @@ void SmartWasteBin::init() {
     Logger.log("Calibrating sensor in the waste bin...");
     pir->calibrate();
 
+    led1->switchOn();
+    led2->switchOff();
+
     state = IDLE;
 }
 
@@ -49,7 +52,10 @@ bool SmartWasteBin::isReadyToOpen() {
 // Methods for disposing:
 
 void SmartWasteBin::openBin() {
-    // servo open bin
+    this->coverMotor->on();
+    this->coverMotor->setPosition(SERVE_OPEN_ANGLE);
+    this->coverMotor->off();
+    delay(500);
 }
 
 void SmartWasteBin::openingCompleted() {
@@ -85,7 +91,10 @@ bool SmartWasteBin::isReadyToClose() {
 }
 
 void SmartWasteBin::closeBin() {
-    // servo close bin
+    this->coverMotor->on();
+    this->coverMotor->setPosition(SERVO_CLOSE_ANGLE);
+    this->coverMotor->off();
+    delay(500);
 }
 
 void SmartWasteBin::closingCompleted() {
@@ -103,11 +112,13 @@ bool SmartWasteBin::isFull() {
 // Methods for maintenance:
 
 void SmartWasteBin::problemDetected() {
-
+    led1->switchOff();
+    led2->switchOn();
 }
 
 void SmartWasteBin::setActuatorsInMaintenance() {
-
+    led1->switchOff();
+    led2->switchOn();
 }
 
 bool SmartWasteBin::isInMaintenance() {
