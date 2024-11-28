@@ -27,5 +27,5 @@ dependencies {
 }
 
 application {
-    mainClass.set("Dashboard")
+    mainClass.set("it.unibo.Dashboard")
 }
