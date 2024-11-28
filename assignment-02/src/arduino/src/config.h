@@ -23,6 +23,15 @@
 // Waste bin level check:
 #define MAX_LEVEL 10 // The maximum level of the waste bin
 
-// PINs
+// PINs configuration:
+#define LED1_PIN 3
+#define LED2_PIN 2
+#define SONAR_ECHO_PIN 9
+#define SONAR_TRIG_PIN 10
+#define PIR_PIN A3
+#define TEMP_SENSOR_PIN A0
+
+#define SERVO_CLOSE_ANGLE 0
+#define SERVE_OPEN_ANGLE 90
 
 #endif

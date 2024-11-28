@@ -1,11 +1,22 @@
 #include "SmartWasteBin.h"
 #include "config.h"
+#include <kernel/Logger.h>
 
 SmartWasteBin::SmartWasteBin() {
 }
 
 void SmartWasteBin::init() {
-    
+    led1 = new Led(LED1_PIN);
+    led2 = new Led(LED2_PIN);
+    sonar = new Sonar(SONAR_TRIG_PIN, SONAR_ECHO_PIN, 10000);
+    pir = new Pir(PIR_PIN);
+
+    Logger.log("Calibrating sensor in the waste bin...");
+    pir->calibrate();
+
+    led1->switchOn();
+    led2->switchOff();
+
     state = IDLE;
 }
 
@@ -41,7 +52,10 @@ bool SmartWasteBin::isReadyToOpen() {
 // Methods for disposing:
 
 void SmartWasteBin::openBin() {
-    // servo open bin
+    this->coverMotor->on();
+    this->coverMotor->setPosition(SERVE_OPEN_ANGLE);
+    this->coverMotor->off();
+    delay(500);
 }
 
 void SmartWasteBin::openingCompleted() {
@@ -77,7 +91,10 @@ bool SmartWasteBin::isReadyToClose() {
 }
 
 void SmartWasteBin::closeBin() {
-    // servo close bin
+    this->coverMotor->on();
+    this->coverMotor->setPosition(SERVO_CLOSE_ANGLE);
+    this->coverMotor->off();
+    delay(500);
 }
 
 void SmartWasteBin::closingCompleted() {
@@ -95,11 +112,13 @@ bool SmartWasteBin::isFull() {
 // Methods for maintenance:
 
 void SmartWasteBin::problemDetected() {
-
+    led1->switchOff();
+    led2->switchOn();
 }
 
 void SmartWasteBin::setActuatorsInMaintenance() {
-
+    led1->switchOff();
+    led2->switchOn();
 }
 
 bool SmartWasteBin::isInMaintenance() {
@@ -118,4 +137,18 @@ void SmartWasteBin::prepareForSleep() {
 
 void SmartWasteBin::wakeUp() {
 
+}
+
+// Methods for interacting with sensors and actuators: 
+
+double SmartWasteBin::getCurrentLevel() {
+    return sonar->getDistance();
+}
+
+double SmartWasteBin::getCurrentTemperature() {
+    return tempSensor->getTemperature();
+}
+
+bool SmartWasteBin::isSomeonePresent() {
+    return pir->isDetected();
 }
