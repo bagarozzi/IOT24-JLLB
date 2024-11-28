@@ -1,4 +1,4 @@
-package src;
+package it.unibo;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,16 +19,6 @@ public class OperatorDashboardGui extends JFrame{
     private  JLabel tempLabel = new JLabel("Temperature: ");
     private JLabel fillLabel = new JLabel("Fill level: ");
     private Connection connection;
-
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        JFrame gui = new OperatorDashboardGui();
-    }
 
     public OperatorDashboardGui() {
         //connection = new DashboardConnection(this, "COM3");

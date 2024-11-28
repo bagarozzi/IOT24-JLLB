@@ -1,4 +1,5 @@
-package src;
+package it.unibo;
+
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
