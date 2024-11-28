@@ -31,4 +31,7 @@
 #define PIR_PIN A3
 #define TEMP_SENSOR_PIN A0
 
+#define SERVO_CLOSE_ANGLE 0
+#define SERVE_OPEN_ANGLE 90
+
 #endif
