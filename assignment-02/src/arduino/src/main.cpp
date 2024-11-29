@@ -2,6 +2,7 @@
 #include "model/SmartWasteBin.h"
 #include "kernel/Scheduler.h"
 #include "config.h"
+#include "kernel/MessageService.h"
 
 Scheduler scheduler;
 
@@ -9,6 +10,8 @@ SmartWasteBin* wasteBin;
 // UserConsole* userConsole;
 
 void setup() {
+  MSGService.init();
+  
   scheduler.init(BASE_PERIOD);
   
   wasteBin = new SmartWasteBin();
