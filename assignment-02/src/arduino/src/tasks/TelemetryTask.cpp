@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include "config.h"
 #include "kernel/Logger.h"
+#include "kernel/MessageService.h"
 
 TelemetryTask::TelemetryTask(SmartWasteBin* wasteBin) {
     this->wasteBin = wasteBin;
@@ -19,8 +20,20 @@ void TelemetryTask::tick() {
         case SENDING:
             logOnce(F("[telm]: Sending data..."));
             int statusCode = 0;
-            String message = String(wasteBin->getCurrentLevel()) + ":" + String(wasteBin->getCurrentTemperature());
-            // MSG service send telemetry;
+            if (wasteBin->isReadyToOpen() || wasteBin->isBinOpen() || wasteBin->isReadyForDisposal() || wasteBin->isDisposingDone() || wasteBin->isReadyToClose() || wasteBin->isBinClosed()) {
+                statusCode = 0;
+            }
+            else if (wasteBin->isInMaintenance()) {
+                statusCode = 1;
+            }
+            else if (wasteBin->isUserDetected() || wasteBin->isUserGone()) {
+                statusCode = 2;
+            }
+            else if (wasteBin->isIdle()){
+                statusCode = 3;
+            }
+            String message = String(statusCode) + ":" + String(wasteBin->getCurrentLevel()) + ":" + String(wasteBin->getCurrentTemperature());
+            MSGService.sendMessage(message);
             setState(IDLE);
             break;
     }
