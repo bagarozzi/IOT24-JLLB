@@ -6,9 +6,8 @@
 #define BIN_CLOSING_TIME 500
 #define DISPOSAL_TIME 15000 //15 sec
 
-WasteDisposalTask::WasteDisposalTask() {
-    // da passare dal main
-    wasteBin = new SmartWasteBin();
+WasteDisposalTask::WasteDisposalTask(SmartWasteBin* wasteBin) {
+    this->wasteBin = wasteBin;
     setState(IDLE);
 }
 

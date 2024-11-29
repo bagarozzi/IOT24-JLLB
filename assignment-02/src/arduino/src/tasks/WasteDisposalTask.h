@@ -7,7 +7,7 @@
 class WasteDisposalTask : public Task {
 
     public:
-        WasteDisposalTask();
+        WasteDisposalTask(SmartWasteBin* wasteBin);
         void tick();
 
     private:
