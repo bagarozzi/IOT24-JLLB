@@ -19,6 +19,7 @@ class MainTask : public Task {
             SLEEPING,
             USER_DETECTED,
             BIN_OPENING,
+            INIZIALIZE_MAINTENANCE,
             IN_MAINTENANCE,
             DISPOSING,
             BIN_CLOSING

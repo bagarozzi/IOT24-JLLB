@@ -47,7 +47,6 @@ void WasteDisposalTask::tick() {
                 setState(IN_MAINTENANCE);
             } // se il tempo di disposizione è finito o se è stato premuto il bottone di chiusura
             else if (elapsedTimeInState() > DISPOSAL_TIME || wasteBin->isReadyToClose()){
-                wasteBin->disposalCompleted();
                 wasteBin->closeBin();
                 setState(BIN_CLOSING);
             }
@@ -55,7 +54,7 @@ void WasteDisposalTask::tick() {
         case BIN_CLOSING:
             logOnce("[Disposal]: Closing bin");
             if (elapsedTimeInState() > BIN_CLOSING_TIME) {
-                wasteBin->closingCompleted();
+                wasteBin->disposalCompleted();
                 setState(IDLE);
             }
             break;
