@@ -59,7 +59,6 @@ void SmartWasteBin::openBin() {
     this->coverMotor->on();
     this->coverMotor->setPosition(SERVE_OPEN_ANGLE);
     this->coverMotor->off();
-    delay(500);
 }
 
 void SmartWasteBin::openingCompleted() {
@@ -98,7 +97,6 @@ void SmartWasteBin::closeBin() {
     this->coverMotor->on();
     this->coverMotor->setPosition(SERVO_CLOSE_ANGLE);
     this->coverMotor->off();
-    delay(500);
 }
 
 void SmartWasteBin::closingCompleted() {
@@ -116,8 +114,7 @@ bool SmartWasteBin::isFull() {
 // Methods for maintenance:
 
 void SmartWasteBin::problemDetected() {
-    led1->switchOff();
-    led2->switchOn();
+    setState(MAINTENANCE);
 }
 
 void SmartWasteBin::setActuatorsInMaintenance() {
