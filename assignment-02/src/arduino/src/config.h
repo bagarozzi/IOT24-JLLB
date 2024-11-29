@@ -20,6 +20,9 @@
 #define TEMPERATURE_CHECK_MAXTIME 5100 // If the temp. goes "MAXTEMP" for 5.1 seconds or more 
 #define TEMPERATURE_CHECK_MAXTEMP 40 // The maximum temperature allowed
 
+// User detection task's timing configuration:
+#define DETECTION_TIMEOUT 400 // checks every 400ms
+
 // Waste bin level check:
 #define MAX_LEVEL 10 // The maximum level of the waste bin
 

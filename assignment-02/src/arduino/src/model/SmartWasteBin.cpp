@@ -150,6 +150,7 @@ double SmartWasteBin::getCurrentTemperature() {
     return tempSensor->getTemperature();
 }
 
-bool SmartWasteBin::isSomeonePresent() {
+bool SmartWasteBin::sampleUserPresence() {
+    pir->sync();
     return pir->isDetected();
 }

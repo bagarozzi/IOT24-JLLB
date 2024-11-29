@@ -5,8 +5,8 @@
 #include "kernel/Logger.h"
 #include "kernel/MessageService.h"
 
-MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService) :
-    wasteBin(wasteBin), displayService(displayService) {
+MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService, UserDetectionTask* userDetectionTask) :
+    wasteBin(wasteBin), displayService(displayService), userDetectionTask(userDetectionTask) {
     setState(WAITING_FOR_USER);
 }
 
@@ -19,7 +19,7 @@ void MainTask::tick() {
     switch (state) {
         case WAITING_FOR_USER:
             logOnce(F("[main]: Waiting for user"));
-            // userDetectionTask->setActive(true);
+            userDetectionTask->setActive(true);
             if(wasteBin->isUserDetected()) {
                 displayService->turnOnDisplay();
                 displayService->displayInitialMessage();
@@ -43,10 +43,10 @@ void MainTask::tick() {
             break;
         case USER_DETECTED:
             logOnce("[main]: User detected");
-            // la userDetectionTask setta a ReadyToOpen il Bidone
+            // tasto open setta a ReadyToOpen il Bidone
             if(wasteBin->isReadyToOpen()) {
                 // TODO: user console ready to open
-                // userDetectionTask->setActive(false);
+                userDetectionTask->setActive(false);
                 setState(BIN_OPENING);
             }
             else if(wasteBin->isUserGone()) {

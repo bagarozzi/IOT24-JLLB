@@ -54,7 +54,7 @@ class SmartWasteBin {
         // Methods for interacting with sensors and actuators: 
         double getCurrentLevel();
         double getCurrentTemperature();
-        bool isSomeonePresent();
+        bool sampleUserPresence();
 
     private:
 
