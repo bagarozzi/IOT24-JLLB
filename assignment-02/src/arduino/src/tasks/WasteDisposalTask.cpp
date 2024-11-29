@@ -39,6 +39,8 @@ void WasteDisposalTask::tick() {
             break;
         case DISPOSING:
             logOnce("[Disposal]: Disposing");
+            int timeLeft = (DISPOSAL_TIME - elapsedTimeInState()) / 1000;
+            displayService->displayClosingMessage(timeLeft);
             if (wasteBin->isFull()) {
                 //TODO: chiudi e maintenance
                 wasteBin->problemDetected();
