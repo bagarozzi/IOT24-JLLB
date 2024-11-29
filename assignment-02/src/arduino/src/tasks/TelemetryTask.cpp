@@ -3,6 +3,11 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
+TelemetryTask::TelemetryTask(SmartWasteBin* wasteBin) {
+    this->wasteBin = wasteBin;
+    setState(IDLE);
+}
+
 void TelemetryTask::tick() {
     switch (state) {
         case IDLE:

@@ -6,9 +6,8 @@
 #define BIN_CLOSING_TIME 500
 #define DISPOSAL_TIME 15000 //15 sec
 
-WasteDisposalTask::WasteDisposalTask() {
-    // da passare dal main
-    wasteBin = new SmartWasteBin();
+WasteDisposalTask::WasteDisposalTask(SmartWasteBin* wasteBin, DisplayService* displayService) :
+    wasteBin(wasteBin), displayService(displayService) {
     setState(IDLE);
 }
 
@@ -40,6 +39,8 @@ void WasteDisposalTask::tick() {
             break;
         case DISPOSING:
             logOnce("[Disposal]: Disposing");
+            int timeLeft = (DISPOSAL_TIME - elapsedTimeInState()) / 1000;
+            displayService->displayClosingMessage(timeLeft);
             if (wasteBin->isFull()) {
                 //TODO: chiudi e maintenance
                 wasteBin->problemDetected();

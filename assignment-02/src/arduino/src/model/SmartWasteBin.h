@@ -53,10 +53,7 @@ class SmartWasteBin {
         // Methods for interacting with sensors and actuators: 
         double getCurrentLevel();
         double getCurrentTemperature();
-
-        void sampleTemperature();
-        void sampleDistance();
-        void samplePresence();
+        bool isSomeonePresent();
 
     private:
 
@@ -76,13 +73,13 @@ class SmartWasteBin {
 
         void setState(State state);
 
-        Led* Led1;
-        Led* Led2;
+        Led* led1; // Green LED
+        Led* led2; // Red LED
 
-        Sonar* Sonar;
-        Pir* Pir;
-        TempSensor* TempSensor;
-        ServoMotor* CoverMotor;  
+        Sonar* sonar;
+        Pir* pir;
+        TempSensor* tempSensor;
+        ServoMotor* coverMotor;  
 };
 
 #endif

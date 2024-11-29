@@ -19,3 +19,6 @@
 - [ ] Waste disposal: Turbo
 
 - [ ] Java GUI e MsgService: Luca e Luca
+
+- Aggiugnere una task attiva che controlla il canale seriale ed aspetta il segnale di svuotamento, poi
+    rimette tutto a posto e viene disattivata. 

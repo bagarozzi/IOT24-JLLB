@@ -1,18 +1,12 @@
-package src;
+package it.unibo;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class OperatorDashboardGui extends JFrame{
     private JLabel statusLabel = new JLabel("Status: Waiting");
@@ -20,20 +14,12 @@ public class OperatorDashboardGui extends JFrame{
     private JLabel fillLabel = new JLabel("Fill level: ");
     private Connection connection;
 
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        JFrame gui = new OperatorDashboardGui();
-    }
-
     public OperatorDashboardGui() {
         //connection = new DashboardConnection(this, "COM3");
         this.setTitle("Smart Waste Dashboard");
-        GridBagConstraints c = new GridBagConstraints(); 
+        GridBagConstraints c = new GridBagConstraints();
+        
+        connection = new DashboardConnection(this, "COM3");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(500, 500);
@@ -47,7 +33,10 @@ public class OperatorDashboardGui extends JFrame{
         fillLabel = new JLabel("Fill level: ");
 
         JButton emptyButton = new JButton("Empty");
+        emptyButton.addActionListener(e->connection.sendCommand('0'));
         JButton restoreButton = new JButton("Restore");
+        restoreButton.addActionListener(e->connection.sendCommand('0'));
+
 
         // Azioni dei pulsanti per inviare comandi ad Arduino
         //emptyButton.addActionListener(e->connection.sendCommand('0'));
