@@ -65,18 +65,18 @@ void MainTask::tick() {
             logOnce("[main]: Disposing");
             if(wasteBin->isDisposingDone()) {
                 // logOnce("Disposing done");
-                setState(BIN_CLOSING);
+                setState(WAITING_FOR_USER);
             }
             else if (wasteBin->isInMaintenance()) {
                 // logOnce("Problem detected");
-                setState(IN_MAINTENANCE);
+                setState(INIZIALIZE_MAINTENANCE);
             }
             break;
-        case BIN_CLOSING:
-            logOnce("[main]: Bin closing");
-            if(wasteBin->isBinClosed()) {
-                setState(WAITING_FOR_USER);
-            }
+        case INIZIALIZE_MAINTENANCE:
+            logOnce("[main]: Initialize maintenance");
+            wasteBin->setActuatorsInMaintenance();
+            wasteBin->closeBin(); //Non c'è bisogno di attendere la chiusura perché il bin rimane in maintenance
+            setState(IN_MAINTENANCE);
             break;
         case IN_MAINTENANCE: //TODO: gestire chiusura bin
             logOnce("[main]: In maintenance");
