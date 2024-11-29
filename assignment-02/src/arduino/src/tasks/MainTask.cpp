@@ -3,6 +3,7 @@
 #include "config.h"
 #include <avr/sleep.h>
 #include "kernel/Logger.h"
+#include "kernel/MessageService.h"
 
 MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService) :
     wasteBin(wasteBin), displayService(displayService) {
@@ -80,7 +81,10 @@ void MainTask::tick() {
             break;
         case IN_MAINTENANCE: //TODO: gestire chiusura bin
             logOnce("[main]: In maintenance");
-            if(wasteBin->isMaintenanceCompleted()) {
+            /*if(wasteBin->isMaintenanceCompleted()) {
+                setState(WAITING_FOR_USER);
+            }*///cancellare metodi isMAintenanceCompleted
+            if(isMaitenanceMSGArived){
                 setState(WAITING_FOR_USER);
             }
             break;
@@ -90,6 +94,12 @@ void MainTask::tick() {
             break;
     }
 
+}
+
+bool isMaitenanceMSGArived(){
+    if(MSGService.isMessageAivailable()){
+        return MSGService.recieveMessage() == "done";
+    }
 }
 
 void MainTask::setState(State s) {

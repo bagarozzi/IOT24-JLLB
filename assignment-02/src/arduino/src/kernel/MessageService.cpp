@@ -1,6 +1,9 @@
 #include "Arduino.h"
 #include "MessageService.h"
 
+
+MessageService MSGService;
+
 void MessageService::init(){
     Serial.begin(9600);
     msgRecived.reserve(256);
