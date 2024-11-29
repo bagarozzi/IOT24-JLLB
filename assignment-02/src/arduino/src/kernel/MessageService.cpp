@@ -23,7 +23,7 @@ bool MessageService::isMessageAivailable(){
     return msgAvailable;
 }
 
-String MessageService::reciveMessage(){
+String MessageService::recieveMessage(){
     msgAvailable = false;
     String app = msgRecived;
     msgRecived = "";

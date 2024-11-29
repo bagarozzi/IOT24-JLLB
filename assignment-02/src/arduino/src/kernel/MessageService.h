@@ -13,7 +13,7 @@ public:
 
     bool isMessageAivailable();
     
-    String reciveMessage();
+    String recieveMessage();
 
     void sendMessage(String content);
 };
