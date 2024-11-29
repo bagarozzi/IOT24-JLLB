@@ -22,6 +22,7 @@ class SmartWasteBin {
         bool isUserGone(); // checks if the state is USER_GONE
         void readyToOpen(); // sets the state to READY_TO_OPEN (called by the button pressed)
         bool isReadyToOpen(); // checks if the state is READY_TO_OPEN
+        bool isIdle(); // checks if the state is IDLE
 
         // Methods for disposing:
         void openBin(); // opens the bin with the servo

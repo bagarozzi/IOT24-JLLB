@@ -49,6 +49,10 @@ bool SmartWasteBin::isReadyToOpen() {
     return this->state == READY_TO_OPEN;
 }
 
+bool SmartWasteBin::isIdle() {
+    return this->state == IDLE;
+}
+
 // Methods for disposing:
 
 void SmartWasteBin::openBin() {
