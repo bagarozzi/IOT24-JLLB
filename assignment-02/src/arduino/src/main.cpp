@@ -25,7 +25,7 @@ void setup() {
 
   /* Initialize and add to the scheduler all the tasks: */
 
-  MainTask* mainTask = new MainTask(wasteBin);
+  MainTask* mainTask = new MainTask(wasteBin, displayService);
   mainTask->init(100);
 
   //TelemetryTask* telemetryTask = new TelemetryTask(wasteBin);
