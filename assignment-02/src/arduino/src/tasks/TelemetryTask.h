@@ -16,7 +16,7 @@
 class TelemetryTask : public Task {
     
     public:
-        TelemetryTask();
+        TelemetryTask(SmartWasteBin* wasteBin);
         void tick();
 
     private:
