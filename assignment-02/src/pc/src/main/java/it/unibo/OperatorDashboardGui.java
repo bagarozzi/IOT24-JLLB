@@ -33,9 +33,9 @@ public class OperatorDashboardGui extends JFrame{
         fillLabel = new JLabel("Fill level: ");
 
         JButton emptyButton = new JButton("Empty");
-        emptyButton.addActionListener(e->connection.sendCommand('0'));
+        emptyButton.addActionListener(e->connection.sendCommand("done"));
         JButton restoreButton = new JButton("Restore");
-        restoreButton.addActionListener(e->connection.sendCommand('0'));
+        restoreButton.addActionListener(e->connection.sendCommand(""));
 
 
         // Azioni dei pulsanti per inviare comandi ad Arduino

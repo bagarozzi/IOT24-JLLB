@@ -3,6 +3,6 @@ package it.unibo;
 
 public interface Connection {
 
-    void sendCommand(char command);
+    void sendCommand(String command);
 
 }

@@ -35,10 +35,10 @@ public class DashboardConnection implements Connection{
     }
 
     // Metodo per inviare comandi ad Arduino tramite seriale
-    public void sendCommand(char command) {
+    public void sendCommand(String command) {
         try {
             if (serialPort != null && serialPort.isOpened()) {
-                serialPort.writeByte((byte) command);
+                serialPort.writeBytes(command.getBytes());
             }
         } catch (SerialPortException e) {
             System.out.println("Error sending command: " + e.getMessage());
