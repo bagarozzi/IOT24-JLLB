@@ -1,5 +1,6 @@
 #include <LiquidCrystal_I2C.h>
-
+#ifndef __DISPLAY_SERVICE__
+#define __DISPLAY_SERVICE__
 class DisplayService { 
 
     public:
@@ -31,3 +32,5 @@ class DisplayService {
         LiquidCrystal_I2C* lcd;
 
 };
+
+#endif
