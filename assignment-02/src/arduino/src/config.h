@@ -13,7 +13,7 @@
 #define LID_OPEN_TIMEOUT 120000
 
 // Telemtry task's timing configuration:
-#define TELEMETRY_TIMEOUT 500
+#define TELEMETRY_TIMEOUT 600
 
 // Temperature check task's timing configuration: 
 #define TEMPERATURE_CHECK_TIMEOUT 500 // Checks every 500ms
