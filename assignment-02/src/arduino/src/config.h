@@ -16,8 +16,8 @@
 #define TELEMETRY_TIMEOUT 600
 
 // Temperature check task's timing configuration: 
-#define TEMPERATURE_CHECK_TIMEOUT 600 // Checks every 500ms
-#define TEMPERATURE_CHECK_MAXTIME 5000 // If the temp. goes "MAXTEMP" for 5 seconds
+#define TEMPERATURE_CHECK_TIMEOUT 600 // Checks every 600ms
+#define TEMPERATURE_CHECK_MAXTIME 5200 // If the temp. goes "MAXTEMP" for 5.2 seconds or more 
 #define TEMPERATURE_CHECK_MAXTEMP 40 // The maximum temperature allowed
 
 // Waste bin level check:
