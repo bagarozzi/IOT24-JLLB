@@ -20,8 +20,8 @@ void MainTask::tick() {
             logOnce(F("[main]: Waiting for user"));
             // userDetectionTask->setActive(true);
             if(wasteBin->isUserDetected()) {
-                // TODO: user console turn on display
-                // TODO: user console welcome message
+                displayService->turnOnDisplay();
+                displayService->displayInitialMessage();
                 setState(USER_DETECTED);
             }
             else if(elapsedTimeInState() > SLEEP_TIMEOUT) {
