@@ -6,14 +6,14 @@
 class MessageService {
 
 public:
-    String msgRecived;
+    String msgReceived;
     bool msgAvailable;
     
     void init();
 
-    bool isMessageAivailable();
+    bool isMessageAvailable();
     
-    String recieveMessage();
+    String receiveMessage();
 
     void sendMessage(String content);
 };
