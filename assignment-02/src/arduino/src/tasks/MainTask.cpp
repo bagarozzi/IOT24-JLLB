@@ -117,4 +117,6 @@ bool MainTask::isMaintenanceMSGArrived(){
     if(MSGService.isMessageAvailable()){
         return MSGService.receiveMessage() == "done";
     }
+    //TODO: controllare se return false è corretto (VENTU)
+    return false;
 }
