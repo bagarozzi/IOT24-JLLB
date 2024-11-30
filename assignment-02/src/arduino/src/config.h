@@ -34,6 +34,8 @@
 #define PIR_PIN 8
 #define TEMP_SENSOR_PIN A0
 #define SERVO_PIN 11
+#define OPEN_BUTTON_PIN 7
+#define CLOSE_BUTTON_PIN 6
 
 //TODO: Aggiungi servo apertura operatore
 #define SERVO_CLOSE_ANGLE 0
