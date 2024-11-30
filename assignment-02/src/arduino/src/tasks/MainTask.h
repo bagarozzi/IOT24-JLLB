@@ -22,6 +22,7 @@ class MainTask : public Task {
             BIN_OPENING,
             INIZIALIZE_MAINTENANCE,
             IN_MAINTENANCE,
+            IN_MAINTENANCE_FULL,
             DISPOSING,
             BIN_CLOSING
         } state;
@@ -30,7 +31,7 @@ class MainTask : public Task {
         long elapsedTimeInState();
         void logOnce(const String& message);
 
-        bool isMaintenanceMSGArrived();
+        bool isMaintenanceMSGArrived(String message);
 
         SmartWasteBin* wasteBin;
         DisplayService* displayService;
