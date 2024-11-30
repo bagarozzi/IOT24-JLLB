@@ -16,6 +16,7 @@ void WasteDisposalTask::tick() {
     if (wasteBin->isInMaintenance()) {
         setState(IN_MAINTENANCE);
     }
+    int timeLeft;
     switch (state) {
         case IDLE:
             logOnce("[Disposal]: Waiting for user");
@@ -42,7 +43,7 @@ void WasteDisposalTask::tick() {
             break;
         case DISPOSING:
             logOnce("[Disposal]: Disposing");
-            int timeLeft = (DISPOSAL_TIME - elapsedTimeInState()) / 1000;
+            timeLeft = (DISPOSAL_TIME - elapsedTimeInState()) / 1000;
             displayService->displayClosingMessage(timeLeft);
             displayService->synchroniseButton();
             if (wasteBin->isFull()) {
