@@ -46,6 +46,7 @@ class SmartWasteBin {
         void setActuatorsInMaintenance(); // sets the system in maintenance mode, red light
         bool isInMaintenance();
         bool isMaintenanceCompleted();
+        void openBinForEmptying();
 
         // Methods for sleeping
         void wakeUp();

@@ -39,7 +39,8 @@
 #define CLOSE_BUTTON_PIN 6
 
 //TODO: Aggiungi servo apertura operatore
-#define SERVO_CLOSE_ANGLE 0
-#define SERVE_OPEN_ANGLE 90
+#define SERVO_CLOSE_ANGLE 90
+#define SERVO_OPEN_ANGLE 0
+#define SERVO_MAINTENANCE_ANGLE 180
 
 #endif
