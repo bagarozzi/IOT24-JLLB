@@ -74,6 +74,7 @@ void MainTask::tick() {
             }
             else if (wasteBin->isInMaintenance()) {
                 // logOnce("Problem detected");
+                displayService->displayContainerFullMessage();
                 setState(INIZIALIZE_MAINTENANCE);
             }
             break;
