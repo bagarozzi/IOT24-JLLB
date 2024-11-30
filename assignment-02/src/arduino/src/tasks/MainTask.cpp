@@ -68,7 +68,10 @@ void MainTask::tick() {
             logOnce("[main]: Disposing");
             if(wasteBin->isDisposingDone()) {
                 // logOnce("Disposing done");
-                setState(WAITING_FOR_USER);
+                displayService->displayFinalDisposingMessage();
+                if(elapsedTimeInState() > MESSAGE_CLOSING_TIMEOUT) {
+                    setState(WAITING_FOR_USER);
+                }
             }
             else if (wasteBin->isInMaintenance()) {
                 // logOnce("Problem detected");
