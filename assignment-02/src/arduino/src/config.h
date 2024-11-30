@@ -27,13 +27,14 @@
 #define MAX_LEVEL 10 // The maximum level of the waste bin
 
 // PINs configuration:
-#define LED1_PIN 3
-#define LED2_PIN 2
+#define LED1_PIN 3 //green led
+#define LED2_PIN 2 //red led
 #define SONAR_ECHO_PIN 9
 #define SONAR_TRIG_PIN 10
-#define PIR_PIN A3
+#define PIR_PIN 8
 #define TEMP_SENSOR_PIN A0
 
+//TODO: Aggiungi servo apertura operatore
 #define SERVO_CLOSE_ANGLE 0
 #define SERVE_OPEN_ANGLE 90
 
