@@ -18,11 +18,13 @@ void MainTask::tick() {
     }
     switch (state) {
         case WAITING_FOR_USER:
+            if(justEnteredState) {
+                displayService->turnOnDisplay();
+                displayService->displayInitialMessage();
+            }
             logOnce(F("[main]: Waiting for user"));
             userDetectionTask->setActive(true);
             if(wasteBin->isUserDetected()) {
-                displayService->turnOnDisplay();
-                displayService->displayInitialMessage();
                 setState(USER_DETECTED);
             }
             else if(elapsedTimeInState() > SLEEP_TIMEOUT) {
