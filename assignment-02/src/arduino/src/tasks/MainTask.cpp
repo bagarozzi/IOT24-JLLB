@@ -5,8 +5,8 @@
 #include "kernel/Logger.h"
 #include "kernel/MessageService.h"
 
-MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService, UserDetectionTask* userDetectionTask) :
-    wasteBin(wasteBin), displayService(displayService), userDetectionTask(userDetectionTask) {
+MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService, UserDetectionTask* userDetectionTask, MaintenanceTask* maintenanceTask) :
+    wasteBin(wasteBin), displayService(displayService), userDetectionTask(userDetectionTask), maintenanceTask(maintenanceTask) {
     setState(WAITING_FOR_USER);
 }
 
@@ -81,43 +81,20 @@ void MainTask::tick() {
             break;
         case INIZIALIZE_MAINTENANCE:
             logOnce("[main]: Initialize maintenance");
-            wasteBin->setActuatorsInMaintenance();
-            wasteBin->closeBin(); //Non c'è bisogno di attendere la chiusura perché il bin rimane in maintenance
+            maintenanceTask->setActive(true);
             setState(IN_MAINTENANCE);
             break;
         case IN_MAINTENANCE: //TODO: gestire chiusura bin
             logOnce("[main]: In maintenance");
-            /*if(wasteBin->isMaintenanceCompleted()) {
+            if(wasteBin->isMaintenanceCompleted()) {
                 setState(WAITING_FOR_USER);
-            }*///cancellare metodi isMAintenanceCompleted
-            if(isMaintenanceMSGArrived("resetTemperature")){
-                setState(WAITING_FOR_USER);
-            } else if(isMaintenanceMSGArrived("openToEmpty")){
-                wasteBin->openBinForEmptying();
-                setState(IN_MAINTENANCE_FULL);
             }
-            break;
-        case IN_MAINTENANCE_FULL:
-            if(elapsedTimeInState() >= MAINTENANCE_TIMEOUT){
-                wasteBin->closeBin();
-                if(elapsedTimeInState() >= MAINTENANCE_TIMEOUT + 500) {
-                    setState(WAITING_FOR_USER);
-                }
-            }
-            break;
         default:
             // Handle unknown state
             Serial.println("Unknown state🦶");
             break;
     }
 
-}
-
-bool MainTask::isMaintenanceMSGArrived(String message){
-    if(MSGService.isMessageAvailable()){
-        return MSGService.receiveMessage() == message;
-    }
-    return false;
 }
 
 void MainTask::setState(State s) {
