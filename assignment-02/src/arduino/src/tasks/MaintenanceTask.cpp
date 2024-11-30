@@ -1,7 +1,8 @@
 #include "MaintenanceTask.h"
 
 MaintenanceTask::MaintenanceTask(SmartWasteBin *wasteBin) {
-
+    this->wasteBin = wasteBin;
+    setState(INITIALIZE_MAINTENANCE);
 }
 
 void MaintenanceTask::tick() {

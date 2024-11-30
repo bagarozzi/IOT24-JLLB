@@ -9,6 +9,8 @@
 #include "tasks/TemperatureCheckTask.h"
 #include "tasks/WasteDisposalTask.h"
 #include "tasks/TelemetryTask.h"
+#include "tasks/UserDetectionTask.h"
+#include "tasks/MaintenanceTask.h"
 
 Scheduler scheduler;
 
@@ -31,7 +33,10 @@ void setup() {
   UserDetectionTask* userDetectionTask = new UserDetectionTask(wasteBin);
   userDetectionTask->init(200);
 
-  MainTask* mainTask = new MainTask(wasteBin, displayService, userDetectionTask);
+  MaintenanceTask* maintenanceTask = new MaintenanceTask(wasteBin);
+  maintenanceTask->init(100);
+
+  MainTask* mainTask = new MainTask(wasteBin, displayService, userDetectionTask, maintenanceTask);
   mainTask->init(100);
 
   TelemetryTask* telemetryTask = new TelemetryTask(wasteBin);
