@@ -49,6 +49,15 @@ void DisplayService::displayContainerFullMessage() {
     lcd->display();
 }
 
+void DisplayService::displayHighTemperatureMessage() {
+    lcd->clear();
+    lcd->setCursor(2, 0);
+    lcd->print("Temperature too");
+    lcd->setCursor(7, 1);
+    lcd->print("high");
+    lcd->display();
+}
+
 void DisplayService::turnOffDisplay() {
     lcd->noDisplay();
     lcd->noBacklight();
