@@ -13,6 +13,7 @@ MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService, User
 void MainTask::tick() {
     /* Checks if the temperature made the bin be in maintenence */
     if (wasteBin->isInMaintenance()) {
+        displayService->displayHighTemperatureMessage();
         setState(IN_MAINTENANCE);
     }
     switch (state) {

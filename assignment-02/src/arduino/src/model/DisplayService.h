@@ -22,6 +22,9 @@ class DisplayService {
 
         /* Displays the "Container full" message. */
         void displayContainerFullMessage();
+
+        /* Displays the "Temperature too high message" */
+        void displayHighTemperatureMessage();
         
         /* Turns off the display. */
         void turnOffDisplay();
