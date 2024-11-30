@@ -12,6 +12,7 @@
 #define SLEEP_TIMEOUT 10000
 #define LID_OPEN_TIMEOUT 120000
 #define MESSAGE_CLOSING_TIMEOUT 3000
+#define MAINTENANCE_TIMEOUT 20000
 
 // Telemtry task's timing configuration:
 #define TELEMETRY_TIMEOUT 600
