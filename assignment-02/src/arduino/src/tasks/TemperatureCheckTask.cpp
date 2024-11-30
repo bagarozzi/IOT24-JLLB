@@ -49,6 +49,10 @@ void TemperatureCheckTask::setState(State state) {
     this->justEnteredState = true;
 }
 
+long TemperatureCheckTask::elapsedTimeInState() {
+    return millis() - stateTimeStamp;
+}
+
 void TemperatureCheckTask::logOnce(const String& message) {
     if (justEnteredState) {
         Logger.log(message);
