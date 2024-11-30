@@ -25,6 +25,7 @@ void WasteDisposalTask::tick() {
                 wasteBin->openBin();
                 setState(BIN_OPENING);
             }
+            break;
         case BIN_OPENING:
             logOnce("[Disposal]: Opening bin");
             if (elapsedTimeInState() > BIN_OPENING_TIME) {
@@ -67,8 +68,6 @@ void WasteDisposalTask::tick() {
             if (wasteBin->isMaintenanceCompleted()) {
                 setState(IDLE);
             }
-            break;
-        default:
             break;
     }
 
