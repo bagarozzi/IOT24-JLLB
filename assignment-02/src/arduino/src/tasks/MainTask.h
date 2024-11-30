@@ -30,6 +30,8 @@ class MainTask : public Task {
         long elapsedTimeInState();
         void logOnce(const String& message);
 
+        bool isMaintenanceMSGArrived();
+
         SmartWasteBin* wasteBin;
         DisplayService* displayService;
         UserDetectionTask* userDetectionTask;

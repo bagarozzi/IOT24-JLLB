@@ -84,7 +84,7 @@ void MainTask::tick() {
             /*if(wasteBin->isMaintenanceCompleted()) {
                 setState(WAITING_FOR_USER);
             }*///cancellare metodi isMAintenanceCompleted
-            if(isMaitenanceMSGArived){
+            if(isMaintenanceMSGArrived()){
                 setState(WAITING_FOR_USER);
             }
             break;
@@ -94,12 +94,6 @@ void MainTask::tick() {
             break;
     }
 
-}
-
-bool isMaitenanceMSGArived(){
-    if(MSGService.isMessageAivailable()){
-        return MSGService.recieveMessage() == "done";
-    }
 }
 
 void MainTask::setState(State s) {
@@ -116,5 +110,11 @@ void MainTask::logOnce(const String& message) {
     if(justEnteredState) {
         Logger.log(message);
         justEnteredState = false;
+    }
+}
+
+bool MainTask::isMaintenanceMSGArrived(){
+    if(MSGService.isMessageAvailable()){
+        return MSGService.receiveMessage() == "done";
     }
 }
