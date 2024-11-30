@@ -6,7 +6,7 @@
 #include "Sonar.h"
 #include "Pir.h"
 #include "TempSensor.h"
-#include "servo_motor.h"
+#include "servo_motor_impl.h"
 
 class SmartWasteBin {
 

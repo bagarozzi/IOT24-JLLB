@@ -10,6 +10,7 @@ void SmartWasteBin::init() {
     led2 = new Led(LED2_PIN);
     sonar = new Sonar(SONAR_TRIG_PIN, SONAR_ECHO_PIN, 10000);
     pir = new Pir(PIR_PIN);
+    coverMotor = new ServoMotorImpl(SERVO_PIN);
 
     Logger.log("Calibrating sensor in the waste bin...");
     pir->calibrate();

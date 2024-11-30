@@ -33,6 +33,7 @@
 #define SONAR_TRIG_PIN 10
 #define PIR_PIN 8
 #define TEMP_SENSOR_PIN A0
+#define SERVO_PIN 11
 
 //TODO: Aggiungi servo apertura operatore
 #define SERVO_CLOSE_ANGLE 0
