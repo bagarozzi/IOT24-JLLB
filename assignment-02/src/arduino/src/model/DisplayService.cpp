@@ -1,8 +1,11 @@
 #include "model/DisplayService.h"
 #include "DisplayService.h"
+#include "ButtonImpl.h"
 
 DisplayService::DisplayService() {
     lcd = new LiquidCrystal_I2C(0x27, 20, 4);
+    openButton = new ButtonImpl(OPEN_BUTTON_PIN);
+    closeButton = new ButtonImpl(CLOSE_BUTTON_PIN);
 }
 
 void DisplayService::init() {
@@ -46,6 +49,15 @@ void DisplayService::displayContainerFullMessage() {
     lcd->display();
 }
 
+void DisplayService::displayHighTemperatureMessage() {
+    lcd->clear();
+    lcd->setCursor(2, 0);
+    lcd->print("Temperature too");
+    lcd->setCursor(7, 1);
+    lcd->print("high");
+    lcd->display();
+}
+
 void DisplayService::turnOffDisplay() {
     lcd->noDisplay();
     lcd->noBacklight();
@@ -54,4 +66,17 @@ void DisplayService::turnOffDisplay() {
 void DisplayService::turnOnDisplay() {
     lcd->display();
     lcd->backlight();
+}
+
+void DisplayService::synchroniseButton() {
+    openButton->sync();
+    closeButton->sync();
+}
+
+bool DisplayService::isOpenButtonPressed() {
+    return openButton->isPressed();
+}
+
+bool DisplayService::isCloseButtonPressed() {
+    return closeButton->isPressed();
 }

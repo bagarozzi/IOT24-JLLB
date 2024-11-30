@@ -5,24 +5,26 @@
 #include "kernel/Logger.h"
 #include "kernel/MessageService.h"
 
-MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService) :
-    wasteBin(wasteBin), displayService(displayService) {
+MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService, UserDetectionTask* userDetectionTask) :
+    wasteBin(wasteBin), displayService(displayService), userDetectionTask(userDetectionTask) {
     setState(WAITING_FOR_USER);
 }
 
 void MainTask::tick() {
-    //TODO: pensa se questo controllo funzione utility e le task in cui va messo
     /* Checks if the temperature made the bin be in maintenence */
     if (wasteBin->isInMaintenance()) {
+        displayService->displayHighTemperatureMessage();
         setState(IN_MAINTENANCE);
     }
     switch (state) {
         case WAITING_FOR_USER:
-            logOnce(F("[main]: Waiting for user"));
-            // userDetectionTask->setActive(true);
-            if(wasteBin->isUserDetected()) {
+            if(justEnteredState) {
                 displayService->turnOnDisplay();
                 displayService->displayInitialMessage();
+            }
+            logOnce(F("[main]: Waiting for user"));
+            userDetectionTask->setActive(true);
+            if(wasteBin->isUserDetected()) {
                 setState(USER_DETECTED);
             }
             else if(elapsedTimeInState() > SLEEP_TIMEOUT) {
@@ -31,7 +33,7 @@ void MainTask::tick() {
             break;
         case SLEEPING:
             logOnce(F("[main]: No user found, going to sleep"));
-            wasteBin->prepareForSleep();
+            displayService->turnOffDisplay();
             // TODO: user console prepare sleep
             delay(100);
             set_sleep_mode(SLEEP_MODE_PWR_DOWN);
@@ -43,10 +45,10 @@ void MainTask::tick() {
             break;
         case USER_DETECTED:
             logOnce("[main]: User detected");
-            // la userDetectionTask setta a ReadyToOpen il Bidone
+            // tasto open setta a ReadyToOpen il Bidone
             if(wasteBin->isReadyToOpen()) {
                 // TODO: user console ready to open
-                // userDetectionTask->setActive(false);
+                userDetectionTask->setActive(false);
                 setState(BIN_OPENING);
             }
             else if(wasteBin->isUserGone()) {
@@ -66,10 +68,14 @@ void MainTask::tick() {
             logOnce("[main]: Disposing");
             if(wasteBin->isDisposingDone()) {
                 // logOnce("Disposing done");
-                setState(WAITING_FOR_USER);
+                displayService->displayFinalDisposingMessage();
+                if(elapsedTimeInState() > MESSAGE_CLOSING_TIMEOUT) {
+                    setState(WAITING_FOR_USER);
+                }
             }
             else if (wasteBin->isInMaintenance()) {
                 // logOnce("Problem detected");
+                displayService->displayContainerFullMessage();
                 setState(INIZIALIZE_MAINTENANCE);
             }
             break;
@@ -125,3 +131,4 @@ void MainTask::logOnce(const String& message) {
         justEnteredState = false;
     }
 }
+

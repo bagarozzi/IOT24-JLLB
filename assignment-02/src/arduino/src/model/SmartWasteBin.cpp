@@ -10,6 +10,7 @@ void SmartWasteBin::init() {
     led2 = new Led(LED2_PIN);
     sonar = new Sonar(SONAR_TRIG_PIN, SONAR_ECHO_PIN, 10000);
     pir = new Pir(PIR_PIN);
+    coverMotor = new ServoMotorImpl(SERVO_PIN);
 
     Logger.log("Calibrating sensor in the waste bin...");
     pir->calibrate();
@@ -57,7 +58,7 @@ bool SmartWasteBin::isIdle() {
 
 void SmartWasteBin::openBin() {
     this->coverMotor->on();
-    this->coverMotor->setPosition(SERVE_OPEN_ANGLE);
+    this->coverMotor->setPosition(SERVO_OPEN_ANGLE);
     this->coverMotor->off();
 }
 
@@ -130,11 +131,13 @@ bool SmartWasteBin::isMaintenanceCompleted() {
     return false;
 }
 
-// Methods for sleeping
-
-void SmartWasteBin::prepareForSleep() {
-
+void SmartWasteBin::openBinForEmptying() {
+    this->coverMotor->on();
+    this->coverMotor->setPosition(SERVO_MAINTENANCE_ANGLE);
+    this->coverMotor->off();
 }
+
+// Methods for sleeping
 
 void SmartWasteBin::wakeUp() {
 
@@ -150,6 +153,7 @@ double SmartWasteBin::getCurrentTemperature() {
     return tempSensor->getTemperature();
 }
 
-bool SmartWasteBin::isSomeonePresent() {
+bool SmartWasteBin::sampleUserPresence() {
+    pir->sync();
     return pir->isDetected();
 }

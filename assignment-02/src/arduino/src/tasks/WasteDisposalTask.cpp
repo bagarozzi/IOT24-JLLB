@@ -16,13 +16,17 @@ void WasteDisposalTask::tick() {
     if (wasteBin->isInMaintenance()) {
         setState(IN_MAINTENANCE);
     }
+    int timeLeft;
     switch (state) {
         case IDLE:
             logOnce("[Disposal]: Waiting for user");
-            if (wasteBin->isReadyToOpen()) {
+            displayService->synchroniseButton();
+            if (displayService->isOpenButtonPressed()) {
+                wasteBin->readyToOpen();
                 wasteBin->openBin();
                 setState(BIN_OPENING);
             }
+            break;
         case BIN_OPENING:
             logOnce("[Disposal]: Opening bin");
             if (elapsedTimeInState() > BIN_OPENING_TIME) {
@@ -39,14 +43,16 @@ void WasteDisposalTask::tick() {
             break;
         case DISPOSING:
             logOnce("[Disposal]: Disposing");
-            int timeLeft = (DISPOSAL_TIME - elapsedTimeInState()) / 1000;
+            timeLeft = (DISPOSAL_TIME - elapsedTimeInState()) / 1000;
             displayService->displayClosingMessage(timeLeft);
+            displayService->synchroniseButton();
             if (wasteBin->isFull()) {
                 //TODO: chiudi e maintenance
                 wasteBin->problemDetected();
                 setState(IN_MAINTENANCE);
             } // se il tempo di disposizione è finito o se è stato premuto il bottone di chiusura
-            else if (elapsedTimeInState() > DISPOSAL_TIME || wasteBin->isReadyToClose()){
+            else if (elapsedTimeInState() > DISPOSAL_TIME || displayService->isCloseButtonPressed()) {
+                wasteBin->readyToClose();
                 wasteBin->closeBin();
                 setState(BIN_CLOSING);
             }
@@ -63,8 +69,6 @@ void WasteDisposalTask::tick() {
             if (wasteBin->isMaintenanceCompleted()) {
                 setState(IDLE);
             }
-            break;
-        default:
             break;
     }
 

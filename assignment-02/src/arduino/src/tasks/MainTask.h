@@ -4,12 +4,13 @@
 #include "kernel/Task.h"
 #include "model/SmartWasteBin.h"
 #include <model/DisplayService.h>
+#include "UserDetectionTask.h"
 
 class MainTask : public Task {
 
     public:
 
-        MainTask(SmartWasteBin* wasteBin, DisplayService* displayService);
+        MainTask(SmartWasteBin* wasteBin, DisplayService* displayService, UserDetectionTask* userDetectionTask);
         void tick();
 
     private:
@@ -29,8 +30,11 @@ class MainTask : public Task {
         long elapsedTimeInState();
         void logOnce(const String& message);
 
+        bool isMaintenanceMSGArrived();
+
         SmartWasteBin* wasteBin;
         DisplayService* displayService;
+        UserDetectionTask* userDetectionTask;
 
         long stateTimeStamp;
         bool justEnteredState;

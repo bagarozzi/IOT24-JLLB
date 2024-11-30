@@ -6,8 +6,8 @@ MessageService MSGService;
 
 void MessageService::init(){
     Serial.begin(9600);
-    msgRecived.reserve(256);
-    msgRecived = "";
+    msgReceived.reserve(256);
+    msgReceived = "";
     msgAvailable = NULL;
 }
 
@@ -16,20 +16,20 @@ void serialEvent(){
     while (Serial.available()){
         c = Serial.read(); 
         if(c != '\n'){
-            MSGService.msgRecived += c;
+            MSGService.msgReceived += c;
         }
     }
     MSGService.msgAvailable = true;
 }
 
-bool MessageService::isMessageAivailable(){
+bool MessageService::isMessageAvailable(){
     return msgAvailable;
 }
 
-String MessageService::recieveMessage(){
+String MessageService::receiveMessage(){
     msgAvailable = false;
-    String app = msgRecived;
-    msgRecived = "";
+    String app = msgReceived;
+    msgReceived = "";
     return app;
 }
 

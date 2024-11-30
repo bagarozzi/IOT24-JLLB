@@ -6,7 +6,7 @@
 #include "Sonar.h"
 #include "Pir.h"
 #include "TempSensor.h"
-#include "servo_motor.h"
+#include "servo_motor_impl.h"
 
 class SmartWasteBin {
 
@@ -46,15 +46,15 @@ class SmartWasteBin {
         void setActuatorsInMaintenance(); // sets the system in maintenance mode, red light
         bool isInMaintenance();
         bool isMaintenanceCompleted();
+        void openBinForEmptying();
 
         // Methods for sleeping
-        void prepareForSleep();
         void wakeUp();
 
         // Methods for interacting with sensors and actuators: 
         double getCurrentLevel();
         double getCurrentTemperature();
-        bool isSomeonePresent();
+        bool sampleUserPresence();
 
     private:
 
