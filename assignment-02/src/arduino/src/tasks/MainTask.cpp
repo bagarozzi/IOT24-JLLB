@@ -84,8 +84,15 @@ void MainTask::tick() {
             /*if(wasteBin->isMaintenanceCompleted()) {
                 setState(WAITING_FOR_USER);
             }*///cancellare metodi isMAintenanceCompleted
-            if(isMaitenanceMSGArived){
+            if(isMaitenanceMSGArived("resetTemperature")){
                 setState(WAITING_FOR_USER);
+            } else if(isMaitenanceMSGArived("openToEmpty")){
+                if(wasteBin->isBinClosed()){
+                    wasteBin->openBin();
+                }
+                if(elapsedTimeInState() >= TIME_TO_EMPTY){
+                    setState(WAITING_FOR_USER);
+                }
             }
             break;
         default:
@@ -96,9 +103,9 @@ void MainTask::tick() {
 
 }
 
-bool isMaitenanceMSGArived(){
+bool isMaitenanceMSGArived(String type){
     if(MSGService.isMessageAivailable()){
-        return MSGService.recieveMessage() == "done";
+        return MSGService.recieveMessage() == type;
     }
 }
 
