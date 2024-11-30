@@ -11,7 +11,6 @@ MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService, User
 }
 
 void MainTask::tick() {
-    //TODO: pensa se questo controllo funzione utility e le task in cui va messo
     /* Checks if the temperature made the bin be in maintenence */
     if (wasteBin->isInMaintenance()) {
         setState(IN_MAINTENANCE);
