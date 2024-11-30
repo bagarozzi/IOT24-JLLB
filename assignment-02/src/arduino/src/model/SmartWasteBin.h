@@ -48,7 +48,6 @@ class SmartWasteBin {
         bool isMaintenanceCompleted();
 
         // Methods for sleeping
-        void prepareForSleep();
         void wakeUp();
 
         // Methods for interacting with sensors and actuators: 

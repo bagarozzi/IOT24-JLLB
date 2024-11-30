@@ -32,7 +32,6 @@ void MainTask::tick() {
         case SLEEPING:
             logOnce(F("[main]: No user found, going to sleep"));
             displayService->turnOffDisplay();
-            wasteBin->prepareForSleep();
             // TODO: user console prepare sleep
             delay(100);
             set_sleep_mode(SLEEP_MODE_PWR_DOWN);

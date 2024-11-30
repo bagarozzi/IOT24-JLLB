@@ -133,10 +133,6 @@ bool SmartWasteBin::isMaintenanceCompleted() {
 
 // Methods for sleeping
 
-void SmartWasteBin::prepareForSleep() {
-
-}
-
 void SmartWasteBin::wakeUp() {
 
 }
