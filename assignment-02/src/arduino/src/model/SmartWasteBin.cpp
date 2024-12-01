@@ -162,3 +162,11 @@ bool SmartWasteBin::sampleUserPresence() {
     pir->sync();
     return pir->isDetected();
 }
+
+void SmartWasteBin::maintenanceCompleted() {
+    setState(MAINTENANCE_COMPLETED);
+}
+
+void SmartWasteBin::setIdle() {
+    setState(IDLE);
+}
