@@ -9,28 +9,36 @@ void MaintenanceTask::tick() {
 
     switch (state) {
         case INITIALIZE_MAINTENANCE:
-            logOnce("[main]: Initialize maintenance");
-            wasteBin->setActuatorsInMaintenance();
-            wasteBin->closeBin(); //Non c'è bisogno di attendere la chiusura perché il bin rimane in maintenance
-            setState(IN_MAINTENANCE);
+            logOnce("[mian]: Initialize maintenance");
+            if(justEnteredState) {
+                wasteBin->setActuatorsInMaintenance();
+                wasteBin->closeBin();
+            }
+            if(elapsedTimeInState() >= BIN_CLOSING_TIME) {
+                setState(IN_MAINTENANCE);
+            }
             break;
         case IN_MAINTENANCE: //TODO: gestire chiusura bin
-            logOnce("[main]: In maintenance");
+            logOnce("[mian]: In maintenance");
             /*if(wasteBin->isMaintenanceCompleted()) {
                 setState(WAITING_FOR_USER);
             }*///cancellare metodi isMAintenanceCompleted
-            if(isMaintenanceMSGArrived("resetTemperature")){
-                //setState(WAITING_FOR_USER);
-            } else if(isMaintenanceMSGArrived("openToEmpty")){
-                wasteBin->openBinForEmptying();
-                setState(IN_MAINTENANCE_FULL);
+            if(MSGService.isMessageAvailable()){
+                if(isMaintenanceMSGArrived("resetTemperature")){
+                    wasteBin->maintenanceCompleted();
+                    setState(INITIALIZE_MAINTENANCE);
+                } else {
+                    wasteBin->openBinForEmptying();
+                    setState(IN_MAINTENANCE_FULL);
+                }
             }
             break;
         case IN_MAINTENANCE_FULL:
             if(elapsedTimeInState() >= MAINTENANCE_TIMEOUT){
                 wasteBin->closeBin(); 
                 if(elapsedTimeInState() >= MAINTENANCE_TIMEOUT + BIN_CLOSING_TIME) {
-                    //setState(WAITING_FOR_USER);
+                    setState(INITIALIZE_MAINTENANCE);
+                    wasteBin->maintenanceCompleted();
                 }
             }
             break;
