@@ -1,29 +1,24 @@
 #include <Arduino.h>
-#include "tasks/TemperatureCheckTask.h"
+#include "TemperatureCheckTask.h"
 #include "config.h"
 #include "kernel/Logger.h"
 
-enum State {
-    IDLE,
-    CHECKING,
-    PANIC
-};
 
 TemperatureCheckTask::TemperatureCheckTask(SmartWasteBin* smartWasteBin) {
     this->wasteBin = smartWasteBin;
-    this->state = IDLE;
+    setState(IDLE);
 }
 
 void TemperatureCheckTask::tick() {
     switch (state) {
         case IDLE:
-            logOnce("[temp]: Idle");
+            logOnce(F("[temp]: Idle"));
             if (elapsedTimeInState() >= TEMPERATURE_CHECK_TIMEOUT) {
                 setState(CHECKING);
             }
             break;
         case CHECKING:
-            logOnce("[temp]: Checking temperature");
+            logOnce(F("[temp]: Checking temperature"));
             if (wasteBin->getCurrentTemperature() > TEMPERATURE_CHECK_MAXTEMP) {
                 if (elapsedTimeInState() >= TEMPERATURE_CHECK_MAXTIME) {
                     wasteBin->problemDetected();
@@ -35,7 +30,7 @@ void TemperatureCheckTask::tick() {
             }
             break;
         case PANIC:
-            logOnce("[temp]: Temperature is too high, waste bin alerted");
+            logOnce(F("[temp]: Temperature is too high, waste bin alerted"));
             if(wasteBin->isMaintenanceCompleted()) {
                 setState(IDLE);
             }
