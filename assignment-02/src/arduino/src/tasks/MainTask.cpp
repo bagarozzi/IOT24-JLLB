@@ -34,12 +34,14 @@ void MainTask::tick() {
         case SLEEPING:
             logOnce(F("[main]: No user found, going to sleep"));
             displayService->turnOffDisplay();
+            wasteBin->enableSleepInterrpt();
             // TODO: user console prepare sleep
             delay(100);
             set_sleep_mode(SLEEP_MODE_PWR_DOWN);
             sleep_enable();
             sleep_mode();
             sleep_disable();
+            wasteBin->disableSleepInterrpt();
             // TODO: user console wake up
             setState(WAITING_FOR_USER);
             break;
