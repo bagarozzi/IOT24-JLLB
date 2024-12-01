@@ -138,9 +138,16 @@ void SmartWasteBin::openBinForEmptying() {
 }
 
 // Methods for sleeping
+static void wakeUp() {
 
-void SmartWasteBin::wakeUp() {
+}
 
+void SmartWasteBin::enableSleepInterrpt() {
+    attachInterrupt(digitalPinToInterrupt(PIR_PIN), wakeUp, RISING);
+}
+
+void SmartWasteBin::disableSleepInterrpt() {
+    detachInterrupt(digitalPinToInterrupt(PIR_PIN));
 }
 
 // Methods for interacting with sensors and actuators: 
