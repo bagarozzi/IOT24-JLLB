@@ -5,7 +5,7 @@
 #include "Led.h"
 #include "Sonar.h"
 #include "Pir.h"
-#include "TempSensor.h"
+#include "TempSensorLM35.h"
 #include "servo_motor_impl.h"
 #include <avr/sleep.h>
 
