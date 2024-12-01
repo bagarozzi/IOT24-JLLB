@@ -39,7 +39,7 @@ void MainTask::tick() {
             set_sleep_mode(SLEEP_MODE_PWR_DOWN);
             sleep_enable();
             sleep_mode();
-            wasteBin->wakeUp();
+            sleep_disable();
             // TODO: user console wake up
             setState(WAITING_FOR_USER);
             break;
