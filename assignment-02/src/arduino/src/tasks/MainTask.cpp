@@ -14,7 +14,7 @@ void MainTask::tick() {
     /* Checks if the temperature made the bin be in maintenence */
     if (wasteBin->isInMaintenance()) {
         displayService->displayHighTemperatureMessage();
-        setState(IN_MAINTENANCE);
+        setState(INIZIALIZE_MAINTENANCE);
     }
     switch (state) {
         case WAITING_FOR_USER:
@@ -83,6 +83,7 @@ void MainTask::tick() {
         case INIZIALIZE_MAINTENANCE:
             logOnce("[main]: Initialize maintenance");
             maintenanceTask->setActive(true);
+            userDetectionTask->setActive(false);
             setState(IN_MAINTENANCE);
             break;
         case IN_MAINTENANCE: //TODO: gestire chiusura bin
@@ -91,6 +92,7 @@ void MainTask::tick() {
                 maintenanceTask->setActive(false);
                 setState(WAITING_FOR_USER);
             }
+            break;
         default:
             // Handle unknown state
             Serial.println("Unknown state🦶");
