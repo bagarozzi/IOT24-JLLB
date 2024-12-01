@@ -7,6 +7,7 @@
 #include "Pir.h"
 #include "TempSensor.h"
 #include "servo_motor_impl.h"
+#include <avr/sleep.h>
 
 class SmartWasteBin {
 
@@ -49,7 +50,8 @@ class SmartWasteBin {
         void openBinForEmptying();
 
         // Methods for sleeping
-        void wakeUp();
+        void enableSleepInterrpt();
+        void disableSleepInterrpt();
 
         // Methods for interacting with sensors and actuators: 
         double getCurrentLevel();
