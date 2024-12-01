@@ -90,6 +90,7 @@ void MainTask::tick() {
             logOnce("[main]: In maintenance");
             if(wasteBin->isMaintenanceCompleted()) {
                 maintenanceTask->setActive(false);
+                wasteBin->setIdle();
                 setState(WAITING_FOR_USER);
             }
             break;
