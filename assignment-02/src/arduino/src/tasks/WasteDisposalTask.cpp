@@ -6,8 +6,8 @@
 #define BIN_CLOSING_TIME 500
 #define DISPOSAL_TIME 15000 //15 sec
 
-WasteDisposalTask::WasteDisposalTask(SmartWasteBin* wasteBin, DisplayService* displayService) :
-    wasteBin(wasteBin), displayService(displayService) {
+WasteDisposalTask::WasteDisposalTask(SmartWasteBin* wasteBin, DisplayService* displayService, UserDetectionTask* userDetectionTask) :
+    wasteBin(wasteBin), displayService(displayService), userDetectionTask(userDetectionTask) {
     setState(IDLE);
 }
 
@@ -21,9 +21,10 @@ void WasteDisposalTask::tick() {
         case IDLE:
             logOnce("[Disposal]: Waiting for user");
             displayService->synchroniseButton();
-            if (displayService->isOpenButtonPressed()) {
+            if (displayService->isOpenButtonPressed() && wasteBin->isUserDetected()) {
                 wasteBin->readyToOpen();
                 wasteBin->openBin();
+                userDetectionTask->setActive(false);
                 setState(BIN_OPENING);
             }
             break;

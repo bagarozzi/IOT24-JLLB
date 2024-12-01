@@ -43,14 +43,13 @@ void MainTask::tick() {
             sleep_disable();
             wasteBin->disableSleepInterrpt();
             // TODO: user console wake up
-            setState(WAITING_FOR_USER);
+            setState(USER_DETECTED);
             break;
         case USER_DETECTED:
             logOnce("[main]: User detected");
             // tasto open setta a ReadyToOpen il Bidone
             if(wasteBin->isReadyToOpen()) {
                 // TODO: user console ready to open
-                userDetectionTask->setActive(false);
                 setState(BIN_OPENING);
             }
             else if(wasteBin->isUserGone()) {

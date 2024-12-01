@@ -59,7 +59,6 @@ bool SmartWasteBin::isIdle() {
 void SmartWasteBin::openBin() {
     this->coverMotor->on();
     this->coverMotor->setPosition(SERVO_OPEN_ANGLE);
-    this->coverMotor->off();
 }
 
 void SmartWasteBin::openingCompleted() {
@@ -97,7 +96,6 @@ bool SmartWasteBin::isReadyToClose() {
 void SmartWasteBin::closeBin() {
     this->coverMotor->on();
     this->coverMotor->setPosition(SERVO_CLOSE_ANGLE);
-    this->coverMotor->off();
 }
 
 void SmartWasteBin::closingCompleted() {
@@ -134,7 +132,6 @@ bool SmartWasteBin::isMaintenanceCompleted() {
 void SmartWasteBin::openBinForEmptying() {
     this->coverMotor->on();
     this->coverMotor->setPosition(SERVO_MAINTENANCE_ANGLE);
-    this->coverMotor->off();
 }
 
 // Methods for sleeping
