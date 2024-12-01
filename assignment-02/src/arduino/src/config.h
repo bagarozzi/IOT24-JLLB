@@ -21,7 +21,7 @@
 // Temperature check task's timing configuration: 
 #define TEMPERATURE_CHECK_TIMEOUT 600 // Checks every 600ms
 #define TEMPERATURE_CHECK_MAXTIME 5100 // If the temp. goes "MAXTEMP" for 5.1 seconds or more 
-#define TEMPERATURE_CHECK_MAXTEMP 24 // The maximum temperature allowed
+#define TEMPERATURE_CHECK_MAXTEMP 80 // The maximum temperature allowed
 
 // User detection task's timing configuration:
 #define DETECTION_TIMEOUT 400 // checks every 400ms
