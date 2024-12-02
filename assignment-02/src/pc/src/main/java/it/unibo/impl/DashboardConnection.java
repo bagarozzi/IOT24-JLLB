@@ -9,6 +9,7 @@ import jssc.SerialPortException;
 public class DashboardConnection implements Connection{
     private static SerialPort serialPort;
     OperatorDashboardGui odg;
+    private String currentMessage;
 
     public DashboardConnection(OperatorDashboardGui odg, String Port) {
         this.odg = odg;
@@ -53,7 +54,11 @@ public class DashboardConnection implements Connection{
                     if (event.isRXCHAR() && event.getEventValue() > 0) {
                         try {
                             String data = serialPort.readString(event.getEventValue());
-                            odg.updateGUI(data.trim());
+                            currentMessage += data;
+                            if(currentMessage.contains("\n")){
+                                odg.updateGUI(currentMessage.substring(0, currentMessage.indexOf("\n")));
+                                currentMessage = currentMessage.substring(currentMessage.indexOf("\n")+1, currentMessage.length());
+                            }
                         } catch (SerialPortException e) {
                             System.out.println("Error reading serial data: " + e.getMessage());
                         }
