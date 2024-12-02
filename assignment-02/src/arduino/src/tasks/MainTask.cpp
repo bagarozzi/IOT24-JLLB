@@ -91,6 +91,7 @@ void MainTask::tick() {
             if(wasteBin->isMaintenanceCompleted()) {
                 maintenanceTask->setActive(false);
                 wasteBin->setIdle();
+                wasteBin->setActuatorsInIdle();
                 setState(WAITING_FOR_USER);
             }
             break;
