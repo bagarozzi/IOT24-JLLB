@@ -72,8 +72,8 @@ public class OperatorDashboardGui extends JFrame{
     public void updateGUI(String data) {
         String[] parts = data.split(":");
         if (parts.length == 2) {
-            this.tempLabel.setText("Temperature: " + parts[1]);
-            this.fillLabel.setText("Fill level: " + parts[2]);
+            this.tempLabel.setText("Temperature: " + parts[2]);
+            this.fillLabel.setText("Fill level: " + parts[1]);
         }
     }
 }
