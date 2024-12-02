@@ -34,7 +34,6 @@ public class OperatorDashboardGui extends JFrame{
             System.out.println("can't write the file");
         }
 
-        //connection = new DashboardConnection(this, "COM3");
         this.setTitle("Smart Waste Dashboard");
         GridBagConstraints c = new GridBagConstraints();
         
@@ -55,11 +54,6 @@ public class OperatorDashboardGui extends JFrame{
         emptyButton.addActionListener(e->connection.sendCommand("emptyBin"));
         JButton restoreButton = new JButton("Restore");
         restoreButton.addActionListener(e->connection.sendCommand("resetTemperature"));
-
-
-        // Azioni dei pulsanti per inviare comandi ad Arduino
-        //emptyButton.addActionListener(e->connection.sendCommand('0'));
-        //restoreButton.addActionListener(e->connection.sendCommand('0'));
 
         c.gridx = 3;
         c.gridy = 0;

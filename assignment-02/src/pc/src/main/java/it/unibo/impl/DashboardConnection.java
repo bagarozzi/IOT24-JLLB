@@ -15,7 +15,7 @@ public class DashboardConnection implements Connection{
     public DashboardConnection(OperatorDashboardGui odg, String Port) {
         this.odg = odg;
         // Configurazione porta seriale
-        serialPort = new SerialPort(Port); // Sostituire "COM3" con la porta corretta
+        serialPort = new SerialPort(Port);
         try {
             serialPort.openPort();
             serialPort.setParams(SerialPort.BAUDRATE_9600,
