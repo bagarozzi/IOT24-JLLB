@@ -32,8 +32,8 @@
 // PINs configuration:
 #define LED1_PIN 3 //green led
 #define LED2_PIN 8 //red led
-#define SONAR_ECHO_PIN 9
-#define SONAR_TRIG_PIN 10
+#define SONAR_ECHO_PIN 10
+#define SONAR_TRIG_PIN 9
 #define PIR_PIN 2
 #define TEMP_SENSOR_PIN A0
 #define SERVO_PIN 11
