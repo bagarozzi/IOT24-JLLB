@@ -122,12 +122,17 @@ void SmartWasteBin::setActuatorsInMaintenance() {
     led2->switchOn();
 }
 
+void SmartWasteBin::setActuatorsInIdle() {
+    led1->switchOn();
+    led2->switchOff();
+}
+
 bool SmartWasteBin::isInMaintenance() {
     return this->state == MAINTENANCE;
 }
 
 bool SmartWasteBin::isMaintenanceCompleted() {
-    return this->state == MAINTENANCE_COMPLETED;
+    return this->state != MAINTENANCE;
 }
 
 void SmartWasteBin::openBinForEmptying() {

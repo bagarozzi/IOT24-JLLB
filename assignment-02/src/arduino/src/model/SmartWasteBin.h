@@ -45,7 +45,8 @@ class SmartWasteBin {
 
         // Methods for maintenance:
         void problemDetected(); // sets the state to MAINTENANCE
-        void setActuatorsInMaintenance(); // sets the system in maintenance mode, red light
+        void setActuatorsInMaintenance(); // powers off the green light, turns on the red light
+        void setActuatorsInIdle(); // powers off the red light, turns on the green light
         bool isInMaintenance();
         bool isMaintenanceCompleted();
         void openBinForEmptying();
