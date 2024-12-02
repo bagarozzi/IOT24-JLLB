@@ -22,8 +22,8 @@ public class OperatorDashboardGui extends JFrame{
     private JLabel fillLabel = new JLabel("Fill level: ");
     private Connection connection;
     private String MSGtoUpdate = "[0-9]+:([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[Ee]([+-]?\\d+))?:([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[Ee]([+-]?\\d+))?";
-    private Path TemeratureHistory = Paths.get("output/temperature.txt");
-    private Path OutputHistory = Paths.get("output/output.txt");
+    private Path TemeratureHistory = Paths.get("../../logs/temperature.txt");
+    private Path OutputHistory = Paths.get("../../logs/history.txt");
 
     public OperatorDashboardGui() {
 
@@ -37,7 +37,7 @@ public class OperatorDashboardGui extends JFrame{
         this.setTitle("Smart Waste Dashboard");
         GridBagConstraints c = new GridBagConstraints();
         
-        connection = new DashboardConnection(this, "COM3");
+        connection = new DashboardConnection(this, "/dev/cu.usbmodem1301");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(500, 500);
