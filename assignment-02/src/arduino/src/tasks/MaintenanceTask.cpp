@@ -12,16 +12,13 @@ void MaintenanceTask::tick() {
                 wasteBin->setActuatorsInMaintenance();
                 wasteBin->closeBin();
             }
-            logOnce("[mian]: Initialize maintenance");
+            logOnce(F("[maintenance]: Initialize maintenance"));
             if(elapsedTimeInState() >= BIN_CLOSING_TIME) {
                 setState(IN_MAINTENANCE);
             }
             break;
         case IN_MAINTENANCE: //TODO: gestire chiusura bin
-            logOnce("[mian]: In maintenance");
-            /*if(wasteBin->isMaintenanceCompleted()) {
-                setState(WAITING_FOR_USER);
-            }*///cancellare metodi isMAintenanceCompleted
+            logOnce(F("[maintenance]: In maintenance"));
             if(MSGService.isMessageAvailable()){
                 if(isMaintenanceMSGArrived("resetTemperature")){
                     wasteBin->maintenanceCompleted();
@@ -33,6 +30,7 @@ void MaintenanceTask::tick() {
             }
             break;
         case IN_MAINTENANCE_FULL:
+            logOnce(F("[maintenance]: In maintenance full"));
             if(elapsedTimeInState() >= MAINTENANCE_TIMEOUT){
                 wasteBin->closeBin(); 
                 if(elapsedTimeInState() >= MAINTENANCE_TIMEOUT + BIN_CLOSING_TIME) {

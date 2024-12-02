@@ -12,7 +12,7 @@ MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService, User
 
 void MainTask::tick() {
     /* Checks if the temperature made the bin be in maintenence */
-    if (wasteBin->isInMaintenance()) {
+    if (wasteBin->isInMaintenance() && this->state != IN_MAINTENANCE) {
         displayService->displayHighTemperatureMessage();
         setState(INIZIALIZE_MAINTENANCE);
     }
@@ -46,7 +46,7 @@ void MainTask::tick() {
             setState(USER_DETECTED);
             break;
         case USER_DETECTED:
-            logOnce("[main]: User detected");
+            logOnce(F("[main]: User detected"));
             // tasto open setta a ReadyToOpen il Bidone
             if(wasteBin->isReadyToOpen()) {
                 // TODO: user console ready to open
@@ -58,7 +58,7 @@ void MainTask::tick() {
             }
             break;
         case BIN_OPENING:
-            logOnce("[main]: Opening bin");
+            logOnce(F("[main]: Opening bin"));
             if(wasteBin->isBinOpen()) {
                 // TODO: logOnce("Bin open");
                 wasteBin->readyForDisposal();
@@ -66,7 +66,7 @@ void MainTask::tick() {
             }
             break;
         case DISPOSING:
-            logOnce("[main]: Disposing");
+            logOnce(F("[main]: Disposing"));
             if(wasteBin->isDisposingDone()) {
                 // logOnce("Disposing done");
                 displayService->displayFinalDisposingMessage();
@@ -81,13 +81,13 @@ void MainTask::tick() {
             }
             break;
         case INIZIALIZE_MAINTENANCE:
-            logOnce("[main]: Initialize maintenance");
+            logOnce(F("[main]: Initialize maintenance"));
             maintenanceTask->setActive(true);
             userDetectionTask->setActive(false);
             setState(IN_MAINTENANCE);
             break;
         case IN_MAINTENANCE: //TODO: gestire chiusura bin
-            logOnce("[main]: In maintenance");
+            logOnce(F("[main]: In maintenance"));
             if(wasteBin->isMaintenanceCompleted()) {
                 maintenanceTask->setActive(false);
                 wasteBin->setIdle();

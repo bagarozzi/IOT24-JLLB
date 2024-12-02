@@ -20,7 +20,8 @@ class WasteDisposalTask : public Task {
             WAITING_FOR_DISPOSAL,
             DISPOSING,
             BIN_CLOSING,
-            IN_MAINTENANCE
+            BIN_FULL_MAINTENANCE,
+            HIGH_TEMPERATURE_MAINTENANCE
         } state;
 
         void setState(State state);

@@ -18,7 +18,7 @@ void UserDetectionTask::tick() {
             }
             break;
         case CHECKING:
-            logOnce("[Detection]: Checking for user");
+            logOnce(F("[Detection]: Checking for user"));
             if (wasteBin->sampleUserPresence()) {
                 wasteBin->userDetected();
             }
