@@ -11,6 +11,7 @@ public class DashboardConnection implements Connection{
     OperatorDashboardGui odg;
     private String currentMessage;
 
+
     public DashboardConnection(OperatorDashboardGui odg, String Port) {
         this.odg = odg;
         // Configurazione porta seriale

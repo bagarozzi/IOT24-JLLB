@@ -3,6 +3,12 @@ package it.unibo.impl;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,8 +21,19 @@ public class OperatorDashboardGui extends JFrame{
     private  JLabel tempLabel = new JLabel("Temperature: ");
     private JLabel fillLabel = new JLabel("Fill level: ");
     private Connection connection;
+    private String MSGtoUpdate = "[0-9]+:([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[Ee]([+-]?\\d+))?:([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[Ee]([+-]?\\d+))?";
+    private Path TemeratureHistory = Paths.get("output/temperature.txt");
+    private Path OutputHistory = Paths.get("output/output.txt");
 
     public OperatorDashboardGui() {
+
+        try {
+            Files.write(TemeratureHistory, "Temerature History".getBytes(), StandardOpenOption.CREATE);
+            Files.write(OutputHistory, "Output History".getBytes(), StandardOpenOption.CREATE);
+        } catch (IOException e) {
+            System.out.println("can't write the file");
+        }
+
         //connection = new DashboardConnection(this, "COM3");
         this.setTitle("Smart Waste Dashboard");
         GridBagConstraints c = new GridBagConstraints();
@@ -71,9 +88,24 @@ public class OperatorDashboardGui extends JFrame{
 
     public void updateGUI(String data) {
         String[] parts = data.split(":");
-        if (parts.length == 2) {
-            this.tempLabel.setText("Temperature: " + parts[2]);
-            this.fillLabel.setText("Fill level: " + parts[1]);
+        if(data.matches(MSGtoUpdate)){
+            if (parts.length == 2) {
+                this.tempLabel.setText("Temperature: " + parts[2]);
+                this.fillLabel.setText("Fill level: " + parts[1]);
+            }
+        } else if (parts[0].equals("[Temperature]")) {
+            try {
+                Files.write(TemeratureHistory, data.getBytes(), StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                System.out.println("can't write in the file");
+            }
+        } else{
+            try {
+                Files.write(OutputHistory, data.getBytes(), StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                System.out.println("cant write in the file");
+                e.printStackTrace();
+            }
         }
     }
 }
