@@ -14,7 +14,7 @@ void MainTask::tick() {
     /* Checks if the temperature made the bin be in maintenence */
     if (wasteBin->isInMaintenance()) {
         displayService->displayHighTemperatureMessage();
-        setState(IN_MAINTENANCE);
+        setState(INIZIALIZE_MAINTENANCE);
     }
     switch (state) {
         case WAITING_FOR_USER:
@@ -43,14 +43,13 @@ void MainTask::tick() {
             sleep_disable();
             wasteBin->disableSleepInterrpt();
             // TODO: user console wake up
-            setState(WAITING_FOR_USER);
+            setState(USER_DETECTED);
             break;
         case USER_DETECTED:
             logOnce("[main]: User detected");
             // tasto open setta a ReadyToOpen il Bidone
             if(wasteBin->isReadyToOpen()) {
                 // TODO: user console ready to open
-                userDetectionTask->setActive(false);
                 setState(BIN_OPENING);
             }
             else if(wasteBin->isUserGone()) {
@@ -84,14 +83,17 @@ void MainTask::tick() {
         case INIZIALIZE_MAINTENANCE:
             logOnce("[main]: Initialize maintenance");
             maintenanceTask->setActive(true);
+            userDetectionTask->setActive(false);
             setState(IN_MAINTENANCE);
             break;
         case IN_MAINTENANCE: //TODO: gestire chiusura bin
             logOnce("[main]: In maintenance");
             if(wasteBin->isMaintenanceCompleted()) {
                 maintenanceTask->setActive(false);
+                wasteBin->setIdle();
                 setState(WAITING_FOR_USER);
             }
+            break;
         default:
             // Handle unknown state
             Serial.println("Unknown state🦶");

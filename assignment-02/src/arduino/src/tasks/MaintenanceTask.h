@@ -26,13 +26,12 @@ class MaintenanceTask : public Task {
         bool isMaintenanceMSGArrived(String message);
         void setState(State state);
         long elapsedTimeInState();
-        void logOnce(const String& message);
-    
+        void logOnce(const String &message);
+        
         long stateTimeStamp;
         bool justEnteredState;
 
         SmartWasteBin* wasteBin;
-        // userconsole* uCons;
 };
 
 #endif

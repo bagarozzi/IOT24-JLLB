@@ -35,6 +35,7 @@ void setup() {
 
   MaintenanceTask* maintenanceTask = new MaintenanceTask(wasteBin);
   maintenanceTask->init(100);
+  maintenanceTask->setActive(false);
 
   MainTask* mainTask = new MainTask(wasteBin, displayService, userDetectionTask, maintenanceTask);
   mainTask->init(100);
@@ -45,15 +46,15 @@ void setup() {
   TemperatureCheckTask* temperatureCheckTask = new TemperatureCheckTask(wasteBin);
   temperatureCheckTask->init(300);
 
-  WasteDisposalTask* wasteDisposalTask = new WasteDisposalTask(wasteBin, displayService);
+  WasteDisposalTask* wasteDisposalTask = new WasteDisposalTask(wasteBin, displayService, userDetectionTask);
   wasteDisposalTask->init(100);
 
   scheduler.addTask(mainTask);
+  scheduler.addTask(userDetectionTask);
+  scheduler.addTask(maintenanceTask);
+  scheduler.addTask(wasteDisposalTask);
   scheduler.addTask(telemetryTask);
   scheduler.addTask(temperatureCheckTask);
-  scheduler.addTask(wasteDisposalTask);
-  scheduler.addTask(userDetectionTask);
-  
 }
 
 void loop() {

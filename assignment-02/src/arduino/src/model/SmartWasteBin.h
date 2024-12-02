@@ -5,7 +5,7 @@
 #include "Led.h"
 #include "Sonar.h"
 #include "Pir.h"
-#include "TempSensor.h"
+#include "TempSensorLM35.h"
 #include "servo_motor_impl.h"
 #include <avr/sleep.h>
 
@@ -24,7 +24,8 @@ class SmartWasteBin {
         void readyToOpen(); // sets the state to READY_TO_OPEN (called by the button pressed)
         bool isReadyToOpen(); // checks if the state is READY_TO_OPEN
         bool isIdle(); // checks if the state is IDLE
-
+        void setIdle();
+        
         // Methods for disposing:
         void openBin(); // opens the bin with the servo
         void openingCompleted(); // sets the state to OPEN
@@ -48,7 +49,8 @@ class SmartWasteBin {
         bool isInMaintenance();
         bool isMaintenanceCompleted();
         void openBinForEmptying();
-
+        void maintenanceCompleted();
+        
         // Methods for sleeping
         void enableSleepInterrpt();
         void disableSleepInterrpt();
@@ -57,7 +59,7 @@ class SmartWasteBin {
         double getCurrentLevel();
         double getCurrentTemperature();
         bool sampleUserPresence();
-
+        
     private:
 
         enum State {
@@ -71,7 +73,8 @@ class SmartWasteBin {
             DISPOSAL_COMPLETED,
             READY_TO_CLOSE,
             CLOSED,
-            MAINTENANCE
+            MAINTENANCE,
+            MAINTENANCE_COMPLETED
         } state; 
 
         void setState(State state);
