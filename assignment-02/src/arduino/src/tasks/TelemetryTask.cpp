@@ -33,7 +33,7 @@ void TelemetryTask::tick() {
                 statusCode = 3;
             }
             String message = String(statusCode) + ":" + String(wasteBin->getCurrentLevel()) + ":" + String(wasteBin->getCurrentTemperature());
-            //MSGService.sendMessage(message);
+            MSGService.sendMessage(message);
             setState(IDLE);
             break;
     }
