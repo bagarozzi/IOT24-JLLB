@@ -32,7 +32,6 @@ class MaintenanceTask : public Task {
         bool justEnteredState;
 
         SmartWasteBin* wasteBin;
-        // userconsole* uCons;
 };
 
 #endif

@@ -6,14 +6,13 @@ MaintenanceTask::MaintenanceTask(SmartWasteBin *wasteBin) {
 }
 
 void MaintenanceTask::tick() {
-
     switch (state) {
         case INITIALIZE_MAINTENANCE:
-            logOnce("[mian]: Initialize maintenance");
             if(justEnteredState) {
                 wasteBin->setActuatorsInMaintenance();
                 wasteBin->closeBin();
             }
+            logOnce("[mian]: Initialize maintenance");
             if(elapsedTimeInState() >= BIN_CLOSING_TIME) {
                 setState(IN_MAINTENANCE);
             }

@@ -127,7 +127,7 @@ bool SmartWasteBin::isInMaintenance() {
 }
 
 bool SmartWasteBin::isMaintenanceCompleted() {
-    return false;
+    return this->state == MAINTENANCE_COMPLETED;
 }
 
 void SmartWasteBin::openBinForEmptying() {
