@@ -32,7 +32,8 @@ void TelemetryTask::tick() {
             else if (wasteBin->isIdle()){
                 statusCode = 3;
             }
-            String message = String(statusCode) + ":" + String(wasteBin->getCurrentLevel()) + ":" + String(wasteBin->getCurrentTemperature());
+            int percentageLevel = (BIN_CAPACITY - wasteBin->getCurrentLevel()) * 100 / BIN_CAPACITY;
+            String message = String(statusCode) + ":" + String(percentageLevel) + ":" + String(wasteBin->getCurrentTemperature());
             MSGService.sendMessage(message);
             setState(IDLE);
             break;
