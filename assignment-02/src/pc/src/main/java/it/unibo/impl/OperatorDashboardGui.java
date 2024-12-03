@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,17 +23,26 @@ public class OperatorDashboardGui extends JFrame{
     private  JLabel tempLabel = new JLabel("Temperature: ");
     private JLabel fillLabel = new JLabel("Fill level: ");
     private Connection connection;
-    private String MSGtoUpdate = "[0-9]+:([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[Ee]([+-]?\\d+))?:([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[Ee]([+-]?\\d+))?";
-    private Path TemeratureHistory = Paths.get("../../logs/temperature.txt");
-    private Path OutputHistory = Paths.get("../../logs/history.txt");
+    private String filterHistory = "\\[[A-Za-z]+\\]";
+    private Path dataHistory = Paths.get("../../logs/data.txt");
+    private Path logHistory = Paths.get("../../logs/logs.txt");
 
     public OperatorDashboardGui() {
 
         try {
-            Files.write(TemeratureHistory, "Temerature History".getBytes(), StandardOpenOption.CREATE);
-            Files.write(OutputHistory, "Output History".getBytes(), StandardOpenOption.CREATE);
+            Files.write(dataHistory, "Data History\n".getBytes(), StandardOpenOption.CREATE);
+            Files.write(logHistory, "Log History\n".getBytes(), StandardOpenOption.CREATE);
         } catch (IOException e) {
             System.out.println("can't write the file");
+        }
+
+        try {
+            String startingLoggingMessage = "\n\n\n\n\nLogging started on " + LocalDate.now().toString() + " at " + LocalTime.now().toString() + "\n\n\n";
+            Files.write(dataHistory, startingLoggingMessage.getBytes(), StandardOpenOption.APPEND);
+            Files.write(logHistory, startingLoggingMessage.getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            System.out.println("cant write in the file");
+            e.printStackTrace();
         }
 
         this.setTitle("Smart Waste Dashboard");
@@ -82,23 +93,42 @@ public class OperatorDashboardGui extends JFrame{
 
     public void updateGUI(String data) {
         String[] parts = data.split(":");
-        if(data.matches(MSGtoUpdate)){
-            if (parts.length == 2) {
-                this.tempLabel.setText("Temperature: " + parts[2]);
-                this.fillLabel.setText("Fill level: " + parts[1]);
-            }
-        } else if (parts[0].equals("[Temperature]")) {
+        if(parts[0].matches(filterHistory)) {
             try {
-                Files.write(TemeratureHistory, data.getBytes(), StandardOpenOption.APPEND);
-            } catch (IOException e) {
-                System.out.println("can't write in the file");
-            }
-        } else{
-            try {
-                Files.write(OutputHistory, data.getBytes(), StandardOpenOption.APPEND);
+                String log = LocalTime.now().toString() + " -> " + data;
+                Files.write(logHistory, log.getBytes(), StandardOpenOption.APPEND);
             } catch (IOException e) {
                 System.out.println("cant write in the file");
                 e.printStackTrace();
+            }
+        }
+        else {
+            if (parts.length == 3) {
+                switch (parts[0]) {
+                    case "0":
+                        this.statusLabel.setText("Status: Disposing");
+                        break;
+                    case "1":
+                        this.statusLabel.setText("Status: Maintenance");
+                        break;
+                    case "2":
+                        this.statusLabel.setText("Status: User detection");
+                        break;
+                    case "3":
+                        this.statusLabel.setText("Status: Waiting");
+                        break;
+                    default:
+                        this.statusLabel.setText("Status: Error code " + parts[0]);
+                        break;
+                }
+                this.tempLabel.setText("Temperature: " + parts[2]);
+                this.fillLabel.setText("Fill level: " + parts[1]);
+                try {
+                    String dataLog = LocalTime.now().toString() + " -> " + "Temperature: " + parts[2].substring(0,parts[2].length()-1) + "\tFill level: " + parts[1] + "\n";
+                    Files.write(dataHistory, dataLog.getBytes(), StandardOpenOption.APPEND);
+                } catch (IOException e) {
+                    System.out.println("can't write in the file");
+                }
             }
         }
     }
