@@ -1,3 +1,11 @@
+/*
+ * Authors:
+ * Bagattoni Federico
+ * Ponseggi Luca
+ * Turchi Jacopo
+ * Venturini Luca
+ */
+
 #include <Arduino.h>
 #include "model/SmartWasteBin.h"
 #include "model/DisplayService.h"
