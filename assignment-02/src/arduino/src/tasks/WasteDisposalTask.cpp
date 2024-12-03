@@ -13,7 +13,7 @@ WasteDisposalTask::WasteDisposalTask(SmartWasteBin* wasteBin, DisplayService* di
 
 void WasteDisposalTask::tick() {
     /* Checks if the temperature made the bin be in maintenence */
-    if (wasteBin->isInMaintenance() && this->state != HIGH_TEMPERATURE_MAINTENANCE) {
+    if (wasteBin->isInMaintenance() && this->state != BIN_FULL_MAINTENANCE) {
         setState(HIGH_TEMPERATURE_MAINTENANCE);
     }
     int timeLeft;
