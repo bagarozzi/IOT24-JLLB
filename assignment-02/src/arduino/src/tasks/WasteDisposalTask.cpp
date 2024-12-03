@@ -13,7 +13,8 @@ WasteDisposalTask::WasteDisposalTask(SmartWasteBin* wasteBin, DisplayService* di
 
 void WasteDisposalTask::tick() {
     /* Checks if the temperature made the bin be in maintenence */
-    if (wasteBin->isInMaintenance() && this->state != BIN_FULL_MAINTENANCE) {
+    if (wasteBin->isInMaintenance() && this->state != BIN_FULL_MAINTENANCE && this->state != HIGH_TEMPERATURE_MAINTENANCE) {
+        displayService->displayHighTemperatureMessage();
         setState(HIGH_TEMPERATURE_MAINTENANCE);
     }
     int timeLeft;
@@ -50,6 +51,7 @@ void WasteDisposalTask::tick() {
             if (wasteBin->isFull()) {
                 //TODO: chiudi e maintenance
                 wasteBin->problemDetected();
+                displayService->displayContainerFullMessage();
                 setState(BIN_FULL_MAINTENANCE);
             } // se il tempo di disposizione è finito o se è stato premuto il bottone di chiusura
             else if (elapsedTimeInState() > DISPOSAL_TIME || displayService->isCloseButtonPressed()) {
