@@ -27,7 +27,8 @@
 #define DETECTION_TIMEOUT 400 // checks every 400ms
 
 // Waste bin level check:
-#define MAX_LEVEL 0.1f // The maximum level of the waste bin
+#define MAX_LEVEL 0.05f // The maximum level of the waste bin (95%)
+#define BIN_CAPACITY 1.0f // The minimum level of the waste bin (1 meter)
 
 // PINs configuration:
 #define LED1_PIN 3 //green led
