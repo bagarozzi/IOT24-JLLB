@@ -12,7 +12,7 @@ MainTask::MainTask(SmartWasteBin* wasteBin, DisplayService* displayService, User
 
 void MainTask::tick() {
     /* Checks if the temperature made the bin be in maintenence */
-    if (wasteBin->isInMaintenance() && this->state != IN_MAINTENANCE) {
+    if (wasteBin->isInMaintenance() && this->state != INIZIALIZE_MAINTENANCE && this->state != IN_MAINTENANCE && this->state != DISPOSING) {
         displayService->displayHighTemperatureMessage();
         setState(INIZIALIZE_MAINTENANCE);
     }
