@@ -124,7 +124,7 @@ public class OperatorDashboardGui extends JFrame{
                 this.tempLabel.setText("Temperature: " + parts[2]);
                 this.fillLabel.setText("Fill level: " + parts[1]);
                 try {
-                    String dataLog = LocalTime.now().toString() + " -> " + "Temperature: " + parts[2].substring(0,parts[2].length()-1) + "\tFill level: " + parts[1] + "\n";
+                    String dataLog = LocalTime.now().toString() + " -> " + "Temperature: " + parts[2].substring(0,parts[2].length()-1) + "\tFill level: " + parts[1] + "%\n";
                     Files.write(dataHistory, dataLog.getBytes(), StandardOpenOption.APPEND);
                 } catch (IOException e) {
                     System.out.println("can't write in the file");

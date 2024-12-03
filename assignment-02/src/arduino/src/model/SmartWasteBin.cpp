@@ -108,7 +108,7 @@ bool SmartWasteBin::isBinClosed() {
 }
 
 bool SmartWasteBin::isFull() {
-    return this->getCurrentLevel() < MAX_LEVEL;
+    return this->getCurrentLevel() < MAX_LEVEL && this->getCurrentLevel() > 0.0;
 }
 
 // Methods for maintenance:

@@ -33,6 +33,11 @@ void TelemetryTask::tick() {
                 statusCode = 3;
             }
             int percentageLevel = (BIN_CAPACITY - wasteBin->getCurrentLevel()) * 100 / BIN_CAPACITY;
+            //if the distance is more then the BIN_CAPACITY it turns it negative. If the object is too far away, it's returns -1, so the percantageLevel comes out as 200 -> set to 100%
+            if (percentageLevel < 0 || percentageLevel == 200) { //if the distance is more then the BIN_CAPACITY, it's set to full (100%)
+                percentageLevel = 100;
+            }
+            
             String message = String(statusCode) + ":" + String(percentageLevel) + ":" + String(wasteBin->getCurrentTemperature());
             MSGService.sendMessage(message);
             setState(IDLE);
