@@ -1,23 +1,18 @@
-package it.unibo.smartmonitoring;
+package it.unibo.smartmonitoring.core;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+
+import it.unibo.smartmonitoring.core.BackendVerticleImpl;
+import it.unibo.smartmonitoring.core.api.BackendVerticle;
 
 public class MainVerticle extends AbstractVerticle {
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
-    vertx.createHttpServer().requestHandler(req -> {
-      req.response()
-        .putHeader("content-type", "text/plain")
-        .end("Hello from Vert.x!");
-    }).listen(8888).onComplete(http -> {
-      if (http.succeeded()) {
-        startPromise.complete();
-        System.out.println("HTTP server started on port 8888");
-      } else {
-        startPromise.fail(http.cause());
-      }
-    });
+	BackendVerticle backendVerticle = new BackendVerticleImpl();
+	vertx.setPeriodic(100, id -> {
+		backendVerticle.update();
+	});
   }
 }

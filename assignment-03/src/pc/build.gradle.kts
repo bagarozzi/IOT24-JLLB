@@ -17,7 +17,7 @@ repositories {
 val vertxVersion = "4.5.11"
 val junitJupiterVersion = "5.9.1"
 
-val mainVerticleName = "it.unibo.smartmonitoring.MainVerticle"
+val mainVerticleName = "it.unibo.smartmonitoring.core.MainVerticle"
 val launcherClassName = "io.vertx.core.Launcher"
 
 val watchForChange = "src/**/*"

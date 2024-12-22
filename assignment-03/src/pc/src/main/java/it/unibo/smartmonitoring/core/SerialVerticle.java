@@ -1,4 +1,4 @@
-package it.unibo.smartmonitoring;
+package it.unibo.smartmonitoring.core;
 
 public class SerialVerticle {
     
