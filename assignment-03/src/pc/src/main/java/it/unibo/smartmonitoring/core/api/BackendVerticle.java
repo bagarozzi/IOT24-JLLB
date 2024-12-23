@@ -5,8 +5,12 @@ import io.vertx.core.Verticle;
 public interface BackendVerticle extends Verticle {
     
     public enum State {
-        IDLE,
-        BUSY
+        MANUAL,
+        NORMAL,
+        HOT,
+        TOO_HOT,
+        ALARM,
+        IDLE
     }
 
     public void start();
