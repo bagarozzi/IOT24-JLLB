@@ -12,6 +12,9 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     @Override
     public void start() {
         setState(State.IDLE);
+        vertx.setPeriodic(100, id -> {
+            this.update();
+        });
     }
 
     public void update() {

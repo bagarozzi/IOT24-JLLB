@@ -11,8 +11,6 @@ public class MainVerticle extends AbstractVerticle {
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
 	BackendVerticle backendVerticle = new BackendVerticleImpl();
-	vertx.setPeriodic(100, id -> {
-		backendVerticle.update();
-	});
+	vertx.deployVerticle(backendVerticle);
   }
 }
