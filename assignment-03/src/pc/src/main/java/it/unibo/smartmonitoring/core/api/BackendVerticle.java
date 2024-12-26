@@ -13,7 +13,13 @@ public interface BackendVerticle extends Verticle {
         IDLE
     }
 
+    /** 
+     * Starts the Verticle and initializes the Finite State Machine.
+     */
     public void start();
 
+    /**
+     * Updates the state of the Finite State Machine controlling the backend.
+     */
     public void update();
 }
