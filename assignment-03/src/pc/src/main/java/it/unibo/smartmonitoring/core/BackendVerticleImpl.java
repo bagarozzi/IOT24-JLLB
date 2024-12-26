@@ -10,6 +10,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
 
     private State state;
     private long stateTimestamp;
+    private boolean justEnteredState;
 
     @Override
     public void start() {
@@ -18,6 +19,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
             this.update();
         });
         setEventBusConsumer();
+        log("deployment completed");
     }
 
     public void update() {
@@ -58,11 +60,17 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
 
     private void setState(final State state) {
         this.state = state;
+        justEnteredState = true;
         stateTimestamp = System.currentTimeMillis();
     }
 
     private void log(String msg) {
         System.out.println("[BACKEND]: " + msg);
+    }
+
+    private void logOnce(String msg) {
+        System.out.println("[BACKEND]: " + msg);
+        justEnteredState = false;
     }
     
 }
