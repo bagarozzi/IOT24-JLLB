@@ -8,9 +8,11 @@ import it.unibo.smartmonitoring.core.api.BackendVerticle;
 
 public class MainVerticle extends AbstractVerticle {
 
-  @Override
-  public void start(Promise<Void> startPromise) throws Exception {
-	BackendVerticle backendVerticle = new BackendVerticleImpl();
-	vertx.deployVerticle(backendVerticle);
-  }
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		BackendVerticle backendVerticle = new BackendVerticleImpl();
+		MQTTClientVerticle mqttClientVerticle = new MQTTClientVerticle();
+		vertx.deployVerticle(backendVerticle);
+		vertx.deployVerticle(mqttClientVerticle);
+	}
 }
