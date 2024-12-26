@@ -1,7 +1,9 @@
 package it.unibo.smartmonitoring.core;
 
-import io.vertx.core.AbstractVerticle;
+import java.io.ObjectInputFilter.Config;
 
+import io.vertx.core.AbstractVerticle;
+import it.unibo.smartmonitoring.Configuration;
 import it.unibo.smartmonitoring.core.api.BackendVerticle;
 
 public class BackendVerticleImpl extends AbstractVerticle implements BackendVerticle {
@@ -15,6 +17,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
         vertx.setPeriodic(100, id -> {
             this.update();
         });
+        setEventBusConsumer();
     }
 
     public void update() {
@@ -33,6 +36,21 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                 break;
         }
     }
+    
+    private void setEventBusConsumer() {
+        vertx.eventBus().consumer(Configuration.BACKEND_MQTT_EB_ADDR, message -> {
+            System.out.println("[BACKEND]: Received message from MQTT verticle");
+            /* TODO: update the objects with data in the message */
+        });
+        vertx.eventBus().consumer(Configuration.BACKEND_HTTP_EB_ADDR, message -> {
+            System.out.println("[BACKEND]: Received message from HTTP verticle");
+            /* TODO: serve the HTTP request */
+        });
+        vertx.eventBus().consumer(Configuration.BACKEND_ARDUINO_EB_ADDR, message -> {
+            System.out.println("[BACKEND]: Received message from Arduino verticle");
+            /* TODO: update the objects with data in the message */
+        });
+    }
 
     private long elapsedTimeInState() {
         return System.currentTimeMillis() - stateTimestamp;
@@ -41,6 +59,10 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     private void setState(final State state) {
         this.state = state;
         stateTimestamp = System.currentTimeMillis();
+    }
+
+    private void log(String msg) {
+        System.out.println("[BACKEND]: " + msg);
     }
     
 }
