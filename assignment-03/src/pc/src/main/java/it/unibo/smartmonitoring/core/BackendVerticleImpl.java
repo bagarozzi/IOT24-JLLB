@@ -25,16 +25,22 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     public void update() {
         switch(state) {
             case MANUAL:
+                logOnce("state MANUAL");
                 break;
             case NORMAL:
+                logOnce("state NORMAL");
                 break;
             case HOT:
+                logOnce("state HOT");
                 break;
             case TOO_HOT:
+                logOnce("state TOO HOT");
                 break;
             case ALARM:
+                logOnce("state ALARM");
                 break;
             case IDLE:
+                logOnce("state IDLE");
                 break;
         }
     }
