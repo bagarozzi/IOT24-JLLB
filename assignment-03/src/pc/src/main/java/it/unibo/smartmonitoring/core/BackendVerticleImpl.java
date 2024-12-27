@@ -47,6 +47,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
         vertx.eventBus().consumer(Configuration.BACKEND_HTTP_EB_ADDR, message -> {
             System.out.println("[BACKEND]: Received message from HTTP verticle");
             /* TODO: serve the HTTP request */
+            //message.reply("Here's the reply");
         });
         vertx.eventBus().consumer(Configuration.BACKEND_ARDUINO_EB_ADDR, message -> {
             System.out.println("[BACKEND]: Received message from Arduino verticle");
