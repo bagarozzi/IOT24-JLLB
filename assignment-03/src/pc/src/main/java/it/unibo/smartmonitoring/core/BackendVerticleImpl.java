@@ -5,7 +5,9 @@ import io.vertx.core.json.JsonObject;
 import it.unibo.smartmonitoring.Configuration;
 import it.unibo.smartmonitoring.core.api.BackendVerticle;
 import it.unibo.smartmonitoring.model.api.SmartThermometer;
+import it.unibo.smartmonitoring.model.api.SmartWindow;
 import it.unibo.smartmonitoring.model.impl.SmartThermometerImpl;
+import it.unibo.smartmonitoring.model.impl.SmartWindowImpl;
 import it.unibo.smartmonitoring.utils.MessageParser;
 
 public class BackendVerticleImpl extends AbstractVerticle implements BackendVerticle {
@@ -15,16 +17,20 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     private boolean justEnteredState;
 
     private final SmartThermometer thermometer;
+    private final SmartWindow window;
 
     public BackendVerticleImpl() {
         setState(State.IDLE);
         thermometer = new SmartThermometerImpl();
+        window = new SmartWindowImpl();
         stateTimestamp = System.currentTimeMillis();
         justEnteredState = false;
     }
 
     @Override
     public void start() {
+        vertx.deployVerticle(window);
+        vertx.deployVerticle(thermometer);
         vertx.setPeriodic(100, id -> {
             this.update();
         });
@@ -73,17 +79,6 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                     break;
             }
         });
-
-        /**
-         * Messaggi ricevuti dalla finestra:
-         * - "update-mode" -> manual or automatic
-         * - "update-angle" (se in manual-mode)
-         * 
-         * Messaggi inviati alla finestra: 
-         * - "update-temperature" -> temperatura SOLO QUANDO MANUAL MODE
-         * - "set-aperture" -> apertura finestra SOLO quando in AUTOMATIC MODE
-         * - "set-mode" -> manual or automatic quando viene impostato dal sito
-         */
     }
 
     private long elapsedTimeInState() {
