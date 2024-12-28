@@ -26,6 +26,16 @@ public interface BackendVerticle extends Verticle {
     public void update();
 
     /**
+     * Sets the system to automatic mode.
+     */
+    public void setAutomaticMode();
+
+    /**
+     * Sets the system to manual mode.
+     */
+    public void setManualMode();
+
+    /**
      * Returns wether the state is the one passed as parameter.
      * @return
      */
