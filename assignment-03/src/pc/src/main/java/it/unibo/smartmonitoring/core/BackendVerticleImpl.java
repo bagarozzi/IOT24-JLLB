@@ -4,8 +4,10 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import it.unibo.smartmonitoring.Configuration;
 import it.unibo.smartmonitoring.core.api.BackendVerticle;
+import it.unibo.smartmonitoring.model.api.SmartDashboard;
 import it.unibo.smartmonitoring.model.api.SmartThermometer;
 import it.unibo.smartmonitoring.model.api.SmartWindow;
+import it.unibo.smartmonitoring.model.impl.SmartDashboardImpl;
 import it.unibo.smartmonitoring.model.impl.SmartThermometerImpl;
 import it.unibo.smartmonitoring.model.impl.SmartWindowImpl;
 import it.unibo.smartmonitoring.utils.MessageParser;
@@ -18,21 +20,22 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
 
     private final SmartThermometer thermometer;
     private final SmartWindow window;
+    private final SmartDashboard dashboard;
 
     public BackendVerticleImpl() {
         thermometer = new SmartThermometerImpl(this);
         window = new SmartWindowImpl(this);
-        stateTimestamp = System.currentTimeMillis();
+        dashboard = new SmartDashboardImpl(this);
     }
 
     @Override
     public void start() {
         vertx.deployVerticle(window);
         vertx.deployVerticle(thermometer);
+        vertx.deployVerticle(dashboard);
         vertx.setPeriodic(100, id -> {
             this.update();
         });
-        setEventBusConsumer();
         setState(State.IDLE);
         log("deployment completed");
     }
@@ -156,26 +159,6 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     private void logOnce(String msg) {
         System.out.println("[BACKEND]: " + msg);
         justEnteredState = false;
-    }
-
-    private void setEventBusConsumer() {
-        vertx.eventBus().consumer(Configuration.BACKEND_HTTP_EB_ADDR, message -> {
-            System.out.println("[BACKEND]: Received message from HTTP verticle");
-            switch (MessageParser.getHTTPMessageType((JsonObject)message.body())) {
-                case UPDATE:
-                    message.reply(MessageParser.createHTTPUpdate(null, null));
-                    break;
-                case RESET_ALARM:
-                    break;
-                case SET_MODE:
-                    setState(State.MANUAL);
-                    break;
-                case SET_WINDOW_APERTURE:
-                    break;
-                default:
-                    break;
-            }
-        });
     }
 
     private int computeWindowAperture(final float temperature) {
