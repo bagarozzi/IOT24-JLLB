@@ -41,7 +41,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     }
 
     public void update() {
-        float t = thermometer.getTemperature();
+        float t = thermometer.getCurrentTemperature();
         switch(state) {
             case MANUAL:
                 logOnce("state MANUAL");
@@ -98,6 +98,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                 break;
             case IDLE:
                 window.setAngle(0);
+                thermometer.setFrequency(Configuration.NORMAL_MODE_POLLING_FREQUENCY);
                 logOnce("state IDLE");
                 if(t < Configuration.NORMAL_MODE_THRESHOLD) {
                     setState(State.NORMAL);
