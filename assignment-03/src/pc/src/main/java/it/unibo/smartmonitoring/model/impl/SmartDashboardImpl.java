@@ -18,6 +18,7 @@ public class SmartDashboardImpl extends AbstractVerticle implements SmartDashboa
     @Override
     public void start() {
         setEventBusConsumer();
+        System.out.println("[BACKEND]: SmartDashboard deployment completed");
     }
 
     private void setEventBusConsumer() {

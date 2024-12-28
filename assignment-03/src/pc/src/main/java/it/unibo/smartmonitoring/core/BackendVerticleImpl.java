@@ -37,7 +37,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
             this.update();
         });
         setState(State.IDLE);
-        log("deployment completed");
+        log(" Backend verticle deployment completed");
     }
 
     public void update() {

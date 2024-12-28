@@ -21,6 +21,7 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
     @Override
     public void start() {
         setEventBusConsumer();
+        System.out.println("[BACKEND]: SmartWindow deployment completed");
     }
 
     @Override
@@ -76,5 +77,5 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
             }
         });
     }
-    
+
 }
