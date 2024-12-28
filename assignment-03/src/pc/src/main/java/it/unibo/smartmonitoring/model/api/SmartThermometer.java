@@ -6,6 +6,6 @@ public interface SmartThermometer {
 
     public void setTemperature(float temperature);
 
-    public void getTemperature();
+    public float getTemperature();
 
 }
