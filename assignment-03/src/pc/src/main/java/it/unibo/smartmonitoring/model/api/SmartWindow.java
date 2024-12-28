@@ -26,9 +26,4 @@ public interface SmartWindow extends Verticle {
      */
     public void sendTemperatureUpdate(float temperature);
 
-    /**
-     * Sends the state of the system to the Arduino verticle.
-     */
-    public void sendStateUpdate(String state);
-
 }

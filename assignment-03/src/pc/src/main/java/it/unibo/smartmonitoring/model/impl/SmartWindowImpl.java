@@ -38,11 +38,6 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
         // TODO: send temperature to the arduino
     }
 
-    @Override
-    public void sendStateUpdate(String state) {
-        // TODO: send the state to the arduino
-    }
-
     private void setAngleWithoutSending(final int angle) {
         this.angle = angle;
     }
