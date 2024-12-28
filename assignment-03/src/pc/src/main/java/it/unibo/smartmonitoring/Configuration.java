@@ -15,4 +15,6 @@ public final class Configuration {
     public static final float NORMAL_MODE_THRESHOLD = 27.0f;
     public static final float HOT_MODE_THRESHOLD = 35.0f;
     public static final long ALARM_THRESHOLD_TIME = 10000;
+    public static final int NORMAL_MODE_POLLING_FREQUENCY = 500;
+    public static final int HOT_MODE_POLLING_FREQUENCY = 200;
 }
