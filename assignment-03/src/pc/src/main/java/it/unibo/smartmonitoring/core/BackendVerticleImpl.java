@@ -20,11 +20,9 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     private final SmartWindow window;
 
     public BackendVerticleImpl() {
-        setState(State.IDLE);
         thermometer = new SmartThermometerImpl(this);
         window = new SmartWindowImpl(this);
         stateTimestamp = System.currentTimeMillis();
-        justEnteredState = false;
     }
 
     @Override
@@ -35,6 +33,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
             this.update();
         });
         setEventBusConsumer();
+        setState(State.IDLE);
         log("deployment completed");
     }
 
@@ -57,28 +56,33 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                 break;
             case IDLE:
                 logOnce("state IDLE");
+                float t = thermometer.getTemperature();
+                if(t < Configuration.NORMAL_MODE_THRESHOLD) {
+                    setState(State.NORMAL);
+                    break;
+                }
+                else if(t > Configuration.NORMAL_MODE_THRESHOLD && t < Configuration.HOT_MODE_THRESHOLD) {
+                    setState(State.HOT);
+                    break;
+                }
+                else if(t > Configuration.HOT_MODE_THRESHOLD) {
+                    setState(State.TOO_HOT);
+                    break;
+                }
                 break;
         }
     }
-    
-    private void setEventBusConsumer() {
-        vertx.eventBus().consumer(Configuration.BACKEND_HTTP_EB_ADDR, message -> {
-            System.out.println("[BACKEND]: Received message from HTTP verticle");
-            switch (MessageParser.getHTTPMessageType((JsonObject)message.body())) {
-                case UPDATE:
-                    message.reply(MessageParser.createHTTPUpdate(null, null));
-                    break;
-                case RESET_ALARM:
-                    break;
-                case SET_MODE:
-                    setState(State.MANUAL);
-                    break;
-                case SET_WINDOW_APERTURE:
-                    break;
-                default:
-                    break;
-            }
-        });
+
+    @Override
+    public void setAutomaticMode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setAutomaticMode'");
+    }
+
+    @Override
+    public void setManualMode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setManualMode'");
     }
 
     @Override
@@ -113,6 +117,26 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     private void logOnce(String msg) {
         System.out.println("[BACKEND]: " + msg);
         justEnteredState = false;
+    }
+
+    private void setEventBusConsumer() {
+        vertx.eventBus().consumer(Configuration.BACKEND_HTTP_EB_ADDR, message -> {
+            System.out.println("[BACKEND]: Received message from HTTP verticle");
+            switch (MessageParser.getHTTPMessageType((JsonObject)message.body())) {
+                case UPDATE:
+                    message.reply(MessageParser.createHTTPUpdate(null, null));
+                    break;
+                case RESET_ALARM:
+                    break;
+                case SET_MODE:
+                    setState(State.MANUAL);
+                    break;
+                case SET_WINDOW_APERTURE:
+                    break;
+                default:
+                    break;
+            }
+        });
     }
     
 }
