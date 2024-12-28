@@ -21,13 +21,17 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
     }
 
     @Override
-    public void setAngle(int angle) {
+    public void setAngle(final int angle) {
         this.angle = angle;
     }
 
     @Override
     public int getAngle() {
         return angle;
+    }
+
+    private void setAngleWithoutSending(final int angle) {
+        this.angle = angle;
     }
 
     private void setEventBusConsumer() {
