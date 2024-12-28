@@ -38,25 +38,55 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     }
 
     public void update() {
+        float t = thermometer.getTemperature();
         switch(state) {
             case MANUAL:
                 logOnce("state MANUAL");
                 break;
             case NORMAL:
                 logOnce("state NORMAL");
+                window.setAngle(0);
+                if(t > Configuration.NORMAL_MODE_THRESHOLD) {
+                    log("temperature is above normal threshold");
+                    setState(State.HOT);
+                    break;
+                }
                 break;
             case HOT:
                 logOnce("state HOT");
+                if(t < Configuration.NORMAL_MODE_THRESHOLD) {
+                    log("temperature is back below hot threshold");
+                    setState(State.NORMAL);
+                    break;
+                }
+                else if(t > Configuration.HOT_MODE_THRESHOLD) {
+                    log("temperature is above hot threshold");
+                    setState(State.TOO_HOT);
+                    break;
+                }
+                else {
+                    window.setAngle(computeWindowAperture(t));
+                }
                 break;
             case TOO_HOT:
                 logOnce("state TOO HOT");
+                window.setAngle(100);
+                if(t < Configuration.HOT_MODE_THRESHOLD) {
+                    log("temperature is back below too hot threshold");
+                    setState(State.HOT);
+                    break;
+                }
+                else if(elapsedTimeInState() >= Configuration.ALARM_THRESHOLD_TIME) {
+                    log("alarm threshold time reached!");
+                    setState(State.ALARM);
+                    break;
+                }
                 break;
             case ALARM:
                 logOnce("state ALARM");
                 break;
             case IDLE:
                 logOnce("state IDLE");
-                float t = thermometer.getTemperature();
                 if(t < Configuration.NORMAL_MODE_THRESHOLD) {
                     setState(State.NORMAL);
                     break;
@@ -75,14 +105,12 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
 
     @Override
     public void setAutomaticMode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setAutomaticMode'");
+        setState(State.IDLE);
     }
 
     @Override
     public void setManualMode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setManualMode'");
+        setState(State.MANUAL);
     }
 
     @Override
@@ -137,6 +165,12 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                     break;
             }
         });
+    }
+
+    private int computeWindowAperture(final float temperature) {
+        float deltaInterval = Configuration.HOT_MODE_THRESHOLD - Configuration.NORMAL_MODE_THRESHOLD;
+        float deltaTemperature = temperature - Configuration.NORMAL_MODE_THRESHOLD;
+        return (int) (deltaTemperature / deltaInterval * 100);
     }
     
 }
