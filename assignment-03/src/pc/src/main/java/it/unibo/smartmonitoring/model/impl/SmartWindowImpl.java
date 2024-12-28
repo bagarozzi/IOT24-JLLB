@@ -26,6 +26,12 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
     @Override
     public void setAngle(final int angle) {
         this.angle = angle;
+        vertx.eventBus().send(
+            Configuration.ARUDINO_EB_ADDR,
+            new JsonObject()
+                .put("type", "set-angle")
+                .put("angle", angle)
+        );
     }
 
     @Override
@@ -63,14 +69,8 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
                 default:
                     break;
             }
-            /**
-             * Messaggi ricevuti dalla finestra:
-             * - "update-mode" -> manual or automatic
-             * - "update-angle" (se in manual-mode)
-             * 
+            /*
              * Messaggi inviati alla finestra: 
-             * - "update-temperature" -> temperatura SOLO QUANDO MANUAL MODE
-             * - "set-aperture" -> apertura finestra SOLO quando in AUTOMATIC MODE
              * - "set-mode" -> manual or automatic quando viene impostato dal sito
              */
         });
