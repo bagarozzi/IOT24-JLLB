@@ -41,7 +41,12 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
 
     @Override
     public void sendTemperatureUpdate(final float temperature) {
-        // TODO: send temperature to the arduino
+        vertx.eventBus().send(
+            Configuration.ARUDINO_EB_ADDR,
+            new JsonObject()
+                .put("type", "update-temperature")
+                .put("temperature", temperature)
+        );
     }
 
     private void setAngleWithoutSending(final int angle) {
@@ -69,10 +74,6 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
                 default:
                     break;
             }
-            /*
-             * Messaggi inviati alla finestra: 
-             * - "set-mode" -> manual or automatic quando viene impostato dal sito
-             */
         });
     }
     
