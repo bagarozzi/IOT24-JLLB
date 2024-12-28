@@ -47,7 +47,11 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
     }
 
     private void sendFrequency() {
-        //vertx.eventBus().send(Configuration., new JsonObject().put("frequency", this.frequency));
+        vertx.eventBus().send(
+            Configuration.MQTT_EB_ADDR,
+            new JsonObject()
+                .put("frequency", this.frequency)
+        );
     }
 
 }
