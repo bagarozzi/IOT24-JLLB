@@ -14,9 +14,15 @@ public class SmartThermometerImpl implements SmartThermometer {
     }
 
     @Override
-    public void getTemperature() {
+    public float getTemperature() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getTemperature'");
     }
-    
+
+    @Override
+    public void setTemperature(float temperature) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setTemperature'");
+    }
+
 }
