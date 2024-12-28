@@ -11,6 +11,10 @@ public final class Configuration {
     public static final String BACKEND_HTTP_EB_ADDR = "http.backend.com";
     public static final String BACKEND_ARDUINO_EB_ADDR = "arduino.backend.com";
 
+    public static final String ARUDINO_EB_ADDR = "window.arduino.com";
+
+    public static final String MQTT_EB_ADDR = "mqtt.thermometer.com";
+
     /* Backend variables for automatic mode: */
     public static final float NORMAL_MODE_THRESHOLD = 27.0f;
     public static final float HOT_MODE_THRESHOLD = 35.0f;
