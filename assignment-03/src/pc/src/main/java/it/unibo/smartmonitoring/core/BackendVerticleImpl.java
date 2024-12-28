@@ -1,10 +1,12 @@
 package it.unibo.smartmonitoring.core;
 
-import java.io.ObjectInputFilter.Config;
-
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.json.JsonObject;
 import it.unibo.smartmonitoring.Configuration;
 import it.unibo.smartmonitoring.core.api.BackendVerticle;
+import it.unibo.smartmonitoring.model.api.SmartThermometer;
+import it.unibo.smartmonitoring.model.impl.SmartThermometerImpl;
+import it.unibo.smartmonitoring.utils.MessageParser;
 
 public class BackendVerticleImpl extends AbstractVerticle implements BackendVerticle {
 
@@ -12,9 +14,17 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     private long stateTimestamp;
     private boolean justEnteredState;
 
+    private final SmartThermometer thermometer;
+
+    public BackendVerticleImpl() {
+        setState(State.IDLE);
+        thermometer = new SmartThermometerImpl();
+        stateTimestamp = System.currentTimeMillis();
+        justEnteredState = false;
+    }
+
     @Override
     public void start() {
-        setState(State.IDLE);
         vertx.setPeriodic(100, id -> {
             this.update();
         });
@@ -48,12 +58,24 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     private void setEventBusConsumer() {
         vertx.eventBus().consumer(Configuration.BACKEND_MQTT_EB_ADDR, message -> {
             System.out.println("[BACKEND]: Received message from MQTT verticle");
-            /* TODO: update the objects with data in the message */
+            thermometer.setTemperature(MessageParser.parseMQTTMessage((JsonObject)message.body()));
         });
         vertx.eventBus().consumer(Configuration.BACKEND_HTTP_EB_ADDR, message -> {
             System.out.println("[BACKEND]: Received message from HTTP verticle");
-            /* TODO: serve the HTTP request */
-            //message.reply("Here's the reply");
+            switch (MessageParser.getHTTPMessageType((JsonObject)message.body())) {
+                case UPDATE:
+                    message.reply(MessageParser.createHTTPUpdate(null, null));
+                    break;
+                case RESET_ALARM:
+                    break;
+                case SET_MODE:
+                    setState(State.MANUAL);
+                    break;
+                case SET_WINDOW_APERTURE:
+                    break;
+                default:
+                    break;
+            }
         });
         vertx.eventBus().consumer(Configuration.BACKEND_ARDUINO_EB_ADDR, message -> {
             System.out.println("[BACKEND]: Received message from Arduino verticle");
