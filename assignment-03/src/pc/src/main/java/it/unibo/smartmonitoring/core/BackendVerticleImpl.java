@@ -126,6 +126,18 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     }
 
     @Override
+    public void resetAlarm() {
+        setState(State.IDLE);
+    }
+
+    @Override
+    public void setWindowAperture(final int angle) {
+        if(isState(State.MANUAL)) {
+            window.setAngle(angle);
+        }
+    }
+
+    @Override
     public SmartThermometer getSmartThermometer() {
         return thermometer;
     }

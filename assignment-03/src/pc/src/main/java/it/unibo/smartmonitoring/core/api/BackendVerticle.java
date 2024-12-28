@@ -64,6 +64,17 @@ public interface BackendVerticle extends Verticle {
      */
     public void setManualMode();
 
+    /** 
+     * Resets the alarm state.
+     */
+    public void resetAlarm();
+
+    /**
+     * Sets the window aperture to the angle passed as parameter.
+     * @param angle
+     */
+    public void setWindowAperture(int angle);
+
     /**
      * Returns wether the state is the one passed as parameter.
      * @return
