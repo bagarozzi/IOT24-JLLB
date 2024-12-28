@@ -29,7 +29,7 @@ public class SmartDashboardImpl extends AbstractVerticle implements SmartDashboa
                     message.reply(MessageParser.createHTTPUpdate(null, null));
                     break;
                 case RESET_ALARM:
-                    //TODO: backend.resetAlarm();
+                    backend.resetAlarm();
                     break;
                 case SET_MODE:
                     if(body.getString("mode").equals("manual")) {
@@ -40,7 +40,7 @@ public class SmartDashboardImpl extends AbstractVerticle implements SmartDashboa
                     }
                     break;
                 case SET_WINDOW_APERTURE:
-                    // TODO: backend sets window aperture
+                    backend.setWindowAperture(body.getInteger("aperture"));
                     break;
                 default:
                     break;
