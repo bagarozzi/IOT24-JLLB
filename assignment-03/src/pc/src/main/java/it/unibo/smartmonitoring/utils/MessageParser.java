@@ -7,12 +7,15 @@ import it.unibo.smartmonitoring.model.api.SmartWindow;
 public final class MessageParser {
 
     public static enum HTTPMessageType {
-
         UPDATE,
         SET_WINDOW_APERTURE,
         SET_MODE,
         RESET_ALARM;
+    }
 
+    public static enum ArduinoMessageType {
+        SET_MODE,
+        SET_ANGLE;
     }
 
     public static HTTPMessageType getHTTPMessageType(final JsonObject message) {
@@ -26,6 +29,18 @@ public final class MessageParser {
                 return HTTPMessageType.SET_MODE;
             case "reset-alarm":
                 return HTTPMessageType.RESET_ALARM;
+            default:
+                throw new IllegalArgumentException("Invalid message type: " + type);
+        }
+    }
+
+    public static ArduinoMessageType getArduinoMessageType(final JsonObject message) {
+        final String type = message.getString("type");
+        switch (type) {
+            case "update-mode":
+                return ArduinoMessageType.SET_MODE;
+            case "update-angle":
+                return ArduinoMessageType.SET_ANGLE;
             default:
                 throw new IllegalArgumentException("Invalid message type: " + type);
         }
