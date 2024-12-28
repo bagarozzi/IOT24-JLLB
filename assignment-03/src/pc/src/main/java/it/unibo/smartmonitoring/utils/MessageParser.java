@@ -59,8 +59,9 @@ public final class MessageParser {
     public static JsonObject createHTTPUpdate(final SmartThermometer thermometer, final SmartWindow window) {
         final JsonObject json = new JsonObject()
             .put("temperature", thermometer.getTemperature())
-            .put("minTemperature", 20.0)
-            .put("maxTemperature", 30.0)
+            .put("minTemperature", thermometer.getMinTemperature())
+            .put("maxTemperature", thermometer.getMaxTemperature())
+            .put("averageTemperature", thermometer.getAverageTemperature())
             .put("mode", "AUTOMATIC")
             .put("windowOpening", 0)
             .put("systemState", "NORMAL");

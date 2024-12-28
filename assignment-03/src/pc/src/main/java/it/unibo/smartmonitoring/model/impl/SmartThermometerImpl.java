@@ -1,5 +1,8 @@
 package it.unibo.smartmonitoring.model.impl;
 
+import java.util.ArrayDeque;
+import java.util.Collections;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import it.unibo.smartmonitoring.Configuration;
@@ -9,13 +12,14 @@ import it.unibo.smartmonitoring.utils.MessageParser;
 
 public class SmartThermometerImpl extends AbstractVerticle implements SmartThermometer {
 
-    private float temperature;
+    private final ArrayDeque<Float> temperatureLogs;
     private int frequency;
 
     private final BackendVerticle backend;
 
     public SmartThermometerImpl(final BackendVerticle backendVerticle) {
-        this.backend = backendVerticle;        
+        this.backend = backendVerticle;
+        temperatureLogs = new ArrayDeque<>();  
     }
 
     @Override
@@ -31,12 +35,31 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
 
     @Override
     public float getTemperature() {
-        return this.temperature;
+        return temperatureLogs.getLast();
     }
 
     @Override
     public void setTemperature(float temperature) {
-        this.temperature = temperature;
+        temperatureLogs.removeFirst();
+        temperatureLogs.add(temperature);
+    }
+
+    @Override
+    public float getMinTemperature() {
+        return Collections.min(temperatureLogs);
+    }
+
+    @Override
+    public float getMaxTemperature() {
+        return Collections.max(temperatureLogs);
+    }
+
+    @Override
+    public float getAverageTemperature() {
+        return (float) temperatureLogs.stream()
+            .mapToDouble(Float::doubleValue)
+            .average()
+            .orElse(0.0);
     }
 
     private void setEventBusConsumer() {

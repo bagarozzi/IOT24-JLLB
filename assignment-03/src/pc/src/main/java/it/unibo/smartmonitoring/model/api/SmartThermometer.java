@@ -10,4 +10,10 @@ public interface SmartThermometer extends Verticle {
 
     public float getTemperature();
 
+    public float getMinTemperature();
+
+    public float getMaxTemperature();
+
+    public float getAverageTemperature();
+
 }
