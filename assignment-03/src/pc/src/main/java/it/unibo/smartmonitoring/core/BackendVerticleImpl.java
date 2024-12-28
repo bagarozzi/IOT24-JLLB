@@ -37,7 +37,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
             this.update();
         });
         setState(State.IDLE);
-        log(" Backend verticle deployment completed");
+        log("Backend deployment completed");
     }
 
     public void update() {
@@ -170,8 +170,10 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     }
 
     private void logOnce(String msg) {
-        System.out.println("[BACKEND]: " + msg);
-        justEnteredState = false;
+        if(justEnteredState) {
+            System.out.println("[BACKEND]: " + msg);
+            justEnteredState = false;
+        }
     }
 
     private int computeWindowAperture(final float temperature) {
