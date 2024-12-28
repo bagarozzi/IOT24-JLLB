@@ -12,7 +12,6 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
 
     public SmartWindowImpl(final BackendVerticle backend) {
         this.backend = backend;
-        angle = 0;
     }
 
     @Override
