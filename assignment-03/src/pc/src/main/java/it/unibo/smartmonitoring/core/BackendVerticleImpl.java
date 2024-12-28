@@ -81,6 +81,17 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
             System.out.println("[BACKEND]: Received message from Arduino verticle");
             /* TODO: update the objects with data in the message */
         });
+
+        /**
+         * Messaggi ricevuti dalla finestra:
+         * - "update-mode" -> manual or automatic
+         * - "update-angle" (se in manual-mode)
+         * 
+         * Messaggi inviati alla finestra: 
+         * - "update-temperature" -> temperatura SOLO QUANDO MANUAL MODE
+         * - "set-aperture" -> apertura finestra SOLO quando in AUTOMATIC MODE
+         * - "set-mode" -> manual or automatic quando viene impostato dal sito
+         */
     }
 
     private long elapsedTimeInState() {
