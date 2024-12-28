@@ -21,8 +21,8 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
 
     public BackendVerticleImpl() {
         setState(State.IDLE);
-        thermometer = new SmartThermometerImpl();
-        window = new SmartWindowImpl();
+        thermometer = new SmartThermometerImpl(this);
+        window = new SmartWindowImpl(this);
         stateTimestamp = System.currentTimeMillis();
         justEnteredState = false;
     }
@@ -81,14 +81,29 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
         });
     }
 
-    private long elapsedTimeInState() {
-        return System.currentTimeMillis() - stateTimestamp;
+    @Override
+    public SmartThermometer getSmartThermometer() {
+        return thermometer;
+    }
+
+    @Override
+    public SmartWindow getSmartWindow() {
+        return window;
+    }
+
+    @Override
+    public boolean isState(State state) {
+        return this.state == state;
     }
 
     private void setState(final State state) {
         this.state = state;
         justEnteredState = true;
         stateTimestamp = System.currentTimeMillis();
+    }
+
+    private long elapsedTimeInState() {
+        return System.currentTimeMillis() - stateTimestamp;
     }
 
     private void log(String msg) {
