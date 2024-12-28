@@ -42,6 +42,10 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
         switch(state) {
             case MANUAL:
                 logOnce("state MANUAL");
+                /**
+                 * Do nothing. Updating the values is handled by the HTTP verticle
+                 * itself.
+                 */
                 break;
             case NORMAL:
                 logOnce("state NORMAL");
@@ -132,9 +136,11 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     }
 
     private void setState(final State state) {
-        this.state = state;
-        justEnteredState = true;
-        stateTimestamp = System.currentTimeMillis();
+        if(!isState(state)) {
+            this.state = state;
+            justEnteredState = true;
+            stateTimestamp = System.currentTimeMillis();
+        }
     }
 
     private long elapsedTimeInState() {
