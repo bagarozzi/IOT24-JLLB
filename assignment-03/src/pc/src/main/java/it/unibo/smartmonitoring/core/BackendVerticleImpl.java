@@ -46,6 +46,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                  * Do nothing. Updating the values is handled by the HTTP verticle
                  * itself.
                  */
+                // TODO: QUANDO IL SITO METTE IN MANUALE BISOGNA DIRLO ALL'ARDUINO
                 window.sendTemperatureUpdate(t);
                 break;
             case NORMAL:
