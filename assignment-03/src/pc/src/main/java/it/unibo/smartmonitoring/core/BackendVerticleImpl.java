@@ -56,10 +56,6 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     }
     
     private void setEventBusConsumer() {
-        vertx.eventBus().consumer(Configuration.BACKEND_MQTT_EB_ADDR, message -> {
-            System.out.println("[BACKEND]: Received message from MQTT verticle");
-            thermometer.setTemperature(MessageParser.parseMQTTMessage((JsonObject)message.body()));
-        });
         vertx.eventBus().consumer(Configuration.BACKEND_HTTP_EB_ADDR, message -> {
             System.out.println("[BACKEND]: Received message from HTTP verticle");
             switch (MessageParser.getHTTPMessageType((JsonObject)message.body())) {
@@ -76,10 +72,6 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                 default:
                     break;
             }
-        });
-        vertx.eventBus().consumer(Configuration.BACKEND_ARDUINO_EB_ADDR, message -> {
-            System.out.println("[BACKEND]: Received message from Arduino verticle");
-            /* TODO: update the objects with data in the message */
         });
 
         /**

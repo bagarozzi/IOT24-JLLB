@@ -1,8 +1,10 @@
 package it.unibo.smartmonitoring.model.impl;
 
 import io.vertx.core.AbstractVerticle;
-
+import io.vertx.core.json.JsonObject;
+import it.unibo.smartmonitoring.Configuration;
 import it.unibo.smartmonitoring.model.api.SmartThermometer;
+import it.unibo.smartmonitoring.utils.MessageParser;
 
 public class SmartThermometerImpl extends AbstractVerticle implements SmartThermometer {
 
@@ -11,26 +13,34 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
 
     @Override
     public void start() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'start'");
+        setEventBusConsumer();
     }
 
     @Override
     public void setFrequency(int frequency) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFrequency'");
+        this.frequency = frequency;
+        sendFrequency();
     }
 
     @Override
     public float getTemperature() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTemperature'");
+        return this.temperature;
     }
 
     @Override
     public void setTemperature(float temperature) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setTemperature'");
+        this.temperature = temperature;
+    }
+
+    private void setEventBusConsumer() {
+        vertx.eventBus().consumer(Configuration.BACKEND_MQTT_EB_ADDR, message -> {
+            System.out.println("[BACKEND]: Received message from MQTT verticle");
+            setTemperature(MessageParser.parseMQTTMessage((JsonObject)message.body()));
+        });
+    }
+
+    private void sendFrequency() {
+        //vertx.eventBus().send(Configuration., new JsonObject().put("frequency", this.frequency));
     }
 
 }
