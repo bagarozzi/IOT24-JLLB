@@ -3,6 +3,7 @@ package it.unibo.smartmonitoring.model.impl;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import it.unibo.smartmonitoring.Configuration;
+import it.unibo.smartmonitoring.core.api.BackendVerticle;
 import it.unibo.smartmonitoring.model.api.SmartThermometer;
 import it.unibo.smartmonitoring.utils.MessageParser;
 
@@ -10,6 +11,12 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
 
     private float temperature;
     private int frequency;
+
+    private final BackendVerticle backend;
+
+    public SmartThermometerImpl(final BackendVerticle backendVerticle) {
+        this.backend = backendVerticle;        
+    }
 
     @Override
     public void start() {

@@ -2,11 +2,18 @@ package it.unibo.smartmonitoring.model.impl;
 
 import io.vertx.core.AbstractVerticle;
 import it.unibo.smartmonitoring.Configuration;
+import it.unibo.smartmonitoring.core.api.BackendVerticle;
 import it.unibo.smartmonitoring.model.api.SmartWindow;
 
 public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
 
     private int angle;
+    private final BackendVerticle backend;
+
+    public SmartWindowImpl(final BackendVerticle backend) {
+        this.backend = backend;
+        angle = 0;
+    }
 
     @Override
     public void start() {
