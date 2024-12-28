@@ -1,6 +1,8 @@
 package it.unibo.smartmonitoring.core.api;
 
 import io.vertx.core.Verticle;
+import it.unibo.smartmonitoring.model.api.SmartThermometer;
+import it.unibo.smartmonitoring.model.api.SmartWindow;
 
 public interface BackendVerticle extends Verticle {
     
@@ -22,4 +24,20 @@ public interface BackendVerticle extends Verticle {
      * Updates the state of the Finite State Machine controlling the backend.
      */
     public void update();
+
+    /**
+     * Returns wether the state is the one passed as parameter.
+     * @return
+     */
+    public boolean isState(State state);
+
+    /**
+     *  Returns the SmartThermometer instance related to this backend.
+     */
+    public SmartThermometer getSmartThermometer();
+
+    /** 
+     * Returns the SmartWindow instance related to this backend.
+     */
+    public SmartWindow getSmartWindow();
 }
