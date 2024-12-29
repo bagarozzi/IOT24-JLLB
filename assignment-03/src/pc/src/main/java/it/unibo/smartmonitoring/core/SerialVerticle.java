@@ -1,5 +1,16 @@
 package it.unibo.smartmonitoring.core;
 
-public class SerialVerticle {
+import io.vertx.core.AbstractVerticle;
+
+public class SerialVerticle extends AbstractVerticle {
+
+    @Override
+    public void start() {
+        vertx.eventBus().consumer("serial", message -> {
+            String data = (String) message.body();
+            System.out.println("Received data: " + data);
+        });
+    }
+
     
 }
