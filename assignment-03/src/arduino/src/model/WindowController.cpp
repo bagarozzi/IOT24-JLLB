@@ -7,72 +7,76 @@
 #include "devices/servo_motor_impl.h"
 #include "kernel/Logger.h"
 
+#define MAX_ANGLE 90
+#define MAX_PERCENTAGE 100
+
+/**
+ * Constructor
+ * 
+ * @param pHW the hardware platform
+ */
 WindowController::WindowController(HWPlatform* pHW):pHW(pHW){
 }
 
+/**
+ * Initializes the window controller
+ */
 void WindowController::init(){
-  this->reset();
-  isAvail = true;
-  pHW->getWindowMotor()->on();
   pHW->getWindowMotor()->off();
 }
   
+/**
+ * Syncs the potentiometer
+ */
 void WindowController::sync(){
- 
+  pHW->getPot()->sync();
 }
 
-bool WindowController::sensorsCanBeUsed(){
-  return !pHW->getWindowMotor()->isOn();
+/**
+ * Adjusts the window to a certain percentage
+ * 
+ * @param percentage the percentage to adjust the window to
+ */
+void WindowController::adjustWindowToPercentage(int percentage) {
+  int angle = percentageToAngle(percentage);
+  pHW->getWindowMotor()->on();
+  pHW->getWindowMotor()->setPosition(angle);
 }
 
-void WindowController::startOpeningWindow(){
-  if (isAvail){
-    pHW->getWindowMotor()->on();
-    pHW->getWindowMotor()->setPosition(180);
+/**
+ * Adjusts the window based on the potentiometer
+ */
+void WindowController::adjustWindowBasedOnPotentiometer() {
+  adjustWindowToPercentage(readPotentiometer());
+}
+
+/**
+ * Stops adjusting the window
+ */
+void WindowController::stopAdjustingWindow(){
+  pHW->getWindowMotor()->off();
+}
+
+/**
+ * Reads the potentiometer
+ * 
+ * @return the potentiometer value in percentage
+ */
+long WindowController::readPotentiometer() {
+  return map(analogRead(POT_PIN), 0, 1023, 0, MAX_PERCENTAGE);
+}
+
+/**
+ * Converts a percentage to an angle
+ * 
+ * @param percentage the percentage to convert
+ * @return the angle
+ */
+int percentageToAngle(int percentage) {
+  if (percentage < 0) {
+    percentage = 0;
+  } else if (percentage > 100) {
+    percentage = 100;
   }
-}
-
-void WindowController::stopOpeningWindow(){
-  pHW->getWindowMotor()->off();
-}
-
-void WindowController::startClosingWindow(){
-  pHW->getWindowMotor()->on();
-  pHW->getWindowMotor()->setPosition(90);
-}
-
-void WindowController::stopClosingWindow(){
-  pHW->getWindowMotor()->off();
-}
-
-void WindowController::startOpeningForDischarging(){
-  pHW->getWindowMotor()->on();
-  pHW->getWindowMotor()->setPosition(0);
-}
-
-void WindowController::stopOpeningForDischarging(){
-  pHW->getWindowMotor()->setPosition(90);
-}
-
-void WindowController::startClosingForDischarging(){
-  pHW->getWindowMotor()->on();
-  pHW->getWindowMotor()->setPosition(0);
-}
-
-void WindowController::stopClosingForDischarging(){
-  pHW->getWindowMotor()->setPosition(90);
-}
-
-void WindowController::notifyMaintenanceCompleted(){
-  this->reset();
-}
-
-void WindowController::reset(){
-  isAvail = true;
-  pHW->getWindowMotor()->off();
-}
-
-void WindowController::setMaintenance(){
-  isAvail = false;
-  pHW->getWindowMotor()->off();
+  return (percentage * MAX_ANGLE) / 100;
 }

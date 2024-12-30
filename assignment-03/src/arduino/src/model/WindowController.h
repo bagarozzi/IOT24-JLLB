@@ -10,28 +10,17 @@ public:
   WindowController(HWPlatform* hw);
   void init();
 
-  void reset();
-  void setMaintenance();
-   
-  void startOpeningWindow();
-  void stopOpeningWindow();
-  void startClosingWindow();
-  void stopClosingWindow();
-  void startOpeningForDischarging();
-  void stopOpeningForDischarging();
-  void startClosingForDischarging();
-  void stopClosingForDischarging();
-
-  void notifyMaintenanceCompleted();  
+  void adjustWindowToPercentage(int percentage);
+  void adjustWindowBasedOnPotentiometer();
+  void stopAdjustingWindow();
 
   void sync();
 
 private:
-  bool sensorsCanBeUsed();
+  long readPotentiometer();
+  int percentageToAngle(int percentage);
 
   HWPlatform* pHW;
-
-  bool isAvail; 
 };
 
 #endif
