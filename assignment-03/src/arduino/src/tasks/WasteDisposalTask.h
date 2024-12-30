@@ -12,13 +12,14 @@ public:
   void tick();
 
 private:  
-  void setState(int state);
+  enum State{ READY, DOOR_OPENING, SPILLING, DOOR_CLOSING, WASTE_RECEIVED, FULL, SLEEPING, MAINTENANCE} state;
+
+  void setState(State state);
   long elapsedTimeInState();
   void log(const String& msg);
   
   bool checkAndSetJustEntered();
   
-  enum { READY, DOOR_OPENING, SPILLING, DOOR_CLOSING, WASTE_RECEIVED, FULL, SLEEPING, MAINTENANCE} state;
   long stateTimestamp;
   bool justEntered;
 

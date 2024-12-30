@@ -122,7 +122,7 @@ void WasteDisposalTask::tick(){
     }
 }
 
-void WasteDisposalTask::setState(int s){
+void WasteDisposalTask::setState(State s){
     state = s;
     stateTimestamp = millis();
     justEntered = true;
