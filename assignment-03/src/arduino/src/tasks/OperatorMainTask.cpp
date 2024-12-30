@@ -19,6 +19,7 @@ void OperatorMainTask::tick(){
         case AUTOMATIC: {
             if (this->checkAndSetJustEntered()){
                 Logger.log(F("[OM] automatic"));
+                
             }
             
             break;
@@ -27,7 +28,7 @@ void OperatorMainTask::tick(){
             if (this->checkAndSetJustEntered()){
                 Logger.log(F("[OM] manual"));
             }
-            
+            pController->adjustWindowBasedOnPotentiometer();
             break;
         }
     }

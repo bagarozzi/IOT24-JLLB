@@ -23,6 +23,7 @@ public:
   WindowController* pController;
   bool dischargeCmdRequested;
   bool maintenanceDoneNotified;
+  float currentTemp;
 };
 
 #endif

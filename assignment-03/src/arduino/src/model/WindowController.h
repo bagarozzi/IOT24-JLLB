@@ -10,17 +10,25 @@ public:
   WindowController(HWPlatform* hw);
   void init();
 
-  void adjustWindowToPercentage(int percentage);
+  bool isInManualMode();
+  bool isInAutomaticMode();
+  void setManualMode();
+  void setAutomaticMode();
+
+  void adjustWindowToPercentage(float openingPercentage);
   void adjustWindowBasedOnPotentiometer();
   void stopAdjustingWindow();
+  float getCurrentOpeningLevel();
 
   void sync();
 
 private:
   long readPotentiometer();
-  int percentageToAngle(int percentage);
+  int percentageToAngle(float percentage);
 
   HWPlatform* pHW;
+  float currentOpeningLevel;
+  bool manualMode;
 };
 
 #endif

@@ -16,6 +16,8 @@
  * @param pHW the hardware platform
  */
 WindowController::WindowController(HWPlatform* pHW):pHW(pHW){
+  this->currentOpeningLevel = 0;
+  this->manualMode = false;
 }
 
 /**
@@ -23,6 +25,42 @@ WindowController::WindowController(HWPlatform* pHW):pHW(pHW){
  */
 void WindowController::init(){
   pHW->getWindowMotor()->off();
+}
+
+/**
+ * Checks if the window is in manual mode
+ * 
+ * @return true if the window is in manual mode, false otherwise
+ */
+bool WindowController::isInManualMode(){
+  return this->manualMode;
+}
+
+/**
+ * Checks if the window is in automatic mode
+ * 
+ * @return true if the window is in automatic mode, false otherwise
+ */
+bool WindowController::isInAutomaticMode(){
+  return !this->manualMode;
+}
+
+/**
+ * Sets the window to manual mode
+ * 
+ * @return true if the window is in manual mode, false otherwise
+ */
+void WindowController::setManualMode(){
+  this->manualMode = true;
+}
+
+/**
+ * Sets the window to automatic mode
+ * 
+ * @return true if the window is in automatic mode, false otherwise
+ */
+void WindowController::setAutomaticMode(){
+  this->manualMode = false;
 }
   
 /**
@@ -37,8 +75,9 @@ void WindowController::sync(){
  * 
  * @param percentage the percentage to adjust the window to
  */
-void WindowController::adjustWindowToPercentage(int percentage) {
-  int angle = percentageToAngle(percentage);
+void WindowController::adjustWindowToPercentage(float openingPercentage) {
+  this->currentOpeningLevel = openingPercentage;
+  int angle = percentageToAngle(openingPercentage);
   pHW->getWindowMotor()->on();
   pHW->getWindowMotor()->setPosition(angle);
 }
@@ -58,6 +97,15 @@ void WindowController::stopAdjustingWindow(){
 }
 
 /**
+ * Gets the current opening level
+ * 
+ * @return the current opening level
+ */
+float WindowController::getCurrentOpeningLevel(){
+  return this->currentOpeningLevel;
+}
+
+/**
  * Reads the potentiometer
  * 
  * @return the potentiometer value in percentage
@@ -72,7 +120,7 @@ long WindowController::readPotentiometer() {
  * @param percentage the percentage to convert
  * @return the angle
  */
-int percentageToAngle(int percentage) {
+int WindowController::percentageToAngle(float percentage) {
   if (percentage < 0) {
     percentage = 0;
   } else if (percentage > 100) {

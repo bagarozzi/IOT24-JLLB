@@ -14,16 +14,13 @@ void Dashboard::init(){
 
 void Dashboard::notifyNewState(){
   String st;
-  if (pController->isInMaintenance()){
-    st = "2";
-  } else if (pController->isFull()){
+  if (pController->isInManualMode()){ // manual mode
     st = "1";
-  } else {   
-    st = "0"; /* available, not full */
+  } else { // automatic mode
+    st = "0";
   }
-  int wasteLevel = pController->getWasteLevelPercentage();
-  float currentTemp = pController->getCurrentTemperature();
-  MsgService.sendMsg(String("cw:st:") + st + ":" + String(wasteLevel).substring(0,5) + ":" +  String(currentTemp).substring(0,5));  
+  float windowOpeningLevel = pController->getCurrentOpeningLevel();
+  MsgService.sendMsg(String("cw:st:") + st + ":" + String(windowOpeningLevel).substring(0,5) + ":" +  String(currentTemp).substring(0,5));  
 }
 
 void Dashboard::sync(){
