@@ -1,68 +1,77 @@
+/*
+ * ASSIGNMENT #3
+ * 
+ * Author:
+ * Bagattoni Federico
+ * Ponseggi Luca
+ * Turchi Jacopo
+ * Venturini Luca
+ * 
+ *
+*/
 #include <Arduino.h>
+#include "config.h"
+#include "kernel/Scheduler.h"
+#include "kernel/Logger.h"
+#include "kernel/MsgService.h"
+#include "model/HWPlatform.h"
+#include "model/UserPanel.h"
+#include "model/Dashboard.h"
+#include "tasks/TestHWTask.h"
+#include "tasks/WasteDisposalTask.h"
+#include "tasks/ContainerHealthCheckTask.h"
+#include "tasks/OperatorManTask.h"
 
-// put function declarations here:
-int myFunction(int, int);
+// #define __TESTING_HW__
+
+Scheduler sched;
+
+HWPlatform* pHWPlatform;
+UserPanel* pUserPanel;
+WindowController* pWasteContainer;
+Dashboard* pDashboard; 
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  MsgService.init();
+  sched.init(100);
+
+  Logger.log(":::::: Smart Waste Disposal ::::::");
+  
+  pHWPlatform = new HWPlatform();
+  pHWPlatform->init();
+
+#ifndef __TESTING_HW__
+  pUserPanel = new UserPanel(pHWPlatform);
+  pUserPanel->init();
+
+  pWasteContainer = new WindowController(pHWPlatform);
+  pWasteContainer->init();
+
+  pDashboard = new Dashboard(pWasteContainer);
+  pDashboard->init();
+
+  Task* pWasteDisposalTask = new WasteDisposalTask(pWasteContainer, pUserPanel);
+  pWasteDisposalTask->init(50);
+
+  Task* pControllerHealthCheckTask = new ContainerHealthCheckTask(pWasteContainer);
+  pControllerHealthCheckTask->init(100);
+
+  Task* pOperatorManTask = new OperatorManTask(pWasteContainer, pDashboard);
+  pOperatorManTask->init(200);
+
+  sched.addTask(pControllerHealthCheckTask);
+  sched.addTask(pWasteDisposalTask);
+  sched.addTask(pOperatorManTask);
+#endif
+
+#ifdef __TESTING_HW__
+  /* Testing */
+  Task* pTestHWTask = new TestHWTask(pHWPlatform);
+  pTestHWTask->init(1000);
+  sched.addTask(pTestHWTask);
+#endif
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+    sched.schedule();
 }
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
-
-
-/*
-  
- * ESIOT a.y. 2024/2025
- *
- * ASSIGNMENT #1 - GIVE ME THE BINARY CODE!  
- * 
- * Author: A. Ricci
- * 
- *
-#include "config.h"
-#include "game_core.h"
-#include "user_console.h" 
-#include "led_board.h"
-
-void setup() {
-  init_player_console();
-  init_led_board();
-  reset_player_input();
-  change_game_state(GAME_INTRO);
-}
-
-void loop(){ 
-  update_game_state_time(); 
-  switch (game_state) { 
-  case GAME_INTRO:
-    game_intro();
-    break;
-  case GAME_WAIT_TO_START:
-    game_wait_to_start();
-    break;
-  case GAME_INIT:
-    game_init();
-    break;
-  case GAME_LOOP_GENERATE_AND_SHOW_NUMBER:
-    game_loop_generate_and_show_sequence();
-    break;
-  case GAME_LOOP_WAITING_PLAYER_SEQUENCE:
-    game_loop_waiting_player_sequence();
-    break;
-  case GAME_OVER:
-    game_over();
-    break;
-  case GAME_SLEEP:
-    game_sleep();
-    break;
-  }
-}
-*/
