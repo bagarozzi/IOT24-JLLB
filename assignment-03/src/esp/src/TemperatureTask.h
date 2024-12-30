@@ -1,19 +1,17 @@
 #include <Task.h>
-
+#include "MQTT_Agent.h"
 class TemperatureTask : public Task
 {
 private:
-    /* data */
+    MQTT_agent agent;
+    //TempSensor sensor;
+    enum State{
+        
+            NORMAL,
+            FAST,
+            ALARM,
+        };
 public:
-
+    TemperatureTask();
+    void tick();
 };
-
-TemperatureTask::TemperatureTask(/* args */)
-{
-    
-}
-
-TemperatureTask::~TemperatureTask()
-{
-
-}
