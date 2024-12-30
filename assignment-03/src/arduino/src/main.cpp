@@ -1,14 +1,13 @@
 /*
  * ASSIGNMENT #3
- * 
+ *
  * Author:
  * Bagattoni Federico
  * Ponseggi Luca
  * Turchi Jacopo
  * Venturini Luca
- * 
  *
-*/
+ */
 #include <Arduino.h>
 #include "config.h"
 #include "kernel/Scheduler.h"
@@ -19,24 +18,23 @@
 #include "model/Dashboard.h"
 #include "tasks/TestHWTask.h"
 #include "tasks/WasteDisposalTask.h"
-#include "tasks/ContainerHealthCheckTask.h"
-#include "tasks/OperatorManTask.h"
+#include "tasks/OperatorMainTask.h"
 
 // #define __TESTING_HW__
 
 Scheduler sched;
 
-HWPlatform* pHWPlatform;
-UserPanel* pUserPanel;
-WindowController* pWasteContainer;
-Dashboard* pDashboard; 
+HWPlatform *pHWPlatform;
+UserPanel *pUserPanel;
+WindowController *pWindowController;
+Dashboard *pDashboard;
 
 void setup() {
   MsgService.init();
   sched.init(100);
 
-  Logger.log(":::::: Smart Waste Disposal ::::::");
-  
+  Logger.log(":::::: Window Controller Subsystem ::::::");
+
   pHWPlatform = new HWPlatform();
   pHWPlatform->init();
 
@@ -44,34 +42,30 @@ void setup() {
   pUserPanel = new UserPanel(pHWPlatform);
   pUserPanel->init();
 
-  pWasteContainer = new WindowController(pHWPlatform);
-  pWasteContainer->init();
+  pWindowController = new WindowController(pHWPlatform);
+  pWindowController->init();
 
-  pDashboard = new Dashboard(pWasteContainer);
+  pDashboard = new Dashboard(pWindowController);
   pDashboard->init();
 
-  Task* pWasteDisposalTask = new WasteDisposalTask(pWasteContainer, pUserPanel);
+  Task *pWasteDisposalTask = new WasteDisposalTask(pWindowController, pUserPanel);
   pWasteDisposalTask->init(50);
 
-  Task* pControllerHealthCheckTask = new ContainerHealthCheckTask(pWasteContainer);
-  pControllerHealthCheckTask->init(100);
+  Task *pOperatorMainTask = new OperatorMainTask(pWindowController, pDashboard);
+  pOperatorMainTask->init(200);
 
-  Task* pOperatorManTask = new OperatorManTask(pWasteContainer, pDashboard);
-  pOperatorManTask->init(200);
-
-  sched.addTask(pControllerHealthCheckTask);
   sched.addTask(pWasteDisposalTask);
-  sched.addTask(pOperatorManTask);
+  sched.addTask(pOperatorMainTask);
 #endif
 
 #ifdef __TESTING_HW__
   /* Testing */
-  Task* pTestHWTask = new TestHWTask(pHWPlatform);
+  Task *pTestHWTask = new TestHWTask(pHWPlatform);
   pTestHWTask->init(1000);
   sched.addTask(pTestHWTask);
 #endif
 }
 
 void loop() {
-    sched.schedule();
+  sched.schedule();
 }
