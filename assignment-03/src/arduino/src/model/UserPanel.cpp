@@ -25,50 +25,22 @@ void UserPanel::turnOffDisplay(){
   pLcd->noDisplay();
 }
 
-void UserPanel::displayReadyToGetWaste(){
+void UserPanel::displayInfoManualMode(int openingLevel, float temperature){
   pLcd->clear();
   pLcd->setCursor(0, 0); 
-  pLcd->print("PRESS OPEN");
+  pLcd->print((String)"Opening Level: " + openingLevel);
   pLcd->setCursor(0,1);
-  pLcd->print("TO ENTER WASTE");
+  pLcd->print("Mode: MANUAL");
+  pLcd->setCursor(0,2);
+  pLcd->print((String)"Temperature: " + temperature);
 }
 
-void UserPanel::displayGettingWaste(){
+void UserPanel::displayInfoAutomaticMode(int openingLevel){
   pLcd->clear();
   pLcd->setCursor(0, 0); 
-  pLcd->print("PRESS CLOSE");
+  pLcd->print((String)"Opening Level: " + openingLevel);
   pLcd->setCursor(0,1);
-  pLcd->print("WHEN DONE");
-}
-
-void UserPanel::displayWasteReceived(){
-  pLcd->clear();
-  pLcd->setCursor(0, 0); 
-  pLcd->print("WASTE RECEIVED");
-}
-
-void UserPanel::displayContainerFull(){
-  pLcd->clear();
-  pLcd->setCursor(0, 0); 
-  pLcd->print("CONTAINER FULL");
-}
-
-void UserPanel::displayOpening(){
-  pLcd->clear();
-  pLcd->setCursor(0, 0); 
-  pLcd->print("OPENING...");
-}
-
-void UserPanel::displayClosing(){
-  pLcd->clear();
-  pLcd->setCursor(0, 0); 
-  pLcd->print("CLOSING...");
-}
-
-void UserPanel::displayInMaintenance(){
-  pLcd->clear();
-  pLcd->setCursor(0, 0); 
-  pLcd->print("IN MAINTENANCE");
+  pLcd->print("Mode: AUTOMATIC");
 }
 
 bool UserPanel::pressedButton(){

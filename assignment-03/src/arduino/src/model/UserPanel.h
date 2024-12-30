@@ -15,13 +15,8 @@ public:
   void turnOffDisplay();
   void turnOnDisplay();
 
-  void displayReadyToGetWaste();
-  void displayGettingWaste();
-  void displayWasteReceived();
-  void displayContainerFull();
-  void displayInMaintenance();
-  void displayOpening();
-  void displayClosing();
+  void displayInfoManualMode(int openingLevel, float temperature);
+  void displayInfoAutomaticMode(int openingLevel);
   
   bool pressedButton();
 
