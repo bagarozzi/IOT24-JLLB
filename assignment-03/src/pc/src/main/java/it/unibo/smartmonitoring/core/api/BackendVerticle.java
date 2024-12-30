@@ -82,6 +82,12 @@ public interface BackendVerticle extends Verticle {
     public boolean isState(State state);
 
     /**
+     * Returns the current state of the system.
+     * @return the current state of the system.
+     */
+    public State getState();
+
+    /**
      *  Returns the SmartThermometer instance related to this backend.
      */
     public SmartThermometer getSmartThermometer();

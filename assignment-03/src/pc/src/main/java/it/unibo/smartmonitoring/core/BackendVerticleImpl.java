@@ -153,6 +153,11 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
         return this.state == state;
     }
 
+    @Override
+    public State getState() {
+        return this.state;
+    }
+
     private void setState(final State state) {
         if(!isState(state)) {
             this.state = state;
