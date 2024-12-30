@@ -1,6 +1,7 @@
 package it.unibo.smartmonitoring.utils;
 
 import io.vertx.core.json.JsonObject;
+import it.unibo.smartmonitoring.core.api.BackendVerticle;
 import it.unibo.smartmonitoring.model.api.SmartThermometer;
 import it.unibo.smartmonitoring.model.api.SmartWindow;
 
@@ -56,15 +57,15 @@ public final class MessageParser {
      * @param window
      * @return
      */
-    public static JsonObject createHTTPUpdate(final SmartThermometer thermometer, final SmartWindow window) {
+    public static JsonObject createHTTPUpdate(final SmartThermometer thermometer, final SmartWindow window, final BackendVerticle backend) {
         final JsonObject json = new JsonObject()
             .put("temperature", thermometer.getTemperature())
             .put("minTemperature", thermometer.getMinTemperature())
             .put("maxTemperature", thermometer.getMaxTemperature())
             .put("averageTemperature", thermometer.getAverageTemperature())
-            .put("mode", "AUTOMATIC")
-            .put("windowOpening", 0)
-            .put("systemState", "NORMAL");
+            .put("mode", backend.isState(BackendVerticle.State.MANUAL) ? "manual" : "auto")
+            .put("windowOpening", window.getAngle())
+            .put("systemState", backend.getState().toString());
         return json;
     }
     

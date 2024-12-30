@@ -27,7 +27,7 @@ public class SmartDashboardImpl extends AbstractVerticle implements SmartDashboa
             JsonObject body = (JsonObject) message.body();
             switch (MessageParser.getHTTPMessageType(body)) {
                 case UPDATE:
-                    message.reply(MessageParser.createHTTPUpdate(null, null));
+                    message.reply(MessageParser.createHTTPUpdate(backend.getSmartThermometer(), backend.getSmartWindow(), backend));
                     break;
                 case RESET_ALARM:
                     backend.resetAlarm();
