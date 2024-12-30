@@ -20,7 +20,7 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
     public SmartThermometerImpl(final BackendVerticle backendVerticle) {
         this.backend = backendVerticle;
         temperatureLogs = new ArrayDeque<>();  
-        temperatureLogs.add(28.0f);
+        //temperatureLogs.add(25.0f);
     }
 
     @Override
