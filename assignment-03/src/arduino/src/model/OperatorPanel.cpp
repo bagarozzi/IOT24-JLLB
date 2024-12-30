@@ -1,31 +1,31 @@
-#include "UserPanel.h"
+#include "OperatorPanel.h"
 #include <Arduino.h>
 #include "config.h"
 #include "kernel/Logger.h"
 #include "model/HWPlatform.h"
 
-UserPanel::UserPanel(HWPlatform* pHW) {
+OperatorPanel::OperatorPanel(HWPlatform* pHW) {
     pLcd = pHW->getOperatorPanelLcd();
     pButton = pHW->getButton();
 }
 
-void UserPanel::init(){
+void OperatorPanel::init(){
   pLcd->init();
   pLcd->backlight();
   pLcd->noDisplay();
   turnOnDisplay();
 }
 
-void UserPanel::turnOnDisplay(){
+void OperatorPanel::turnOnDisplay(){
   pLcd->display();
   pLcd->clear();
 }
 
-void UserPanel::turnOffDisplay(){
+void OperatorPanel::turnOffDisplay(){
   pLcd->noDisplay();
 }
 
-void UserPanel::displayInfoManualMode(int openingLevel, float temperature){
+void OperatorPanel::displayInfoManualMode(int openingLevel, float temperature){
   pLcd->clear();
   pLcd->setCursor(0, 0); 
   pLcd->print((String)"Opening Level: " + openingLevel);
@@ -35,7 +35,7 @@ void UserPanel::displayInfoManualMode(int openingLevel, float temperature){
   pLcd->print((String)"Temperature: " + temperature);
 }
 
-void UserPanel::displayInfoAutomaticMode(int openingLevel){
+void OperatorPanel::displayInfoAutomaticMode(int openingLevel){
   pLcd->clear();
   pLcd->setCursor(0, 0); 
   pLcd->print((String)"Opening Level: " + openingLevel);
@@ -43,11 +43,11 @@ void UserPanel::displayInfoAutomaticMode(int openingLevel){
   pLcd->print("Mode: AUTOMATIC");
 }
 
-bool UserPanel::pressedButton(){
+bool OperatorPanel::pressedButton(){
   return buttonPressed;
 }
 
-void UserPanel::sync(){
+void OperatorPanel::sync(){
   pButton->sync();
   buttonPressed = pButton->isPressed();
 }

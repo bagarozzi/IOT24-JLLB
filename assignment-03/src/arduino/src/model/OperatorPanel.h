@@ -1,14 +1,14 @@
-#ifndef __USER_PANEL__
-#define __USER_PANEL__
+#ifndef __OPERATOR_PANEL__
+#define __OPERATOR_PANEL__
 
 #include "config.h"
 #include "HWPlatform.h"
 #include <LiquidCrystal_I2C.h>
 
-class UserPanel {
+class OperatorPanel {
 
 public:
-  UserPanel(HWPlatform* pHW);
+  OperatorPanel(HWPlatform* pHW);
 
   void init();
 
