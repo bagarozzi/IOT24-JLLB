@@ -11,6 +11,8 @@ public class SerialVerticle extends AbstractVerticle {
             System.out.println("Received data: " + data);
         });
     }
-
+    /*
+     * Inviare dati a arduino: codice(Automatico o manuale):livelloFinestra(%):temperatura
+     */
     
 }
