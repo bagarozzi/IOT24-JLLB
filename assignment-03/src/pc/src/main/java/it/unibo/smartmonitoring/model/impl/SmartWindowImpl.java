@@ -26,13 +26,15 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
 
     @Override
     public void setAngle(final int angle) {
-        this.angle = angle;
-        vertx.eventBus().send(
-            Configuration.ARUDINO_EB_ADDR,
-            new JsonObject()
-                .put("type", "set-angle")
-                .put("angle", angle)
-        );
+        if(this.angle != angle) {
+            this.angle = angle;
+            vertx.eventBus().send(
+                Configuration.ARUDINO_EB_ADDR,
+                new JsonObject()
+                    .put("type", "set-angle")
+                    .put("angle", angle)
+            );
+        }
     }
 
     @Override
