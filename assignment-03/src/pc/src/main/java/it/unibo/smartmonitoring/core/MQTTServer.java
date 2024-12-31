@@ -1,12 +1,13 @@
 package it.unibo.smartmonitoring.core;
 
+import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.mqtt.MqttServer;
 
-public class MQTTServer {
+public class MQTTServer extends AbstractVerticle {
 
-	public static void main(String[] args) {
-
+	@Override
+	public void start() {
 		Vertx vertx = Vertx.vertx();
 		MqttServer mqttServer = MqttServer.create(vertx);
 		mqttServer.endpointHandler(endpoint -> {
