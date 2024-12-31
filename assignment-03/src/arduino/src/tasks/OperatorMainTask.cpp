@@ -19,16 +19,19 @@ void OperatorMainTask::tick(){
         case AUTOMATIC: {
             if (this->checkAndSetJustEntered()){
                 Logger.log(F("[OM] automatic"));
-                
             }
-            
+            if (pDashboard->checkAndResetManualRequest()){
+                setState(MANUAL);
+            }
             break;
         }
         case MANUAL: {
             if (this->checkAndSetJustEntered()){
                 Logger.log(F("[OM] manual"));
             }
-            pController->adjustWindowBasedOnPotentiometer();
+            if (pDashboard->checkAndResetAutomaticRequest()){
+                setState(AUTOMATIC);
+            }
             break;
         }
     }
