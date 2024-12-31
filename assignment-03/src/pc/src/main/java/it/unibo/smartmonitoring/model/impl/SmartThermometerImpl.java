@@ -20,7 +20,7 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
     public SmartThermometerImpl(final BackendVerticle backendVerticle) {
         this.backend = backendVerticle;
         temperatureLogs = new ArrayDeque<>();  
-        //temperatureLogs.add(25.0f);
+        temperatureLogs.add(0.0f);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
 
     private void setEventBusConsumer() {
         vertx.eventBus().consumer(Configuration.BACKEND_MQTT_EB_ADDR, message -> {
-            System.out.println("[BACKEND]: Received message from MQTT verticle");
+            System.out.println("[BACKEND]: Received message from MQTT verticle temp " + (JsonObject)message.body()); 
             setTemperature(MessageParser.parseMQTTMessage((JsonObject)message.body()));
         });
     }
