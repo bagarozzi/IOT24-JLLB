@@ -5,9 +5,120 @@ import io.vertx.core.json.JsonObject;
 import it.unibo.smartmonitoring.Configuration;
 
 public final class TestVerticle extends AbstractVerticle {
+
+    private final int testChioce = 1;
     
     public void start() {
-        System.out.println("Test started");
+        switch (testChioce) {
+            case 0:
+                testNormal();
+                break;
+            case 1:
+                testManual();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void testManual() {
+        vertx.setTimer(4000, id -> {
+            vertx.eventBus().send(
+            Configuration.BACKEND_MQTT_EB_ADDR, 
+            new JsonObject()
+                .put("temperature", 20)
+            );
+        });
+        vertx.setTimer(5000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR, 
+                new JsonObject()
+                    .put("type", "set-mode")
+                    .put("mode", "manual")
+            );
+        });
+        vertx.setTimer(7000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR, 
+                new JsonObject()
+                    .put("type", "set-aperture")
+                    .put("aperture", 50)
+            );
+        });
+        vertx.setTimer(9000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR, 
+                new JsonObject()
+                    .put("type", "set-mode")
+                    .put("mode","auto")
+            );
+        });
+        vertx.setTimer(10000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_MQTT_EB_ADDR, 
+                new JsonObject()
+                    .put("temperature", 28)
+            );
+        });
+        vertx.setTimer(12000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR, 
+                new JsonObject()
+                    .put("type", "set-mode")
+                    .put("mode","manual")
+            );
+        });
+        vertx.setTimer(14000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR, 
+                new JsonObject()
+                    .put("type", "set-aperture")
+                    .put("aperture", 60)
+            );
+        });
+        vertx.setTimer(16000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR, 
+                new JsonObject()
+                    .put("type", "set-mode")
+                    .put("mode","auto")
+            );
+        });
+        vertx.setTimer(18000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_MQTT_EB_ADDR, 
+                new JsonObject()
+                    .put("temperature", 36)
+            );
+        });
+        vertx.setTimer(20000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR, 
+                new JsonObject()
+                    .put("type", "set-mode")
+                    .put("mode","manual")
+            );
+        });
+        vertx.setTimer(22000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR, 
+                new JsonObject()
+                    .put("type", "set-aperture")
+                    .put("aperture", 60)
+            );
+        });
+        vertx.setTimer(24000, id -> {
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR, 
+                new JsonObject()
+                    .put("type", "set-mode")
+                    .put("mode","auto")
+            );
+        });
+    }
+
+    private void testNormal() {
+        System.out.println("Standard est started");
         vertx.eventBus().send(
             Configuration.BACKEND_MQTT_EB_ADDR, 
             new JsonObject()
