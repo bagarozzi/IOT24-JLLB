@@ -16,7 +16,7 @@
  * @param pHW the hardware platform
  */
 WindowController::WindowController(HWPlatform* pHW):pHW(pHW){
-  this->currentOpeningLevel = 0;
+  this->currentOpeningPercentage = 0;
   this->manualMode = false;
 }
 
@@ -76,7 +76,7 @@ void WindowController::sync(){
  * @param percentage the percentage to adjust the window to
  */
 void WindowController::adjustWindowToPercentage(float openingPercentage) {
-  this->currentOpeningLevel = openingPercentage;
+  this->currentOpeningPercentage = openingPercentage;
   int angle = percentageToAngle(openingPercentage);
   pHW->getWindowMotor()->on();
   pHW->getWindowMotor()->setPosition(angle);
@@ -102,7 +102,28 @@ void WindowController::stopAdjustingWindow(){
  * @return the current opening level
  */
 float WindowController::getCurrentOpeningLevel(){
-  return this->currentOpeningLevel;
+  return this->currentOpeningPercentage;
+}
+
+/**
+ * Sets the current opening level
+ */
+void WindowController::setCurrentOpeningLevel(float openingPercentage){
+  this->currentOpeningPercentage = openingPercentage;
+}
+
+/**
+ * Sets the current temperature
+ */
+void WindowController::setCurrentTemperature(float temperature){
+  this->currentTemperature = temperature;
+}
+
+/**
+ * Gets the current temperature
+ */
+float WindowController::getCurrentTemperature(){
+  return this->currentTemperature;
 }
 
 /**

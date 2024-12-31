@@ -18,7 +18,11 @@ public:
   void adjustWindowToPercentage(float openingPercentage);
   void adjustWindowBasedOnPotentiometer();
   void stopAdjustingWindow();
+
+  void setCurrentOpeningLevel(float openingPercentage);
   float getCurrentOpeningLevel();
+  void setCurrentTemperature(float temperature);
+  float getCurrentTemperature();
 
   void sync();
 
@@ -27,7 +31,8 @@ private:
   int percentageToAngle(float percentage);
 
   HWPlatform* pHW;
-  float currentOpeningLevel;
+  float currentOpeningPercentage;
+  float currentTemperature;
   bool manualMode;
 };
 
