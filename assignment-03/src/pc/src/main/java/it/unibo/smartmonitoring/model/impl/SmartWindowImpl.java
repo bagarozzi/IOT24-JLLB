@@ -27,6 +27,7 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
     @Override
     public void setAngle(final int angle) {
         if(this.angle != angle) {
+            log("Setting angle to " + angle);
             this.angle = angle;
             vertx.eventBus().send(
                 Configuration.ARUDINO_EB_ADDR,
@@ -78,6 +79,10 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
                     break;
             }
         });
+    }
+
+    private void log(final String message) {
+        System.out.println("[BACKEND]: " + message);
     }
 
 }
