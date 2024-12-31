@@ -95,6 +95,9 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                 break;
             case ALARM:
                 logOnce("state ALARM");
+                /* 
+                 * Wait for the user to reset the alarm.
+                 */
                 break;
             case IDLE:
                 window.setAngle(0);
