@@ -14,16 +14,15 @@ public:
   
   void notifyNewState();
   
-  bool checkAndResetDischargeRequest();
-  bool checkAndResetMaintenanceDone();
+  bool checkAndResetManualRequest();
+  bool checkAndResetAutomaticRequest();
 
   void sync();
 
  private:
   WindowController* pController;
-  bool dischargeCmdRequested;
-  bool maintenanceDoneNotified;
-  float currentTemp;
+  bool manualCmdRequested;
+  bool automaticCmdRequested;
 };
 
 #endif
