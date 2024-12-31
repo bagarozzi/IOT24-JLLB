@@ -12,7 +12,9 @@ public class MainVerticle extends AbstractVerticle {
 	public void start(Promise<Void> startPromise) throws Exception {
 		BackendVerticle backendVerticle = new BackendVerticleImpl();
 		MQTTClientVerticle mqttClientVerticle = new MQTTClientVerticle();
-		vertx.deployVerticle(backendVerticle);
 		vertx.deployVerticle(mqttClientVerticle);
+		vertx.deployVerticle(backendVerticle);
+		//TestVerticle testVerticle = new TestVerticle();
+		//vertx.deployVerticle(backendVerticle, ar -> vertx.deployVerticle(testVerticle));
 	}
 }
