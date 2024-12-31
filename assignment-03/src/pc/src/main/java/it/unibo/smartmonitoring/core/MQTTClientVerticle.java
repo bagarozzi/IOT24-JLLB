@@ -23,7 +23,7 @@ public class MQTTClientVerticle extends AbstractVerticle {
 		MqttClient client = MqttClient.create(vertx);
         EventBus eb = vertx.eventBus();
 		
-		client.connect(1883, Configuration.MQTT_BROKER_ADDRESS, c -> {
+		client.connect(Configuration.MQTT_BROKER_PORT, Configuration.MQTT_BROKER_ADDRESS, c -> {
 
 			log("Connected to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
 			log("Subscribing to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
