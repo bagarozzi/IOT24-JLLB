@@ -73,7 +73,7 @@ public class SerialVerticle extends AbstractVerticle {
                         vertx.eventBus().send(Configuration.BACKEND_ARDUINO_EB_ADDR, json);
                     } else if (type == "angle") {
                         JsonObject json = new JsonObject()
-                            .put("type", "set-angle")
+                            .put("type", "update-angle")
                             .put("angle", value);
                         vertx.eventBus().send(Configuration.BACKEND_ARDUINO_EB_ADDR, json);
                     }
