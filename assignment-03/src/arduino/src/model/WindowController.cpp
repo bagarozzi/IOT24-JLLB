@@ -83,10 +83,32 @@ void WindowController::adjustWindowToPercentage(float openingPercentage) {
 }
 
 /**
- * Adjusts the window based on the potentiometer
+ * Adjusts the window based on the potentiometer if necessary
+ * 
+ * @return true if the window was adjusted, false otherwise
  */
-void WindowController::adjustWindowBasedOnPotentiometer() {
-  adjustWindowToPercentage(readPotentiometer());
+bool WindowController::adjustWindowBasedOnPotentiometer() {
+  bool adjusted = false;
+  float potentiometerValue = readPotentiometer();
+  adjusted = getCurrentOpeningLevel() != potentiometerValue;
+  if (adjusted) {
+    adjustWindowToPercentage(potentiometerValue);
+  }
+  return adjusted;
+}
+
+/**
+ * Adjusts the window automatically based on the future opening percentage
+ * 
+ * @return true if the window was adjusted, false otherwise
+ */
+bool WindowController::adjustWindowAutomatically() {
+  bool adjusted = false;
+  adjusted = getCurrentOpeningLevel() != getFutureOpeningPercentage();
+  if (adjusted) {
+    adjustWindowToPercentage(getFutureOpeningPercentage());
+  }
+  return adjusted;
 }
 
 /**
@@ -110,6 +132,20 @@ float WindowController::getCurrentOpeningLevel(){
  */
 void WindowController::setCurrentOpeningLevel(float openingPercentage){
   this->currentOpeningPercentage = openingPercentage;
+}
+
+/**
+ * Gets the future opening percentage
+ */
+float WindowController::getFutureOpeningPercentage(){
+  return this->futureOpeningPercentage;
+}
+
+/**
+ * Sets the future opening percentage
+ */
+void WindowController::setFutureOpeningPercentage(float openingPercentage){
+  this->futureOpeningPercentage = openingPercentage;
 }
 
 /**
