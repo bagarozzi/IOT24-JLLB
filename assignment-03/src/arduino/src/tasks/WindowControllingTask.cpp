@@ -7,34 +7,30 @@
 
 #define WINDOW_TIME 200
 
-WindowControllingTask::WindowControllingTask(WindowController* pController, OperatorPanel* pPanel): 
-    pController(pController), pPanel(pPanel) {
+WindowControllingTask::WindowControllingTask(WindowController* pController, OperatorPanel* pPanel, Dashboard* pDashboard): 
+    pController(pController), pPanel(pPanel), pDashboard(pDashboard) {
         pController->setAutomaticMode();
         setState(AUTOMATIC);
     }
   
 void WindowControllingTask::tick(){    
     pPanel->sync();
-    if (pController->isInAutomaticMode() && state != AUTOMATIC){
-        setState(AUTOMATIC);
-    }
-    if (pController->isInManualMode() && state != MANUAL){
-        setState(MANUAL);
-    }
+    checkIfModeChanged();
     switch (state){
         case MANUAL: {
             if (this->checkAndSetJustEntered()){
                 Logger.log(F("[WC] manual mode"));
             }
             if (pPanel->pressedButton()) { // if the button is pressed then switch to automatic mode
-                pController->setAutomaticMode();
+                pDashboard->setAutomaticRequest();
                 setState(AUTOMATIC);
             }
             if (pController->adjustWindowBasedOnPotentiometer()) { // if the window was adjusted then display the information
-                pPanel->displayInfoManualMode(pController->getCurrentOpeningLevel(), pController->getCurrentTemperature());
                 previousState = this->state;
                 setState(WINDOW_OPENING);
             }
+            // if the temperature changes
+            pPanel->displayInfoManualMode(pController->getCurrentOpeningPercentage(), pController->getCurrentTemperature());
             break;
         }
         case AUTOMATIC: {
@@ -42,11 +38,11 @@ void WindowControllingTask::tick(){
                 Logger.log(F("[WC] automatic mode"));
             }
             if (pPanel->pressedButton()) { // if the button is pressed then switch to manual mode
-                pController->setManualMode();
+                pDashboard->setManualRequest();
                 setState(MANUAL);
             }
             if (pController->adjustWindowAutomatically()) { // if the window was adjusted then display the information
-                pPanel->displayInfoAutomaticMode(pController->getCurrentOpeningLevel());
+                pPanel->displayInfoAutomaticMode(pController->getCurrentOpeningPercentage());
                 previousState = this->state;
                 setState(WINDOW_OPENING);
             }
@@ -65,19 +61,46 @@ void WindowControllingTask::tick(){
     }
 }
 
-void WindowControllingTask::setState(State s){
+void WindowControllingTask::checkIfModeChanged() {
+    checkIfAutomaticMode();
+    checkIfManualMode();
+}
+
+void WindowControllingTask::checkIfManualMode() {
+    if (pController->isInManualMode() && state != MANUAL) {
+        if (state == WINDOW_OPENING) { // if the window is opening saves to go to manual mode after the window is opened
+            previousState = MANUAL;
+        }
+        else {
+            setState(MANUAL);
+        }
+    }
+}
+
+void WindowControllingTask::checkIfAutomaticMode() {
+    if (pController->isInAutomaticMode() && state != AUTOMATIC) {
+        if (state == WINDOW_OPENING) { // if the window is opening saves to go to automatic mode after the window is opened
+            previousState = AUTOMATIC;
+        }
+        else {
+            setState(AUTOMATIC);
+        }
+    }
+}
+
+void WindowControllingTask::setState(State s) {
     state = s;
     stateTimestamp = millis();
     justEntered = true;
 }
 
-long WindowControllingTask::elapsedTimeInState(){
+long WindowControllingTask::elapsedTimeInState() {
     return millis() - stateTimestamp;
 }
 
-bool WindowControllingTask::checkAndSetJustEntered(){
+bool WindowControllingTask::checkAndSetJustEntered() {
     bool bak = justEntered;
-    if (justEntered){
+    if (justEntered) {
       justEntered = false;
     }
     return bak;

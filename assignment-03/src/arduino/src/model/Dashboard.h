@@ -16,13 +16,17 @@ public:
   
   bool checkAndResetManualRequest();
   bool checkAndResetAutomaticRequest();
+  void setManualRequest();
+  void setAutomaticRequest();
 
   void sync();
 
- private:
+  private:
   WindowController* pController;
   bool manualCmdRequested;
   bool automaticCmdRequested;
+
+   void processMsg();
 };
 
 #endif

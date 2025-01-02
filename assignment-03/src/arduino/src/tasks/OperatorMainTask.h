@@ -16,7 +16,6 @@ private:
 
   void setState(State state);
   long elapsedTimeInState();
-  
   bool checkAndSetJustEntered();
   
   long stateTimestamp;
