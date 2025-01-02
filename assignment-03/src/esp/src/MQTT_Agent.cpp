@@ -5,6 +5,8 @@
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+
+
 void MQTT_agent::setUpWiFi(){
     Serial.println(String("tring to connect to: ") + ssid);
     WiFi.mode(WIFI_STA);
@@ -41,10 +43,20 @@ void MQTT_agent::reconect(){
 }
 
 String MQTT_agent::reciveMessage() {
-
+    String app = this->buffer.front();
+    buffer.pop_front();
+    return app;
 }
 
 void MQTT_agent::sendMessage(String message){
-
+    client.publish("temperature", message.c_str());
 }
 
+bool MQTT_agent::isMessageArrived()
+{
+    return !buffer.empty();
+}
+
+void MQTT_agent::addMessage(String message){
+    this->buffer.push_back(message);
+}
