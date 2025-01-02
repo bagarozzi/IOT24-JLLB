@@ -11,9 +11,9 @@ public class MainVerticle extends AbstractVerticle {
 		BackendVerticle backendVerticle = new BackendVerticleImpl();
 		//MQTTClientVerticle mqttClientVerticle = new MQTTClientVerticle();
 		//vertx.deployVerticle(mqttClientVerticle);
-		vertx.deployVerticle(backendVerticle);
-		//TestVerticle testVerticle = new TestVerticle();
-		//vertx.deployVerticle(backendVerticle, ar -> vertx.deployVerticle(testVerticle));
+		//vertx.deployVerticle(backendVerticle);
+		TestVerticle testVerticle = new TestVerticle();
+		vertx.deployVerticle(backendVerticle, ar -> vertx.deployVerticle(testVerticle));
     vertx.deployVerticle(new HTTPVerticle());
 	}
 }

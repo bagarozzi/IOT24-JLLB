@@ -1,11 +1,11 @@
 package it.unibo.smartmonitoring;
 
 public final class Configuration {
-    
+
     /* MQTT Broker and client setup */
     public static final String MQTT_BROKER_ADDRESS = "broker.mqtt-dashboard.com";
     public static final int MQTT_BROKER_PORT = 8883;
-	public static final String ESP_TOPIC_NAME = "temperature/smartwindow";
+    public static final String ESP_TOPIC_NAME = "temperature/smartwindow";
 
     /* Event bus addresses: */
     public static final String BACKEND_MQTT_EB_ADDR = "mqtt.backend.com";
@@ -13,6 +13,8 @@ public final class Configuration {
     public static final String BACKEND_ARDUINO_EB_ADDR = "arduino.backend.com";
 
     public static final String ARUDINO_EB_ADDR = "window.arduino.com";
+
+    public static final String HTTP_EB_ADDR = "dashboard.http.com";
 
     public static final String MQTT_EB_ADDR = "mqtt.thermometer.com";
 
