@@ -16,11 +16,14 @@ public:
   void setAutomaticMode();
 
   void adjustWindowToPercentage(float openingPercentage);
-  void adjustWindowBasedOnPotentiometer();
+  bool adjustWindowBasedOnPotentiometer();
+  bool adjustWindowAutomatically();
   void stopAdjustingWindow();
 
   void setCurrentOpeningLevel(float openingPercentage);
   float getCurrentOpeningLevel();
+  void setFutureOpeningPercentage(float openingPercentage);
+  float getFutureOpeningPercentage();
   void setCurrentTemperature(float temperature);
   float getCurrentTemperature();
 
@@ -32,6 +35,7 @@ private:
 
   HWPlatform* pHW;
   float currentOpeningPercentage;
+  float futureOpeningPercentage;
   float currentTemperature;
   bool manualMode;
 };
