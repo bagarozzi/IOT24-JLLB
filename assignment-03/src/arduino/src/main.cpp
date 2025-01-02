@@ -14,10 +14,10 @@
 #include "kernel/Logger.h"
 #include "kernel/MsgService.h"
 #include "model/HWPlatform.h"
-#include "model/UserPanel.h"
+#include "model/OperatorPanel.h"
 #include "model/Dashboard.h"
 #include "tasks/TestHWTask.h"
-#include "tasks/WasteDisposalTask.h"
+#include "tasks/WindowControllingTask.h"
 #include "tasks/OperatorMainTask.h"
 
 // #define __TESTING_HW__
@@ -25,7 +25,7 @@
 Scheduler sched;
 
 HWPlatform *pHWPlatform;
-UserPanel *pUserPanel;
+OperatorPanel *pOperatorPanel;
 WindowController *pWindowController;
 Dashboard *pDashboard;
 
@@ -39,8 +39,8 @@ void setup() {
   pHWPlatform->init();
 
 #ifndef __TESTING_HW__
-  pUserPanel = new UserPanel(pHWPlatform);
-  pUserPanel->init();
+  pOperatorPanel = new OperatorPanel(pHWPlatform);
+  pOperatorPanel->init();
 
   pWindowController = new WindowController(pHWPlatform);
   pWindowController->init();
@@ -48,14 +48,14 @@ void setup() {
   pDashboard = new Dashboard(pWindowController);
   pDashboard->init();
 
-  Task *pWasteDisposalTask = new WasteDisposalTask(pWindowController, pUserPanel);
-  pWasteDisposalTask->init(50);
-
   Task *pOperatorMainTask = new OperatorMainTask(pWindowController, pDashboard);
-  pOperatorMainTask->init(200);
+  pOperatorMainTask->init(100);
 
-  sched.addTask(pWasteDisposalTask);
+  Task *pWindowControllingTask = new WindowControllingTask(pWindowController, pOperatorPanel, pDashboard);
+  pWindowControllingTask->init(100);
+
   sched.addTask(pOperatorMainTask);
+  sched.addTask(pWindowControllingTask);
 #endif
 
 #ifdef __TESTING_HW__
