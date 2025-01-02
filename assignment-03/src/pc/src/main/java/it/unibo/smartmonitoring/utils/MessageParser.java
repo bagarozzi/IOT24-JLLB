@@ -23,13 +23,13 @@ public final class MessageParser {
         final String type = message.getString("type");
         switch (type) {
             case "update":
-                return HTTPMessageType.UPDATE;
+                return HTTPMessageType.UPDATE; // type: update
             case "set-aperture":
-                return HTTPMessageType.SET_WINDOW_APERTURE;
+                return HTTPMessageType.SET_WINDOW_APERTURE; // type: set-aperture + aperture: 0-100
             case "set-mode":
-                return HTTPMessageType.SET_MODE;
+                return HTTPMessageType.SET_MODE; // type: set-mode + mode: manual/auto
             case "reset-alarm":
-                return HTTPMessageType.RESET_ALARM;
+                return HTTPMessageType.RESET_ALARM; // type: reset-alarm
             default:
                 throw new IllegalArgumentException("Invalid message type: " + type);
         }
@@ -68,5 +68,5 @@ public final class MessageParser {
             .put("systemState", backend.getState().toString());
         return json;
     }
-    
+
 }
