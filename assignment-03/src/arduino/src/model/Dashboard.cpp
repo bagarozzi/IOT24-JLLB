@@ -41,7 +41,7 @@ void Dashboard::sync(){
         int windowLevel = content.substring(firstColon + 1, secondColon).toFloat();
         float temp = content.substring(secondColon + 1, thirdColon).toFloat();
 
-        pController->setCurrentOpeningLevel(windowLevel);
+        pController->setFutureOpeningPercentage(windowLevel);
         pController->setCurrentTemperature(temp);
 
         if (stateCode == AUTOMATIC && pController->isInManualMode()) { // if the state is automatic and the controller is in manual mode then switch to automatic mode
