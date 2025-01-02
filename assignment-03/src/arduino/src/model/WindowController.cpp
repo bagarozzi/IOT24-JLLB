@@ -75,7 +75,7 @@ void WindowController::sync(){
  * 
  * @param percentage the percentage to adjust the window to
  */
-void WindowController::adjustWindowToPercentage(float openingPercentage) {
+void WindowController::adjustWindowToPercentage(int openingPercentage) {
   this->currentOpeningPercentage = openingPercentage;
   int angle = percentageToAngle(openingPercentage);
   pHW->getWindowMotor()->on();
@@ -89,8 +89,8 @@ void WindowController::adjustWindowToPercentage(float openingPercentage) {
  */
 bool WindowController::adjustWindowBasedOnPotentiometer() {
   bool adjusted = false;
-  float potentiometerValue = readPotentiometer();
-  adjusted = getCurrentOpeningLevel() != potentiometerValue;
+  int potentiometerValue = readPotentiometer();
+  adjusted = getCurrentOpeningPercentage() != potentiometerValue;
   if (adjusted) {
     adjustWindowToPercentage(potentiometerValue);
   }
@@ -104,7 +104,7 @@ bool WindowController::adjustWindowBasedOnPotentiometer() {
  */
 bool WindowController::adjustWindowAutomatically() {
   bool adjusted = false;
-  adjusted = getCurrentOpeningLevel() != getFutureOpeningPercentage();
+  adjusted = getCurrentOpeningPercentage() != getFutureOpeningPercentage();
   if (adjusted) {
     adjustWindowToPercentage(getFutureOpeningPercentage());
   }
@@ -119,32 +119,32 @@ void WindowController::stopAdjustingWindow(){
 }
 
 /**
- * Gets the current opening level
+ * Gets the current opening Percentage
  * 
- * @return the current opening level
+ * @return the current opening Percentage
  */
-float WindowController::getCurrentOpeningLevel(){
+int WindowController::getCurrentOpeningPercentage(){
   return this->currentOpeningPercentage;
 }
 
 /**
- * Sets the current opening level
+ * Sets the current opening Percentage
  */
-void WindowController::setCurrentOpeningLevel(float openingPercentage){
+void WindowController::setCurrentOpeningPercentage(int openingPercentage){
   this->currentOpeningPercentage = openingPercentage;
 }
 
 /**
  * Gets the future opening percentage
  */
-float WindowController::getFutureOpeningPercentage(){
+int WindowController::getFutureOpeningPercentage(){
   return this->futureOpeningPercentage;
 }
 
 /**
  * Sets the future opening percentage
  */
-void WindowController::setFutureOpeningPercentage(float openingPercentage){
+void WindowController::setFutureOpeningPercentage(int openingPercentage){
   this->futureOpeningPercentage = openingPercentage;
 }
 
@@ -177,7 +177,7 @@ long WindowController::readPotentiometer() {
  * @param percentage the percentage to convert
  * @return the angle
  */
-int WindowController::percentageToAngle(float percentage) {
+int WindowController::percentageToAngle(int percentage) {
   if (percentage < 0) {
     percentage = 0;
   } else if (percentage > 100) {

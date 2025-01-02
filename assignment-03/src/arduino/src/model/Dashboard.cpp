@@ -6,6 +6,8 @@
 
 #define AUTOMATIC 0
 #define MANUAL 1
+#define NO_REQUEST -1
+const String CONTAINER_PREFIX = "cw:";
 
 Dashboard::Dashboard(WindowController* pController): pController(pController){
 }
@@ -16,44 +18,57 @@ void Dashboard::init(){
 }
 
 void Dashboard::notifyNewState(){
-  String st;
-  if (pController->isInManualMode()){ // manual mode
-    st = "1";
-  } else { // automatic mode
-    st = "0";
+  int st = NO_REQUEST;
+  if (pController->isInManualMode() && checkAndResetAutomaticRequest()){ // manual mode
+    pController->setAutomaticMode();
+    st = AUTOMATIC;
+  } else if (pController->isInAutomaticMode() && checkAndResetManualRequest()) { // automatic mode
+    pController->setManualMode();
+    st = MANUAL;
   }
-  float windowOpeningLevel = pController->getCurrentOpeningLevel();
-  float currentTemperature = pController->getCurrentTemperature();
-  MsgService.sendMsg(String("cw:st:") + st + ":" + String(windowOpeningLevel).substring(0,5) + ":" +  String(currentTemperature).substring(0,5));  
+  if (st != NO_REQUEST) { // if the state has changed then send the message
+    MsgService.sendMsg(String("cw:st:") + "mode" + ":" + String(st));
+  }
+  if (pController->isInManualMode()) { // if the controller is in manual mode then send the current angle of the window
+    int windowOpeningPercentage = pController->getCurrentOpeningPercentage();
+    MsgService.sendMsg(String("cw:st:") + "angle" + ":" + String(windowOpeningPercentage).substring(0,5));
+  }
 }
 
 void Dashboard::sync(){
-  if (MsgService.isMsgAvailable()){
-    Msg* msg = MsgService.receiveMsg();
-    if (msg != NULL){
-      String content = msg->getContent();
+  while (MsgService.isMsgAvailable()){
+    processMsg();
+  }
+}
+
+void Dashboard::processMsg() {
+  Msg *msg = MsgService.receiveMsg();
+  if (msg != NULL) {
+    String content = msg->getContent();
+    if (content.startsWith(CONTAINER_PREFIX)) {
+      String args = content.substring(CONTAINER_PREFIX.length());
       int firstColon = content.indexOf(':');
-      int secondColon = content.indexOf(':', firstColon + 1);
-      int thirdColon = content.indexOf(':', secondColon + 1);
-
-      if (firstColon != -1 && secondColon != -1 && thirdColon != -1) {
-        int stateCode = content.substring(0, firstColon).toInt();
-        int windowLevel = content.substring(firstColon + 1, secondColon).toFloat();
-        float temp = content.substring(secondColon + 1, thirdColon).toFloat();
-
-        pController->setFutureOpeningPercentage(windowLevel);
-        pController->setCurrentTemperature(temp);
-
-        if (stateCode == AUTOMATIC && pController->isInManualMode()) { // if the state is automatic and the controller is in manual mode then switch to automatic mode
-          pController->setAutomaticMode();
-          automaticCmdRequested = true;
-        } else if (stateCode == MANUAL && pController->isInAutomaticMode()) { // if the state is manual and the controller is in automatic mode then switch to manual mode
-          pController->setManualMode();
-          manualCmdRequested = true;
+      if (firstColon != -1) {
+        String type = args.substring(0, firstColon);
+        String value = args.substring(firstColon + 1);
+        if (type == "mode") {
+          int stateCode = value.toInt();
+          if (stateCode == AUTOMATIC && pController->isInManualMode()) { // if the state is automatic and the controller is in manual mode then switch to automatic mode
+            pController->setAutomaticMode();
+          }
+          else if (stateCode == MANUAL && pController->isInAutomaticMode()) { // if the state is manual and the controller is in automatic mode then switch to manual mode
+            pController->setManualMode();
+          }
+        }
+        else if (type == "angle") {
+          pController->setFutureOpeningPercentage(value.toInt());
+        }
+        else if (type == "temperature") {
+          pController->setCurrentTemperature(value.toFloat());
         }
       }
-      delete msg;
     }
+    delete msg;
   }
 }
 
@@ -67,4 +82,12 @@ bool Dashboard::checkAndResetAutomaticRequest(){
   bool com = this->automaticCmdRequested;
   automaticCmdRequested = false;
   return com;
+}
+
+void Dashboard::setManualRequest(){
+  this->manualCmdRequested = true;
+}
+
+void Dashboard::setAutomaticRequest(){
+  this->automaticCmdRequested = true;
 }

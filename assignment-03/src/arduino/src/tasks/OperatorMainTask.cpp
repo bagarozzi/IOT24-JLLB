@@ -11,12 +11,12 @@ OperatorMainTask::OperatorMainTask(WindowController* pController, Dashboard* pDa
 void OperatorMainTask::tick(){
     pDashboard->sync();
     pDashboard->notifyNewState();
-    switch (state){    
+    switch (state){
         case AUTOMATIC: {
             if (this->checkAndSetJustEntered()){
                 Logger.log(F("[OM] automatic"));
             }
-            if (pDashboard->checkAndResetManualRequest()){
+            if (pController->isInManualMode()){
                 setState(MANUAL);
             }
             break;
@@ -25,14 +25,13 @@ void OperatorMainTask::tick(){
             if (this->checkAndSetJustEntered()){
                 Logger.log(F("[OM] manual"));
             }
-            if (pDashboard->checkAndResetAutomaticRequest()){
+            if (pController->isInAutomaticMode()){
                 setState(AUTOMATIC);
             }
             break;
         }
     }
 }
-
 
 void OperatorMainTask::setState(State s){
     state = s;
