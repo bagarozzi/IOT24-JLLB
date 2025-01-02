@@ -5,81 +5,63 @@
 #include "model/OperatorPanel.h"
 #include <avr/sleep.h>
 
-#define DOOR_TIME  1000
-#define SPILLING_MAX_TIME 20000 
-#define WASTE_RECEIVED_TIME 2000 
-#define SLEEP_TIMEOUT 120000
+#define WINDOW_TIME 200
 
 WindowControllingTask::WindowControllingTask(WindowController* pController, OperatorPanel* pPanel): 
     pController(pController), pPanel(pPanel) {
-    setState(READY);
-}
+        pController->setAutomaticMode();
+        setState(AUTOMATIC);
+    }
   
 void WindowControllingTask::tick(){    
     pPanel->sync();
-    //if (pController->isInMaintenance() && state != MAINTENANCE){
-    //    setState(MAINTENANCE);
-    //}
-    switch (state){    
+    if (pController->isInAutomaticMode() && state != AUTOMATIC){
+        setState(AUTOMATIC);
+    }
+    if (pController->isInManualMode() && state != MANUAL){
+        setState(MANUAL);
+    }
+    switch (state){
         case MANUAL: {
             if (this->checkAndSetJustEntered()){
-                Logger.log(F("[WD] manual mode"));
+                Logger.log(F("[WC] manual mode"));
             }
-            pController->adjustWindowBasedOnPotentiometer();
-            pPanel->displayInfoManualMode(pController->getCurrentOpeningLevel(), 0);
-            if (pPanel->pressedButton()){
+            if (pPanel->pressedButton()) { // if the button is pressed then switch to automatic mode
+                pController->setAutomaticMode();
                 setState(AUTOMATIC);
+            }
+            if (pController->adjustWindowBasedOnPotentiometer()) { // if the window was adjusted then display the information
+                pPanel->displayInfoManualMode(pController->getCurrentOpeningLevel(), pController->getCurrentTemperature());
+                previousState = this->state;
+                setState(WINDOW_OPENING);
             }
             break;
         }
         case AUTOMATIC: {
             if (this->checkAndSetJustEntered()){
-                Logger.log(F("[WD] automatic mode"));
-                pPanel->displayInfoAutomaticMode();
+                Logger.log(F("[WC] automatic mode"));
             }
-            int openLevel = pPanel->getDesiredOpenLevel(); // Get the desired open level from the panel
-            pController->setOpenLevel(openLevel); // Set the window opening level
-            if (pPanel->pressedManual()){
+            if (pPanel->pressedButton()) { // if the button is pressed then switch to manual mode
+                pController->setManualMode();
                 setState(MANUAL);
+            }
+            if (pController->adjustWindowAutomatically()) { // if the window was adjusted then display the information
+                pPanel->displayInfoAutomaticMode(pController->getCurrentOpeningLevel());
+                previousState = this->state;
+                setState(WINDOW_OPENING);
             }
             break;
         }
-    case READY: {
-        if (this->checkAndSetJustEntered()){
-            Logger.log(F("[WD] ready"));
-            pPanel->displayReadyToGetWaste();
+        case WINDOW_OPENING: {        
+            if (this->checkAndSetJustEntered()){
+                Logger.log(F("[WC] opening"));
+            }
+            if (elapsedTimeInState() > WINDOW_TIME){ // waits for the window to be opened
+                pController->stopAdjustingWindow();
+                setState(previousState);
+            }
+            break;       
         }
-        if (pPanel->pressedOpen()){
-            setState(DOOR_OPENING);
-        } else if (elapsedTimeInState() > SLEEP_TIMEOUT && !pController->isFull()){
-            setState(SLEEPING);
-        }
-        break;
-    }
-    case DOOR_OPENING: {        
-        if (this->checkAndSetJustEntered()){
-            Logger.log(F("[WD] opening"));
-            pController->startOpeningDoor();
-            pPanel->displayOpening();
-        }
-        if (elapsedTimeInState() > DOOR_TIME){
-            pController->stopOpeningDoor();
-            setState(SPILLING);
-        }
-        break;       
-    }
-    case SPILLING: {
-        if (this->checkAndSetJustEntered()){
-            Logger.log(F("[WD] spilling"));
-            pPanel->displayGettingWaste();
-        }
-        if (pPanel->pressedClose() || 
-            elapsedTimeInState() > SPILLING_MAX_TIME || 
-            pController->isFull()){
-            setState(DOOR_CLOSING);            
-        } 
-        break;
-    }    
     }
 }
 
