@@ -3,10 +3,6 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
-#define DISCHARGE_TIME 5000
-#define OPENING_DISCHARGING_TIME 1000
-#define CLOSING_DISCHARGING_TIME 1000
-
 OperatorMainTask::OperatorMainTask(WindowController* pController, Dashboard* pDashboard): 
     pController(pController), pDashboard(pDashboard){
     setState(AUTOMATIC);
