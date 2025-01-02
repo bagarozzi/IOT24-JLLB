@@ -12,7 +12,7 @@ public:
   void tick();
 
 private:  
-  enum State{ READY, DOOR_OPENING, SPILLING, AUTOMATIC, MANUAL } state;
+  enum State{ AUTOMATIC, MANUAL, WINDOW_OPENING } state;
 
   void setState(State state);
   long elapsedTimeInState();
@@ -22,6 +22,7 @@ private:
   
   long stateTimestamp;
   bool justEntered;
+  State previousState;
 
   WindowController* pController;
   OperatorPanel* pPanel;
