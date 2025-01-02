@@ -32,6 +32,7 @@ dependencies {
   implementation("io.vertx:vertx-web")
   implementation("io.vertx:vertx-mqtt")
   implementation("io.github.cdimascio:dotenv-java:3.1.0")
+  implementation (files("lib/jssc-2.9.6.jar"))
   testImplementation("io.vertx:vertx-junit5")
   testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
   }
