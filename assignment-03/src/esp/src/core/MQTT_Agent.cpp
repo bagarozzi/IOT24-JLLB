@@ -1,11 +1,21 @@
 #include<WiFi.h>
 #include<PubSubClient.h>
-#include<MQTT_Agent.h>
+#include "MQTT_Agent.h"
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+void callback(char* topic, uint8_t * payload, unsigned int length) {
+    
+}
 
+MQTT_agent::MQTT_agent(const char* ssid, const char* password, const char* mqtt_server, const char* topic) :
+    ssid(ssid), password(password), mqtt_server(mqtt_server), topic(topic)
+{
+    this->setUpWiFi();
+    client.setServer(mqtt_server, 1883);
+    client.setCallback(callback);
+}
 
 void MQTT_agent::setUpWiFi(){
     Serial.println(String("tring to connect to: ") + ssid);
@@ -16,16 +26,6 @@ void MQTT_agent::setUpWiFi(){
     Serial.print(".");
     }
     Serial.println("\nconnected\n");
-}
-
-void callback(char* topic, uint8_t * payload, unsigned int length) {
-    
-}
-
-MQTT_agent::MQTT_agent(){
-    setUpWiFi();
-    client.setServer(mqtt_server, 1883);
-    client.setCallback(callback);
 }
 
 boolean MQTT_agent::isConnected(){

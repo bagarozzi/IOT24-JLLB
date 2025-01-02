@@ -1,8 +1,12 @@
-#include "Task.h"
+#ifndef __SMART_TEMPERATURE_SENSOR__
+#define __SMART_TEMPERATURE_SENSOR__
+
 #include "Led.h"
 #include "TempSensor.h"
 #include "TempSensorLM35.h"
-class SmartTemperatureSensor : public Task
+#include <Arduino.h>
+
+class SmartTemperatureSensor
 {
     private:
         enum State{
@@ -20,14 +24,16 @@ class SmartTemperatureSensor : public Task
     public:
         SmartTemperatureSensor();
 
-
+        int getState();
         void setStateAlarm();
         void setState(int state);
         void setLedsToNormal();
         void setLedsToError();
         float getTemperature();
         bool isInAlarmState();
-        bool isInHotState();
+        bool isInHotOrTooHotState();
         
 };
 
+
+#endif

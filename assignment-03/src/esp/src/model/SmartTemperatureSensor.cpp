@@ -41,7 +41,12 @@ bool SmartTemperatureSensor::isInAlarmState()
 {
     return this->getState() == ALARM;
 }
-bool SmartTemperatureSensor::isInHotState()
+bool SmartTemperatureSensor::isInHotOrTooHotState()
 {
-    return this->getState() == HOT;
+    return this->getState() == HOT || this->getState() == TOO_HOT;
+}
+
+int SmartTemperatureSensor::getState()
+{
+    return state;
 }
