@@ -32,7 +32,7 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
             vertx.eventBus().send(
                 Configuration.ARUDINO_EB_ADDR,
                 new JsonObject()
-                    .put("type", "set-angle")
+                    .put("type", "update-angle")
                     .put("angle", angle)
             );
         }
@@ -50,6 +50,16 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
             new JsonObject()
                 .put("type", "update-temperature")
                 .put("temperature", temperature)
+        );
+    }
+
+    @Override
+    public void sendModeUpdate() {
+        vertx.eventBus().send(
+            Configuration.ARUDINO_EB_ADDR,
+            new JsonObject()
+                .put("type", "update-mode")
+                .put("mode", backend.isState(State.MANUAL) ? "manual" : "auto")
         );
     }
 
