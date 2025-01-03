@@ -29,7 +29,7 @@ void Dashboard::notifyNewState(){
   if (st != NO_REQUEST) { // if the state has changed then send the message
     MsgService.sendMsg(String("cw:st:") + "mode" + ":" + String(st));
   }
-  if (pController->isInManualMode()) { // if the controller is in manual mode then send the current angle of the window
+  if (pController->isInManualMode() && pController->checkAndResetAngleCmdRequeste()) { // if the controller is in manual mode then send the current angle of the window
     int windowOpeningPercentage = pController->getCurrentOpeningPercentage();
     MsgService.sendMsg(String("cw:st:") + "angle" + ":" + String(windowOpeningPercentage).substring(0,5));
   }

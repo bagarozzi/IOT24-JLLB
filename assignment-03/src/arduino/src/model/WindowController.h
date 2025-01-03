@@ -27,17 +27,21 @@ public:
   void setCurrentTemperature(float temperature);
   float getCurrentTemperature();
 
+  bool checkAndResetAngleCmdRequeste();
+
   void sync();
 
 private:
   long readPotentiometer();
   int percentageToAngle(int percentage);
+  int checkAndFixPercentage(int percentage);
 
   HWPlatform* pHW;
-  int currentOpeningPercentage;
-  int futureOpeningPercentage;
-  float currentTemperature;
-  bool manualMode;
+  int currentOpeningPercentage = 1;
+  int futureOpeningPercentage = 0;
+  float currentTemperature = 24;
+  bool manualMode = false;
+  bool notifyAngleCmdRequested = false;
 };
 
 #endif

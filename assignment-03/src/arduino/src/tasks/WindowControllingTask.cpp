@@ -36,6 +36,7 @@ void WindowControllingTask::tick(){
         case AUTOMATIC: {
             if (this->checkAndSetJustEntered()){
                 Logger.log(F("[WC] automatic mode"));
+                pPanel->displayInfoAutomaticMode(pController->getCurrentOpeningPercentage());
             }
             if (pPanel->pressedButton()) { // if the button is pressed then switch to manual mode
                 pDashboard->setManualRequest();
