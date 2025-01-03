@@ -5,7 +5,7 @@
 #include "model/OperatorPanel.h"
 #include <avr/sleep.h>
 
-#define WINDOW_TIME 300
+#define WINDOW_TIME 200
 
 WindowControllingTask::WindowControllingTask(WindowController* pController, OperatorPanel* pPanel, Dashboard* pDashboard): 
     pController(pController), pPanel(pPanel), pDashboard(pDashboard) {

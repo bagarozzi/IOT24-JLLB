@@ -15,15 +15,14 @@
  * 
  * @param pHW the hardware platform
  */
-WindowController::WindowController(HWPlatform* pHW):pHW(pHW){
-  this->currentOpeningPercentage = 0;
-  this->manualMode = false;
-}
+WindowController::WindowController(HWPlatform* pHW):pHW(pHW){}
 
 /**
  * Initializes the window controller
  */
 void WindowController::init(){
+  this->manualMode = false;
+  this->notifyAngleCmdRequested = false;
   pHW->getWindowMotor()->off();
 }
 
@@ -93,6 +92,7 @@ bool WindowController::adjustWindowBasedOnPotentiometer() {
   adjusted = getCurrentOpeningPercentage() != potentiometerValue;
   if (adjusted) {
     adjustWindowToPercentage(potentiometerValue);
+
   }
   return adjusted;
 }
@@ -163,12 +163,23 @@ float WindowController::getCurrentTemperature(){
 }
 
 /**
+ * Checks and resets the angle command request
+ * 
+ * @return true if the angle command was requested, false otherwise
+ */
+bool WindowController::checkAndResetAngleCmdRequeste(){
+  bool com = this->notifyAngleCmdRequested;
+  notifyAngleCmdRequested = false;
+  return com;
+}
+
+/**
  * Reads the potentiometer
  * 
  * @return the potentiometer value in percentage
  */
-long WindowController::readPotentiometer() {
-  return map(analogRead(POT_PIN), 0, 982, 0, MAX_PERCENTAGE);
+long WindowController::readPotentiometer() { // 980 is the maximum value of the potentiometer
+  return map(analogRead(POT_PIN), 0, 980, 0, MAX_PERCENTAGE);
 }
 
 /**

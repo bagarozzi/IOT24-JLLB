@@ -27,6 +27,8 @@ public:
   void setCurrentTemperature(float temperature);
   float getCurrentTemperature();
 
+  bool checkAndResetAngleCmdRequeste();
+
   void sync();
 
 private:
@@ -39,6 +41,7 @@ private:
   int futureOpeningPercentage = 0;
   float currentTemperature = 24;
   bool manualMode = false;
+  bool notifyAngleCmdRequested = false;
 };
 
 #endif
