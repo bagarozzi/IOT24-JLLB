@@ -46,6 +46,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
         switch(state) {
             case MANUAL_DASHBOARD:
                 logOnce("state MANUAL_DASHBOARD");
+                window.sendModeUpdate();
                 /**
                  * Do nothing. Updating the values is handled by the HTTP verticle
                  * itself.
@@ -103,6 +104,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                  */
                 break;
             case IDLE:
+                window.sendModeUpdate();
                 window.setAngle(0);
                 thermometer.setFrequency(Configuration.NORMAL_MODE_POLLING_FREQUENCY);
                 logOnce("state IDLE");
