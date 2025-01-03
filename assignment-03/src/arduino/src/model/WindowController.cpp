@@ -92,7 +92,7 @@ bool WindowController::adjustWindowBasedOnPotentiometer() {
   adjusted = getCurrentOpeningPercentage() != potentiometerValue;
   if (adjusted) {
     adjustWindowToPercentage(potentiometerValue);
-
+    notifyAngleCmdRequested = true;
   }
   return adjusted;
 }
