@@ -34,10 +34,10 @@ private:
   int percentageToAngle(int percentage);
 
   HWPlatform* pHW;
-  int currentOpeningPercentage;
-  int futureOpeningPercentage;
-  float currentTemperature;
-  bool manualMode;
+  int currentOpeningPercentage = 0;
+  int futureOpeningPercentage = 0;
+  float currentTemperature = 24;
+  bool manualMode = false;
 };
 
 #endif
