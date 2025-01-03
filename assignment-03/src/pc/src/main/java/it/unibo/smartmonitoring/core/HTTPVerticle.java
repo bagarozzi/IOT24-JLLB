@@ -72,9 +72,9 @@ public class HTTPVerticle extends AbstractVerticle {
         // Endpoint: Cambia modalità del sistema
         router.post("/api/switch-mode").handler(ctx -> {
             JsonObject body = ctx.body().asJsonObject();
-            String newMode = body.getString("mode", "AUTOMATIC"); // Default to AUTOMATIC
+            String newMode = body.getString("mode", "auto"); // Default to AUTOMATIC
             systemState.setMode(newMode);
-            //ctx.json(new JsonObject().put("status", "success").put("newMode", newMode));
+            ctx.json(new JsonObject().put("status", "success").put("newMode", newMode));
             vertx.eventBus().send(
                 Configuration.BACKEND_HTTP_EB_ADDR,
                 new JsonObject().put("type", "set-mode").put("mode", newMode)
@@ -93,7 +93,7 @@ public class HTTPVerticle extends AbstractVerticle {
             });
     }
 
-    //CONTROLLA STA FUNZIONE: NON VA LA ROBA DENTRO IL CONSUMER
+
     private void setEventBusConsumer() {
         vertx.eventBus().consumer(Configuration.HTTP_EB_ADDR, message -> {
             JsonObject body = (JsonObject) message.body();
