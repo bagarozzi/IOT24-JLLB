@@ -1,8 +1,11 @@
 package it.unibo.smartmonitoring.core;
 
+import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
 import io.vertx.mqtt.MqttClient;
 
 import it.unibo.smartmonitoring.Configuration;
@@ -29,15 +32,23 @@ public class MQTTClientVerticle extends AbstractVerticle {
 			log("Subscribing to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
 			client.publishHandler(message -> {
                 System.out.println("[MQTT-AGENT]: Received message from ESP32");
-                //eb.publish(Configuration.MQTT_CLIENT_EB_ADDR, Buffer.buffer(message.payload().getBytes()));
+                eb.publish(Configuration.MQTT_CLIENT_EB_ADDR, toJson(message.payload().toString()));
 			})
 			.subscribe(Configuration.ESP_TOPIC_NAME, 2);		
+		});
+
+		eb.consumer(Configuration.MQTT_CLIENT_EB_ADDR, message -> {
+			client.publish("temperature", null, MqttQoS.AT_LEAST_ONCE, false, false);
 		});
 	}
 	
 
 	private void log(String msg) { 
 		System.out.println("[MQTT-AGENT]: " + msg);
+	}
+
+	private JsonObject toJson(String temperature) {
+		return new JsonObject().put("temperature", Float.valueOf(temperature));
 	}
 
 
