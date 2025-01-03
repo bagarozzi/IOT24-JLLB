@@ -44,6 +44,7 @@ public class SmartDashboardImpl extends AbstractVerticle implements SmartDashboa
                 case SET_MODE:
                     if(body.getString("mode").equals("manual")) {
                         backend.setManualMode(State.MANUAL_DASHBOARD);
+                        backend.getSmartWindow().setAngle(backend.getSmartWindow().getAngle());
                     } 
                     else if(body.getString("mode").equals("auto")){
                         backend.setAutomaticMode();
