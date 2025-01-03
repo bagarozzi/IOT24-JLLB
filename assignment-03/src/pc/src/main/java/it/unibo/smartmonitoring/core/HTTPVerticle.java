@@ -49,7 +49,7 @@ public class HTTPVerticle extends AbstractVerticle {
 
             // Aggiorna lo stato del sistema
             systemState.setWindowOpening(windowOpening);
-            systemState.setMode("MANUAL"); // Cambia la modalità a MANUAL
+            systemState.setMode("manual"); // Cambia la modalità a manual
 
             ctx.json(new JsonObject().put("status", "success"));
             vertx.eventBus().send(
