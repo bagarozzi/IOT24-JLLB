@@ -42,6 +42,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
 
     public void update() {
         float t = thermometer.getTemperature();
+        dashboard.sendDashboardUpdate();
         switch(state) {
             case MANUAL:
                 logOnce("state MANUAL");
