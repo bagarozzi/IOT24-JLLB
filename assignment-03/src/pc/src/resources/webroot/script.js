@@ -85,8 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Event listener per cambiare modalità
-    switchToAutomaticButton.addEventListener('click', () => switchMode('AUTOMATIC'));
-    switchToManualButton.addEventListener('click', () => switchMode('MANUAL'));
+    switchToAutomaticButton.addEventListener('click', () => switchMode('auto'));
+    switchToManualButton.addEventListener('click', () => switchMode('manual'));
 
     // Initial fetch of system data
     fetchSystemState();
