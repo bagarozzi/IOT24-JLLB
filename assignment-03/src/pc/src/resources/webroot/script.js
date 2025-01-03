@@ -5,20 +5,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const modeElem = document.getElementById('mode');
     const windowOpeningElem = document.getElementById('window-opening');
     const systemStateElem = document.getElementById('system-state');
-  
+
     const windowSlider = document.getElementById('window-slider');
     const setOpeningButton = document.getElementById('set-opening');
     const resolveAlarmButton = document.getElementById('resolve-alarm');
-  
+
     const switchToAutomaticButton = document.getElementById('switch-to-automatic');
     const switchToManualButton = document.getElementById('switch-to-manual');
 
     // Funzione per abilitare/disabilitare il controllo manuale
-    function updateManualControl(mode) {
+    /*function updateManualControl(mode) {
       const isManual = mode === 'MANUAL';
       windowSlider.disabled = !isManual; // Disabilita lo slider in modalità AUTOMATIC
       setOpeningButton.disabled = !isManual; // Disabilita il pulsante di apertura in modalità AUTOMATIC
-    }
+    }*/
 
     // Fetch system data
     function fetchSystemState() {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error fetching system state:', error));
     }
-    
+
     function switchMode(newMode) {
       fetch('/api/switch-mode', {
         method: 'POST',
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error setting window opening:', error));
     });
-  
+
     // Resolve alarm
     resolveAlarmButton.addEventListener('click', () => {
       fetch('/api/resolve-alarm', { method: 'POST' })
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error resolving alarm:', error));
     });
-    
+
     // Event listener per cambiare modalità
     switchToAutomaticButton.addEventListener('click', () => switchMode('auto'));
     switchToManualButton.addEventListener('click', () => switchMode('manual'));
@@ -91,4 +91,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial fetch of system data
     fetchSystemState();
   });
-  
