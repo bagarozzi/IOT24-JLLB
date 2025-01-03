@@ -35,7 +35,6 @@ public class HTTPVerticle extends AbstractVerticle {
 
         // Endpoint: Ottieni lo stato del sistema
         router.get("/api/system-state").handler(ctx -> {
-            log("Stato corrente del sistema: " + systemState.toJson());
             ctx.json(systemState.toJson());
         });
 
@@ -83,16 +82,15 @@ public class HTTPVerticle extends AbstractVerticle {
         vertx.eventBus().consumer(Configuration.HTTP_EB_ADDR, message -> {
             JsonObject body = (JsonObject) message.body();
 
-            systemState.setTemperature(5.0);
+            systemState.setTemperature(body.getDouble("temperature"));
             systemState.setMinTemperature(body.getDouble("minTemperature"));
             systemState.setMaxTemperature(body.getDouble("maxTemperature"));
             systemState.setMode(body.getString("mode"));
             systemState.setWindowOpening(body.getInteger("windowOpening"));
             systemState.setSystemState(body.getString("systemState"));
-
-            System.out.println(systemState.toJson());
         });
     }
+
     private void log(String message) {
         System.out.println("[HTTP-SERVER]: " + message);
     }
