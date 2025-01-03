@@ -12,7 +12,13 @@ public interface BackendVerticle extends Verticle {
          * the aperture.s
          */
 
-        MANUAL,
+         MANUAL_ARDUINO,
+
+        /**
+         * The system's manual mode, the dashboard component is controlling the 
+         * aperture.
+         */
+        MANUAL_DASHBOARD,
         /**
          * The system is in normal mode. The temperature is less than
          * {@link Configuration#NORMAL_MODE_THRESHOLD}.
@@ -62,7 +68,7 @@ public interface BackendVerticle extends Verticle {
     /**
      * Sets the system to manual mode.
      */
-    public void setManualMode();
+    public void setManualMode(State state);
 
     /** 
      * Resets the alarm state.
