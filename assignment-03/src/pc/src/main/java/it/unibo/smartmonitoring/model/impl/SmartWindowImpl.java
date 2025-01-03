@@ -59,7 +59,7 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
             Configuration.ARUDINO_EB_ADDR,
             new JsonObject()
                 .put("type", "update-mode")
-                .put("mode", backend.isState(State.MANUAL) ? "manual" : "auto")
+                .put("mode", backend.isState(State.MANUAL_ARDUINO) ? "manual" : "auto")
         );
     }
 
@@ -74,14 +74,14 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
             switch (MessageParser.getArduinoMessageType(body)) {
                 case SET_MODE:
                     if(body.getString("mode").equals("manual")) {
-                        backend.setManualMode();
+                        backend.setManualMode(State.MANUAL_ARDUINO);
                     } 
                     else if(body.getString("mode").equals("auto")){
                         backend.setAutomaticMode();
                     }
                     break;
                 case SET_ANGLE:
-                    if(backend.isState(State.MANUAL)) {
+                    if(backend.isState(State.MANUAL_ARDUINO)) {
                         setAngleWithoutSending(body.getInteger("angle"));
                     }
                     break;

@@ -63,7 +63,7 @@ public final class MessageParser {
             .put("minTemperature", thermometer.getMinTemperature())
             .put("maxTemperature", thermometer.getMaxTemperature())
             .put("averageTemperature", thermometer.getAverageTemperature())
-            .put("mode", backend.isState(BackendVerticle.State.MANUAL) ? "manual" : "auto")
+            .put("mode", backend.isState(BackendVerticle.State.MANUAL_DASHBOARD) ? "manual" : "auto")
             .put("windowOpening", window.getAngle())
             .put("systemState", backend.getState().toString());
         return json;

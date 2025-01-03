@@ -44,14 +44,15 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
         float t = thermometer.getTemperature();
         dashboard.sendDashboardUpdate();
         switch(state) {
-            case MANUAL:
-                logOnce("state MANUAL");
+            case MANUAL_DASHBOARD:
+                logOnce("state MANUAL_DASHBOARD");
                 /**
                  * Do nothing. Updating the values is handled by the HTTP verticle
                  * itself.
                  */
-                // TODO: QUANDO IL SITO METTE IN MANUALE BISOGNA DIRLO ALL'ARDUINO USARE METODO CHE HO FATTO 
-                // APPOSTA IN SMARTWINDOW
+                break;
+            case MANUAL_ARDUINO:
+                logOnce("state MANUAL_ARDUINO");
                 window.sendTemperatureUpdate(t);
                 break;
             case NORMAL:
@@ -127,8 +128,8 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     }
 
     @Override
-    public void setManualMode() {
-        setState(State.MANUAL);
+    public void setManualMode(State state) {
+        setState(state);
     }
 
     @Override
@@ -138,7 +139,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
 
     @Override
     public void setWindowAperture(final int angle) {
-        if(isState(State.MANUAL)) {
+        if(isState(State.MANUAL_DASHBOARD)) {
             window.setAngle(angle);
         }
     }

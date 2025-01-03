@@ -4,6 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import it.unibo.smartmonitoring.Configuration;
 import it.unibo.smartmonitoring.core.api.BackendVerticle;
+import it.unibo.smartmonitoring.core.api.BackendVerticle.State;
 import it.unibo.smartmonitoring.model.api.SmartDashboard;
 import it.unibo.smartmonitoring.utils.MessageParser;
 
@@ -42,7 +43,7 @@ public class SmartDashboardImpl extends AbstractVerticle implements SmartDashboa
                     break;
                 case SET_MODE:
                     if(body.getString("mode").equals("manual")) {
-                        backend.setManualMode();
+                        backend.setManualMode(State.MANUAL_DASHBOARD);
                     } 
                     else if(body.getString("mode").equals("auto")){
                         backend.setAutomaticMode();
