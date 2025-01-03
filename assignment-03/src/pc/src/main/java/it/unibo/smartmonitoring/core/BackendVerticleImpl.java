@@ -45,8 +45,10 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
         dashboard.sendDashboardUpdate();
         switch(state) {
             case MANUAL_DASHBOARD:
+                if(justEnteredState) {
+                    window.sendModeUpdate();
+                }
                 logOnce("state MANUAL_DASHBOARD");
-                window.sendModeUpdate();
                 /**
                  * Do nothing. Updating the values is handled by the HTTP verticle
                  * itself.
