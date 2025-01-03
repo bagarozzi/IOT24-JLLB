@@ -47,7 +47,7 @@ void Dashboard::processMsg() {
     String content = msg->getContent();
     if (content.startsWith(CONTAINER_PREFIX)) {
       String args = content.substring(CONTAINER_PREFIX.length());
-      int firstColon = content.indexOf(':');
+      int firstColon = args.indexOf(':');
       if (firstColon != -1) {
         String type = args.substring(0, firstColon);
         String value = args.substring(firstColon + 1);
