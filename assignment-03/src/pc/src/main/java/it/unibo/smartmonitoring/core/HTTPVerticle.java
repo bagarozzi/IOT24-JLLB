@@ -36,6 +36,10 @@ public class HTTPVerticle extends AbstractVerticle {
         // Endpoint: Ottieni lo stato del sistema
         router.get("/api/system-state").handler(ctx -> {
             ctx.json(systemState.toJson());
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR,
+                new JsonObject().put("type", "update")
+            );
         });
 
         // Endpoint: Imposta l'apertura manuale della finestra
@@ -48,6 +52,10 @@ public class HTTPVerticle extends AbstractVerticle {
             systemState.setMode("MANUAL"); // Cambia la modalità a MANUAL
 
             ctx.json(new JsonObject().put("status", "success"));
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR,
+                new JsonObject().put("type", "set-aperture").put("aperture", windowOpening)
+            );
         });
 
         // Endpoint: Risolvi stato di allarme
@@ -55,6 +63,10 @@ public class HTTPVerticle extends AbstractVerticle {
             // Cambia lo stato a NORMAL
             systemState.setSystemState("NORMAL");
             ctx.json(new JsonObject().put("status", "success"));
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR,
+                new JsonObject().put("type", "reset-alarm")
+            );
         });
 
         // Endpoint: Cambia modalità del sistema
@@ -62,7 +74,11 @@ public class HTTPVerticle extends AbstractVerticle {
             JsonObject body = ctx.body().asJsonObject();
             String newMode = body.getString("mode", "AUTOMATIC"); // Default to AUTOMATIC
             systemState.setMode(newMode);
-            ctx.json(new JsonObject().put("status", "success").put("newMode", newMode));
+            //ctx.json(new JsonObject().put("status", "success").put("newMode", newMode));
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR,
+                new JsonObject().put("type", "set-mode").put("mode", newMode)
+            );
         });
 
         // Avvia il server HTTP
@@ -112,40 +128,20 @@ public class HTTPVerticle extends AbstractVerticle {
             this.temperature = temperature;
         }
 
-        public double getMinTemperature() {
-            return minTemperature;
-        }
-
         public void setMinTemperature(double minTemperature) {
             this.minTemperature = minTemperature;
-        }
-
-        public double getMaxTemperature() {
-            return maxTemperature;
         }
 
         public void setMaxTemperature(double maxTemperature) {
             this.maxTemperature = maxTemperature;
         }
 
-        public String getMode() {
-            return mode;
-        }
-
         public void setMode(String mode) {
             this.mode = mode;
         }
 
-        public int getWindowOpening() {
-            return windowOpening;
-        }
-
         public void setWindowOpening(int windowOpening) {
             this.windowOpening = windowOpening;
-        }
-
-        public String getSystemState() {
-            return systemState;
         }
 
         public void setSystemState(String systemState) {
