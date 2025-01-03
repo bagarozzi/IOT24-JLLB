@@ -21,6 +21,14 @@ public class SmartDashboardImpl extends AbstractVerticle implements SmartDashboa
         System.out.println("[BACKEND]: SmartDashboard deployment completed");
     }
 
+    @Override
+    public void sendDashboardUpdate() {
+        vertx.eventBus().send(
+            Configuration.HTTP_EB_ADDR, 
+            MessageParser.createHTTPUpdate(backend.getSmartThermometer(), backend.getSmartWindow(), backend)  
+        );
+    }
+
     private void setEventBusConsumer() {
         vertx.eventBus().consumer(Configuration.BACKEND_HTTP_EB_ADDR, message -> {
             System.out.println("[BACKEND]: Received message from HTTP verticle");
