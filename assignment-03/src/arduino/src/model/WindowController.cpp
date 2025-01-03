@@ -88,7 +88,7 @@ void WindowController::adjustWindowToPercentage(int openingPercentage) {
  */
 bool WindowController::adjustWindowBasedOnPotentiometer() {
   bool adjusted = false;
-  int potentiometerValue = readPotentiometer();
+  int potentiometerValue = checkAndFixPercentage(readPotentiometer());
   adjusted = getCurrentOpeningPercentage() != potentiometerValue;
   if (adjusted) {
     adjustWindowToPercentage(potentiometerValue);
@@ -104,9 +104,10 @@ bool WindowController::adjustWindowBasedOnPotentiometer() {
  */
 bool WindowController::adjustWindowAutomatically() {
   bool adjusted = false;
-  adjusted = getCurrentOpeningPercentage() != getFutureOpeningPercentage();
+   int fixedPercentage = checkAndFixPercentage(getFutureOpeningPercentage());
+  adjusted = getCurrentOpeningPercentage() != fixedPercentage;
   if (adjusted) {
-    adjustWindowToPercentage(getFutureOpeningPercentage());
+    adjustWindowToPercentage(fixedPercentage);
   }
   return adjusted;
 }
