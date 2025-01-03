@@ -21,17 +21,21 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
     @Override
     public void start() {
         setEventBusConsumer();
+        System.out.println("[BACKEND]: SmartWindow deployment completed");
     }
 
     @Override
     public void setAngle(final int angle) {
-        this.angle = angle;
-        vertx.eventBus().send(
-            Configuration.ARUDINO_EB_ADDR,
-            new JsonObject()
-                .put("type", "set-angle")
-                .put("angle", angle)
-        );
+        if(this.angle != angle) {
+            log("Setting angle to " + angle);
+            this.angle = angle;
+            vertx.eventBus().send(
+                Configuration.ARUDINO_EB_ADDR,
+                new JsonObject()
+                    .put("type", "update-angle")
+                    .put("angle", angle)
+            );
+        }
     }
 
     @Override
@@ -46,6 +50,16 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
             new JsonObject()
                 .put("type", "update-temperature")
                 .put("temperature", temperature)
+        );
+    }
+
+    @Override
+    public void sendModeUpdate() {
+        vertx.eventBus().send(
+            Configuration.ARUDINO_EB_ADDR,
+            new JsonObject()
+                .put("type", "update-mode")
+                .put("mode", backend.isState(State.MANUAL) ? "manual" : "auto")
         );
     }
 
@@ -76,5 +90,9 @@ public class SmartWindowImpl extends AbstractVerticle implements SmartWindow {
             }
         });
     }
-    
+
+    private void log(final String message) {
+        System.out.println("[BACKEND]: " + message);
+    }
+
 }

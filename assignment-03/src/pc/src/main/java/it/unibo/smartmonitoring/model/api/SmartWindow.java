@@ -3,11 +3,6 @@ package it.unibo.smartmonitoring.model.api;
 import io.vertx.core.Verticle;
 
 public interface SmartWindow extends Verticle {
-    
-    /** 
-     * Starts the Verticle and initializes the smart window verticle.
-     */
-    public void start();
 
     /** 
      * Sets and sends the angle of the window aperture to the Arduino verticle.
@@ -25,5 +20,10 @@ public interface SmartWindow extends Verticle {
      * Arduino is in manual mode.
      */
     public void sendTemperatureUpdate(float temperature);
+
+    /**
+     * Send state notification to the Arduino.
+     */
+    public void sendModeUpdate();
 
 }

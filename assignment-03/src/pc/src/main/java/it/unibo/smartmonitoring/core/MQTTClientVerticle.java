@@ -23,12 +23,12 @@ public class MQTTClientVerticle extends AbstractVerticle {
 		MqttClient client = MqttClient.create(vertx);
         EventBus eb = vertx.eventBus();
 		
-		client.connect(1883, Configuration.MQTT_BROKER_ADDRESS, c -> {
+		client.connect(Configuration.MQTT_BROKER_PORT, Configuration.MQTT_BROKER_ADDRESS, c -> {
 
-			log("Connected to: " + Configuration.MQTT_BROKER_ADDRESS);
-			log("Subscribing to: " + Configuration.ESP_TOPIC_NAME);
+			log("Connected to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
+			log("Subscribing to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
 			client.publishHandler(message -> {
-                System.out.println("[MQTT AGENT]: Received message from ESP32");
+                System.out.println("[MQTT-AGENT]: Received message from ESP32");
                 //eb.publish(Configuration.MQTT_CLIENT_EB_ADDR, Buffer.buffer(message.payload().getBytes()));
 			})
 			.subscribe(Configuration.ESP_TOPIC_NAME, 2);		
@@ -37,7 +37,7 @@ public class MQTTClientVerticle extends AbstractVerticle {
 	
 
 	private void log(String msg) { 
-		System.out.println("[MQTT AGENT]: " + msg);
+		System.out.println("[MQTT-AGENT]: " + msg);
 	}
 
 
