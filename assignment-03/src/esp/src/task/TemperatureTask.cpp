@@ -15,14 +15,6 @@ void TemperatureTask::tick()
     {
     case IDLE:
         this->logOnce("[temp] : idle");
-        if(sensor->isInHotOrTooHotState())
-        {
-            this->setFrequency(HOT_FREQUENCY);
-        } else if(sensor->isInAlarmState())
-        {
-            this->setState(ALARM);
-            sensor->setLedsToError();
-        }
         if (this->elapsedTimeInState() >= frequency)
         {
             this->setState(SENDIG);
@@ -33,12 +25,6 @@ void TemperatureTask::tick()
         agent->sendMessage((String)sensor->getTemperature());
         this->setState(IDLE);
         break;
-    case ALARM:
-        this->logOnce("[temp] : alarm");
-        if(!sensor->isInAlarmState()){
-            this->setState(IDLE);
-            sensor->setLedsToNormal();
-        }
     }
 }
 

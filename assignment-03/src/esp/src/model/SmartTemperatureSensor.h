@@ -9,30 +9,16 @@
 class SmartTemperatureSensor
 {
     private:
-        enum State{
-            NORMAL,
-            HOT,
-            TOO_HOT,
-            ALARM,
-        };
-
-        int state;
         Led* greenLed;
         Led* redLed;
         TempSensor* sensor;
 
     public:
         SmartTemperatureSensor();
-
-        int getState();
-        void setStateAlarm();
-        void setState(int state);
         void setLedsToNormal();
         void setLedsToError();
         float getTemperature();
-        bool isInAlarmState();
-        bool isInHotOrTooHotState();
-        
+        void setFrequency(int frequency);
 };
 
 

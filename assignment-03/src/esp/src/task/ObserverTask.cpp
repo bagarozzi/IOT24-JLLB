@@ -22,19 +22,7 @@ void ObserverTask::tick()
             String msg = agent->reciveMessage();
             JsonDocument doc;
             deserializeJson(doc, msg);
-
-            if (doc["state"] == "hot")
-            {
-                sensor->setState(1);
-            }
-            else if (doc["state"] == "too-hot")
-            {
-                sensor->setState(2);
-            }
-            else if (doc["state"] == "alarm")
-            {
-                sensor->setState(3);
-            }
+            sensor->setFrequency(doc["frequency"]);
         }
         this->setState(IDLE);
         break;
