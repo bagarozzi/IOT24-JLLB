@@ -35,7 +35,7 @@ private:
   int checkAndFixPercentage(int percentage);
 
   HWPlatform* pHW;
-  int currentOpeningPercentage = 0;
+  int currentOpeningPercentage = 1;
   int futureOpeningPercentage = 0;
   float currentTemperature = 24;
   bool manualMode = false;
