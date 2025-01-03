@@ -66,12 +66,12 @@ public class SerialVerticle extends AbstractVerticle {
                     if (elems.length >= 2) {
                         String type = elems[0];
                         int value = Integer.parseInt(elems[1]);
-                        if (type == "mode") {
+                        if (type.equals("mode")) {
                             JsonObject json = new JsonObject()
                                 .put("type", "update-mode")
                                 .put("mode", value == 0 ? "auto" : "manual");
                             vertx.eventBus().send(Configuration.BACKEND_ARDUINO_EB_ADDR, json);
-                        } else if (type == "angle") {
+                        } else if (type.equals("angle")) {
                             JsonObject json = new JsonObject()
                                 .put("type", "update-angle")
                                 .put("angle", value);
