@@ -47,40 +47,41 @@ public class SerialVerticle extends AbstractVerticle {
     public void update() {
         try {
             processMsg();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Process the message received from the serial channel and send it to the backend verticle.
-    * @throws InterruptedException
     */
-    private void processMsg() throws InterruptedException {
-        String msg = channel.receiveMsg();
-        if (msg.startsWith(CONTAINER_PREFIX)){
-            String cmd = msg.substring(CONTAINER_PREFIX.length());             
-            if (cmd.startsWith(MSG_STATE)){
-                String args = cmd.substring(MSG_STATE.length()); 
-                String[] elems = args.split(":");
-                if (elems.length >= 2) {
-                    String type = elems[0];
-                    int value = Integer.parseInt(elems[1]);
-                    if (type == "mode") {
-                        JsonObject json = new JsonObject()
-                            .put("type", "update-mode")
-                            .put("mode", value == 0 ? "auto" : "manual");
-                        vertx.eventBus().send(Configuration.BACKEND_ARDUINO_EB_ADDR, json);
-                    } else if (type == "angle") {
-                        JsonObject json = new JsonObject()
-                            .put("type", "update-angle")
-                            .put("angle", value);
-                        vertx.eventBus().send(Configuration.BACKEND_ARDUINO_EB_ADDR, json);
-                    }
-                } 
+    private void processMsg() throws Exception {
+        if (channel.isMsgAvailable()) {
+            String msg = channel.receiveMsg();
+            if (msg.startsWith(CONTAINER_PREFIX)){
+                String cmd = msg.substring(CONTAINER_PREFIX.length());             
+                if (cmd.startsWith(MSG_STATE)){
+                    String args = cmd.substring(MSG_STATE.length()); 
+                    String[] elems = args.split(":");
+                    if (elems.length >= 2) {
+                        String type = elems[0];
+                        int value = Integer.parseInt(elems[1]);
+                        if (type == "mode") {
+                            JsonObject json = new JsonObject()
+                                .put("type", "update-mode")
+                                .put("mode", value == 0 ? "auto" : "manual");
+                            vertx.eventBus().send(Configuration.BACKEND_ARDUINO_EB_ADDR, json);
+                        } else if (type == "angle") {
+                            JsonObject json = new JsonObject()
+                                .put("type", "update-angle")
+                                .put("angle", value);
+                            vertx.eventBus().send(Configuration.BACKEND_ARDUINO_EB_ADDR, json);
+                        }
+                    } 
+                }
+            } else if (msg.startsWith(LOG_PREFIX)){
+                System.out.println("[SERIAL]: " + msg.substring(LOG_PREFIX.length()));
             }
-        } else if (msg.startsWith(LOG_PREFIX)){
-            System.out.println("[SERIAL]: " + msg.substring(LOG_PREFIX.length()));
         }
     }
 }
