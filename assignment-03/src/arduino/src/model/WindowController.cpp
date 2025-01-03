@@ -76,8 +76,8 @@ void WindowController::sync(){
  * @param percentage the percentage to adjust the window to
  */
 void WindowController::adjustWindowToPercentage(int openingPercentage) {
-  this->currentOpeningPercentage = openingPercentage;
-  int angle = percentageToAngle(openingPercentage);
+  this->currentOpeningPercentage = checkAndFixPercentage(openingPercentage);
+  int angle = percentageToAngle(this->currentOpeningPercentage);
   pHW->getWindowMotor()->on();
   pHW->getWindowMotor()->setPosition(angle);
 }
@@ -168,7 +168,7 @@ float WindowController::getCurrentTemperature(){
  * @return the potentiometer value in percentage
  */
 long WindowController::readPotentiometer() {
-  return map(analogRead(POT_PIN), 0, 1023, 0, MAX_PERCENTAGE);
+  return map(analogRead(POT_PIN), 0, 982, 0, MAX_PERCENTAGE);
 }
 
 /**
@@ -184,4 +184,19 @@ int WindowController::percentageToAngle(int percentage) {
     percentage = 100;
   }
   return (percentage * MAX_ANGLE) / 100;
+}
+
+/**
+ * Checks and fixes the percentage
+ * 
+ * @param percentage the percentage to check and fix
+ * @return the fixed percentage
+ */
+int WindowController::checkAndFixPercentage(int percentage) {
+  if (percentage < 0) {
+    percentage = 0;
+  } else if (percentage > 100) {
+    percentage = 100;
+  }
+  return percentage;
 }

@@ -32,6 +32,7 @@ public:
 private:
   long readPotentiometer();
   int percentageToAngle(int percentage);
+  int checkAndFixPercentage(int percentage);
 
   HWPlatform* pHW;
   int currentOpeningPercentage = 0;
