@@ -9,11 +9,11 @@ public class MainVerticle extends AbstractVerticle {
 	@Override
 	public void start(Promise<Void> startPromise) throws Exception {
 		BackendVerticle backendVerticle = new BackendVerticleImpl();
-		//MQTTClientVerticle mqttClientVerticle = new MQTTClientVerticle();
-		//vertx.deployVerticle(mqttClientVerticle);
-		//vertx.deployVerticle(backendVerticle);
-		TestVerticle testVerticle = new TestVerticle();
-		vertx.deployVerticle(backendVerticle, ar -> vertx.deployVerticle(testVerticle));
-    vertx.deployVerticle(new HTTPVerticle());
+		MQTTClientVerticle mqttClientVerticle = new MQTTClientVerticle();
+		vertx.deployVerticle(mqttClientVerticle);
+		vertx.deployVerticle(backendVerticle);
+		//TestVerticle testVerticle = new TestVerticle();
+		//vertx.deployVerticle(backendVerticle, ar -> vertx.deployVerticle(testVerticle));
+    	vertx.deployVerticle(new HTTPVerticle());
 	}
 }
