@@ -35,8 +35,11 @@ public class HTTPVerticle extends AbstractVerticle {
 
         // Endpoint: Ottieni lo stato del sistema
         router.get("/api/system-state").handler(ctx -> {
-            log("Stato corrente del sistema: " + systemState.toJson());
             ctx.json(systemState.toJson());
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR,
+                new JsonObject().put("type", "update")
+            );
         });
 
         // Endpoint: Imposta l'apertura manuale della finestra
@@ -46,9 +49,13 @@ public class HTTPVerticle extends AbstractVerticle {
 
             // Aggiorna lo stato del sistema
             systemState.setWindowOpening(windowOpening);
-            systemState.setMode("MANUAL"); // Cambia la modalità a MANUAL
+            systemState.setMode("manual"); // Cambia la modalità a manual
 
             ctx.json(new JsonObject().put("status", "success"));
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR,
+                new JsonObject().put("type", "set-aperture").put("aperture", windowOpening)
+            );
         });
 
         // Endpoint: Risolvi stato di allarme
@@ -56,14 +63,22 @@ public class HTTPVerticle extends AbstractVerticle {
             // Cambia lo stato a NORMAL
             systemState.setSystemState("NORMAL");
             ctx.json(new JsonObject().put("status", "success"));
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR,
+                new JsonObject().put("type", "reset-alarm")
+            );
         });
 
         // Endpoint: Cambia modalità del sistema
         router.post("/api/switch-mode").handler(ctx -> {
             JsonObject body = ctx.body().asJsonObject();
-            String newMode = body.getString("mode", "AUTOMATIC"); // Default to AUTOMATIC
+            String newMode = body.getString("mode", "auto"); // Default to AUTOMATIC
             systemState.setMode(newMode);
             ctx.json(new JsonObject().put("status", "success").put("newMode", newMode));
+            vertx.eventBus().send(
+                Configuration.BACKEND_HTTP_EB_ADDR,
+                new JsonObject().put("type", "set-mode").put("mode", newMode)
+            );
         });
 
         // Avvia il server HTTP
@@ -78,21 +93,20 @@ public class HTTPVerticle extends AbstractVerticle {
             });
     }
 
-    //CONTROLLA STA FUNZIONE: NON VA LA ROBA DENTRO IL CONSUMER
+
     private void setEventBusConsumer() {
         vertx.eventBus().consumer(Configuration.HTTP_EB_ADDR, message -> {
             JsonObject body = (JsonObject) message.body();
 
-            systemState.setTemperature(5.0);
+            systemState.setTemperature(body.getDouble("temperature"));
             systemState.setMinTemperature(body.getDouble("minTemperature"));
             systemState.setMaxTemperature(body.getDouble("maxTemperature"));
             systemState.setMode(body.getString("mode"));
             systemState.setWindowOpening(body.getInteger("windowOpening"));
             systemState.setSystemState(body.getString("systemState"));
-
-            System.out.println(systemState.toJson());
         });
     }
+
     private void log(String message) {
         System.out.println("[HTTP-SERVER]: " + message);
     }
@@ -114,40 +128,20 @@ public class HTTPVerticle extends AbstractVerticle {
             this.temperature = temperature;
         }
 
-        public double getMinTemperature() {
-            return minTemperature;
-        }
-
         public void setMinTemperature(double minTemperature) {
             this.minTemperature = minTemperature;
-        }
-
-        public double getMaxTemperature() {
-            return maxTemperature;
         }
 
         public void setMaxTemperature(double maxTemperature) {
             this.maxTemperature = maxTemperature;
         }
 
-        public String getMode() {
-            return mode;
-        }
-
         public void setMode(String mode) {
             this.mode = mode;
         }
 
-        public int getWindowOpening() {
-            return windowOpening;
-        }
-
         public void setWindowOpening(int windowOpening) {
             this.windowOpening = windowOpening;
-        }
-
-        public String getSystemState() {
-            return systemState;
         }
 
         public void setSystemState(String systemState) {

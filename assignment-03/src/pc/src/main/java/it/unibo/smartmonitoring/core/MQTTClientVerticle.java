@@ -32,7 +32,7 @@ public class MQTTClientVerticle extends AbstractVerticle {
 			log("Subscribing to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
 			client.publishHandler(message -> {
                 System.out.println("[MQTT-AGENT]: Received message from ESP32");
-                eb.publish(Configuration.MQTT_CLIENT_EB_ADDR, toJson(message.payload().toString()));
+                eb.send(Configuration.BACKEND_MQTT_EB_ADDR, toJson(message.payload().toString()));
 			})
 			.subscribe(Configuration.ESP_TOPIC_NAME, 2);		
 		});

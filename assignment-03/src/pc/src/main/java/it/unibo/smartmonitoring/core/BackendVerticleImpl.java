@@ -42,20 +42,28 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
 
     public void update() {
         float t = thermometer.getTemperature();
+        dashboard.sendDashboardUpdate();
         switch(state) {
-            case MANUAL:
-                logOnce("state MANUAL");
+            case MANUAL_DASHBOARD:
+                if(justEnteredState) {
+                    window.sendModeUpdate();
+                    window.setAngle(window.getAngle());
+                }
+                logOnce("state MANUAL_DASHBOARD");
                 /**
                  * Do nothing. Updating the values is handled by the HTTP verticle
                  * itself.
                  */
-                // TODO: QUANDO IL SITO METTE IN MANUALE BISOGNA DIRLO ALL'ARDUINO USARE METODO CHE HO FATTO 
-                // APPOSTA IN SMARTWINDOW
+                break;
+            case MANUAL_ARDUINO:
+                logOnce("state MANUAL_ARDUINO");
                 window.sendTemperatureUpdate(t);
                 break;
             case NORMAL:
+                if (justEnteredState) {
+                    window.setAngle(0);
+                }
                 logOnce("state NORMAL");
-                window.setAngle(0);
                 thermometer.setFrequency(Configuration.NORMAL_MODE_POLLING_FREQUENCY);
                 if(t > Configuration.NORMAL_MODE_THRESHOLD) {
                     log("temperature is above normal threshold");
@@ -81,8 +89,10 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                 }
                 break;
             case TOO_HOT:
+                if (justEnteredState) {
+                    window.setAngle(100);
+                }
                 logOnce("state TOO HOT");
-                window.setAngle(100);
                 if(t < Configuration.HOT_MODE_THRESHOLD) {
                     log("temperature is back below too hot threshold");
                     setState(State.HOT);
@@ -101,6 +111,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                  */
                 break;
             case IDLE:
+                window.sendModeUpdate();
                 window.setAngle(0);
                 thermometer.setFrequency(Configuration.NORMAL_MODE_POLLING_FREQUENCY);
                 logOnce("state IDLE");
@@ -126,8 +137,8 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     }
 
     @Override
-    public void setManualMode() {
-        setState(State.MANUAL);
+    public void setManualMode(State state) {
+        setState(state);
     }
 
     @Override
@@ -137,7 +148,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
 
     @Override
     public void setWindowAperture(final int angle) {
-        if(isState(State.MANUAL)) {
+        if(isState(State.MANUAL_DASHBOARD)) {
             window.setAngle(angle);
         }
     }
