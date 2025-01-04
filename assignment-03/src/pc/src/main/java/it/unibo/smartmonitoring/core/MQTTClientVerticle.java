@@ -38,7 +38,7 @@ public class MQTTClientVerticle extends AbstractVerticle {
 		});
 
 		eb.consumer(Configuration.MQTT_CLIENT_EB_ADDR, message -> {
-			client.publish("temperature", null, MqttQoS.AT_LEAST_ONCE, false, false);
+			client.publish("temperature", Buffer.buffer(message.body().toString()), MqttQoS.AT_LEAST_ONCE, false, false);
 		});
 	}
 	
