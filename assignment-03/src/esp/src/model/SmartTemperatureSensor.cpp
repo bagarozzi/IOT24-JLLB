@@ -1,9 +1,9 @@
 #include "SmartTemperatureSensor.h"
 
 
-#define GREEN_LED 1
-#define RED_LED 2
-#define TEMPERATURE_SENSOR 3
+#define GREEN_LED 32
+#define RED_LED 35
+#define TEMPERATURE_SENSOR 34
 
 SmartTemperatureSensor::SmartTemperatureSensor()
 {
