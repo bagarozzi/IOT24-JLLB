@@ -3,7 +3,7 @@ package it.unibo.smartmonitoring;
 public final class Configuration {
 
     /* MQTT Broker and client setup */
-    public static final String MQTT_BROKER_ADDRESS = "broker.mqtt-dashboard.com";
+    public static final String MQTT_BROKER_ADDRESS = "9c34e1bfaa8b43d3ac10240cf92a9c7a.s1.eu.hivemq.cloud";
     public static final int MQTT_BROKER_PORT = 8883;
     public static final String ESP_TOPIC_NAME = "temperature/smartwindow";
 
