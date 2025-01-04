@@ -62,9 +62,9 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
             case NORMAL:
                 if (justEnteredState) {
                     window.setAngle(0);
+                    thermometer.setFrequency(Configuration.NORMAL_MODE_POLLING_FREQUENCY);
                 }
                 logOnce("state NORMAL");
-                thermometer.setFrequency(Configuration.NORMAL_MODE_POLLING_FREQUENCY);
                 if(t > Configuration.NORMAL_MODE_THRESHOLD) {
                     log("temperature is above normal threshold");
                     setState(State.HOT);
@@ -72,8 +72,10 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                 }
                 break;
             case HOT:
+                if(justEnteredState) {
+                    thermometer.setFrequency(Configuration.HOT_MODE_POLLING_FREQUENCY);
+                }
                 logOnce("state HOT");
-                thermometer.setFrequency(Configuration.HOT_MODE_POLLING_FREQUENCY);
                 if(t < Configuration.NORMAL_MODE_THRESHOLD) {
                     log("temperature is back below hot threshold");
                     setState(State.NORMAL);
@@ -111,9 +113,11 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                  */
                 break;
             case IDLE:
+                if(justEnteredState) {
+                    thermometer.setFrequency(Configuration.NORMAL_MODE_POLLING_FREQUENCY);
+                }
                 window.sendModeUpdate();
                 window.setAngle(0);
-                thermometer.setFrequency(Configuration.NORMAL_MODE_POLLING_FREQUENCY);
                 logOnce("state IDLE");
                 if(t < Configuration.NORMAL_MODE_THRESHOLD) {
                     setState(State.NORMAL);
