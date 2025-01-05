@@ -11,6 +11,7 @@ class ObserverTask : public Task {
         enum {
             IDLE,
             COMPUTING,
+            RECONNECTING,
         };
 
         SmartTemperatureSensor* sensor;

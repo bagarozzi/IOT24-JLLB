@@ -17,10 +17,11 @@ private:
             SENDIG,
             ALARM,
         };
+    void getFrequency();
+
 public:
     TemperatureTask(MQTT_agent* agent, SmartTemperatureSensor* sensor);
     void tick();
-    void setFrequency(int freq);
 };
 
 #endif

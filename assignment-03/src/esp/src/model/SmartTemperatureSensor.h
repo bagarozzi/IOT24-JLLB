@@ -12,6 +12,8 @@ class SmartTemperatureSensor
         Led* greenLed;
         Led* redLed;
         TempSensor* sensor;
+        bool frequencyChanged;
+        int frequency;
 
     public:
         SmartTemperatureSensor();
@@ -19,6 +21,9 @@ class SmartTemperatureSensor
         void setLedsToError();
         float getTemperature();
         void setFrequency(int frequency);
+        void setFrequencyChanged(bool changed);
+        bool isFrequecyChanged();
+        int getFrequency();
 };
 
 

@@ -15,21 +15,24 @@ void TemperatureTask::tick()
     {
     case IDLE:
         this->logOnce("[TEMP] : IDLE");
+        if(sensor->isFrequecyChanged())
+        {
+            getFrequency();
+        }
         if (this->elapsedTimeInState() >= frequency)
         {
             this->setState(SENDIG);
         }
-        Serial.println("end");
         break;
     case SENDIG:
-        this->logOnce("[TEMP] : SENDING");
+        this->logOnce("[TEMP] : SENDING" + (String)sensor->getTemperature());
         agent->sendMessage((String)sensor->getTemperature());
         this->setState(IDLE);
         break;
     }
 }
 
-void TemperatureTask::setFrequency(int freq)
+void TemperatureTask::getFrequency()
 {
-    frequency = freq;
+    frequency = sensor->getFrequency();
 }

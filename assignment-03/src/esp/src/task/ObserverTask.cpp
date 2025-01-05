@@ -10,27 +10,43 @@ void ObserverTask::tick()
 {
     switch (this->getState())
     {
-    case IDLE:
+    case IDLE: {
+        if (this->isJustEntered() && agent->isConnected())
+        {
+            sensor->setLedsToNormal();
+        }
+        else if (!agent->isConnected())
+        {
+            this->setState(RECONNECTING);
+        }
         this->logOnce("[OBSERVER] : IDLE");
-        while(!agent->isConnected())
+
+        if (agent->isMessageArrived())
+        {
+            this->setState(COMPUTING);
+        }
+    }
+    break;
+    case COMPUTING: {
+        this->logOnce("[OBSERVER] : COMPUTING");
+        String msg = agent->reciveMessage();
+        JsonDocument doc;
+        deserializeJson(doc, msg);
+        sensor->setFrequency(doc["frequency"]);
+        this->setState(IDLE);
+    }
+    break;
+    case RECONNECTING: {
+        this->logOnce("[OBS] : RECONNECTING");
+        sensor->setLedsToError();
+        while (!agent->isConnected())
         {
             Serial.println("connecting");
             sensor->setLedsToError();
             agent->reconect();
         }
-        sensor->setLedsToNormal();
-        this->setState(COMPUTING);
-        break;
-    case COMPUTING:
-        this->logOnce("[OBSERVER] : COMPUTING");
-        if (agent->isMessageArrived())
-        {
-            String msg = agent->reciveMessage();
-            JsonDocument doc;
-            deserializeJson(doc, msg);
-            sensor->setFrequency(doc["frequency"]);
-        }
         this->setState(IDLE);
-        break;
+    }
+    break;
     }
 }

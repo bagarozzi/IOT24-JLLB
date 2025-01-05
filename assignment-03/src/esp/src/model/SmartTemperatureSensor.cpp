@@ -14,6 +14,7 @@ SmartTemperatureSensor::SmartTemperatureSensor()
 
 void SmartTemperatureSensor::setLedsToNormal()
 {
+    Serial.println("led accesi");
     this->greenLed->switchOn();
     this->redLed->switchOff();
 }
@@ -29,6 +30,23 @@ float SmartTemperatureSensor::getTemperature()
     return this->sensor->getTemperature();
 }
 
-void SmartTemperatureSensor::setFrequency(int frequency){
-    
+void SmartTemperatureSensor::setFrequency(int frequency)
+{
+    frequency = frequency;
+    frequencyChanged = true;
+}
+
+bool SmartTemperatureSensor::isFrequecyChanged()
+{
+    return frequencyChanged;
+}
+
+void SmartTemperatureSensor::setFrequencyChanged(bool changed)
+{
+    frequencyChanged = changed;
+}
+
+int SmartTemperatureSensor::getFrequency()
+{
+    return frequency;
 }

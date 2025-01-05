@@ -68,6 +68,11 @@ public:
 			justEntered = false;
 		}
 	}
+
+	bool isJustEntered()
+	{
+		return justEntered;
+	}
 };
 
 #endif

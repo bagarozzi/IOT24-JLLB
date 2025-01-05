@@ -17,7 +17,7 @@ void setup()
 
 	// initialize the temperatureSensor, scheduler and mqttAgent
 	SmartTemperatureSensor *sensor = new SmartTemperatureSensor();
-
+	
 	scheduler = new Scheduler();
 	scheduler->init(100);
 	Serial.println("agent");

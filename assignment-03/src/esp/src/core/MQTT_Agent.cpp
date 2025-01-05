@@ -41,10 +41,6 @@ emyPxgcYxn/eR44/KJ4EBs+lVDR3veyJm+kXQ99b21/+jh5Xos1AnX5iItreGCc=
 
 std::list<String> buffer;
         
-void callback(char* topic, uint8_t * payload, unsigned int length) {
-    Serial.println("arrivato");
-    addMessage(toString(payload));
-}
 
 String toString(uint8_t* data)
 {
@@ -55,6 +51,17 @@ String toString(uint8_t* data)
     }
     return *app;
 }
+
+void callback(char* topic, uint8_t * payload, unsigned int length) {
+    Serial.println("arrivato");
+    String app;
+    for( int i = 0; i< sizeof(payload); i++)
+    {
+        app[i] = payload[i];
+    }
+    buffer.push_back(app);
+}
+
 
 MQTT_agent::MQTT_agent(const char* mqtt_server, int port, const char* topic, const char* ssid, const char* password) :
     ssid(ssid), password(password), mqtt_server(mqtt_server), topic(topic)
@@ -106,8 +113,4 @@ void MQTT_agent::sendMessage(String message){
 bool MQTT_agent::isMessageArrived()
 {
     return !buffer.empty();
-}
-
-void addMessage(String message){
-    buffer.push_back(message);
 }
