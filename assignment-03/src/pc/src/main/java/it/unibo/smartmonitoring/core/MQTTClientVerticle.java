@@ -45,15 +45,14 @@ public class MQTTClientVerticle extends AbstractVerticle {
 						log("Failed to subscribe to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
 					}
 				});
+				eb.consumer(Configuration.MQTT_EB_ADDR, message -> {
+					client.publish(Configuration.ESP_TOPIC_NAME, ((JsonObject)message.body()).toBuffer(), MqttQoS.AT_LEAST_ONCE, false, false);
+				});
 			}
 			else if(c.failed()) {
 				log("Failed to connect to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
 				return;
 			}
-		});
-
-		eb.consumer(Configuration.MQTT_EB_ADDR, message -> {
-			client.publish(Configuration.ESP_TOPIC_NAME, ((JsonObject)message.body()).toBuffer(), MqttQoS.AT_LEAST_ONCE, false, false);
 		});
 	}
 	
