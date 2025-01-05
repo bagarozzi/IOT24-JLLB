@@ -17,7 +17,7 @@ public class HTTPVerticle extends AbstractVerticle {
         systemState = new SystemState();
         // Inizializza lo stato del sistema
         setEventBusConsumer();
-        System.out.println(systemState.getTemperature());
+
         // Configura il router
         Router router = Router.router(vertx);
 
@@ -35,11 +35,21 @@ public class HTTPVerticle extends AbstractVerticle {
 
         // Endpoint: Ottieni lo stato del sistema
         router.get("/api/system-state").handler(ctx -> {
-            ctx.json(systemState.toJson());
-            vertx.eventBus().send(
+            vertx.eventBus().request(
                 Configuration.BACKEND_HTTP_EB_ADDR,
-                new JsonObject().put("type", "update")
+                new JsonObject().put("type", "update"),
+                msg -> {
+                    JsonObject body = (JsonObject) msg.result().body();
+                    systemState.setTemperature(body.getDouble("temperature"));
+                    systemState.setMinTemperature(body.getDouble("minTemperature"));
+                    systemState.setMaxTemperature(body.getDouble("maxTemperature"));
+                    systemState.setMode(body.getString("mode"));
+                    systemState.setWindowOpening(body.getInteger("windowOpening"));
+                    systemState.setSystemState(body.getString("systemState"));
+                }
+
             );
+            ctx.json(systemState.toJson());
         });
 
         // Endpoint: Imposta l'apertura manuale della finestra
@@ -60,8 +70,8 @@ public class HTTPVerticle extends AbstractVerticle {
 
         // Endpoint: Risolvi stato di allarme
         router.post("/api/resolve-alarm").handler(ctx -> {
-            // Cambia lo stato a NORMAL
-            systemState.setSystemState("NORMAL");
+            // Cambia lo stato a normal
+            systemState.setSystemState("normal");
             ctx.json(new JsonObject().put("status", "success"));
             vertx.eventBus().send(
                 Configuration.BACKEND_HTTP_EB_ADDR,

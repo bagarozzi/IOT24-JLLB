@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set manual window opening
     setOpeningButton.addEventListener('click', () => {
+
       const opening = parseInt(windowSlider.value, 10);
       fetch('/api/manual-mode', {
         method: 'POST',
