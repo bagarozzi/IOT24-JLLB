@@ -47,7 +47,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
             case MANUAL_DASHBOARD:
                 if(justEnteredState) {
                     window.sendModeUpdate();
-                    window.setAngle(window.getAngle());
+                    vertx.setTimer(200, delay -> window.setAngle(window.getAngle()));
                 }
                 logOnce("state MANUAL_DASHBOARD");
                 /**
