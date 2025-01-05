@@ -7,7 +7,7 @@
 class MQTT_agent {
 
     public :
-        MQTT_agent(const char* ssid, const char* password, const char* mqtt_server, const char* topic);
+        MQTT_agent(const char* mqtt_server, int port, const char* topic, const char* ssid, const char* password);
         bool isConnected();
         void reconect();
         String reciveMessage();
@@ -16,15 +16,13 @@ class MQTT_agent {
         
     
     private :
-        const char* ssid; //= "LittleBarfly";
-        const char* password; //= "esiot-2024-2025";
-        const char* mqtt_server; //= "broker.mqtt-dashboard.com";
-        const char* topic; //= "esiot-2024";
-        std::list<String> buffer;
-
-        void addMessage(String message);
+        const char* ssid;
+        const char* password;
+        const char* mqtt_server;
+        const char* topic;
+        const char* mqtt_username = "SmartTemperatureSensor";
+        const char* mqtt_password = "Luca1234";
         void setUpWiFi();
-        
 };
 
 #endif

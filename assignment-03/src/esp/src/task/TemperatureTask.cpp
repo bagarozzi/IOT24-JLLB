@@ -1,12 +1,12 @@
 
 #include "TemperatureTask.h"
 
-#define BASE_FREQUENCY 60000
-#define HOT_FREQUENCY 30000
+#define BASE_FREQUENCY 6000
 
 TemperatureTask::TemperatureTask(MQTT_agent* agent, SmartTemperatureSensor* sensor) : agent(agent), sensor(sensor)
 {
     frequency = BASE_FREQUENCY;
+    this->setState(IDLE);
 }
 
 void TemperatureTask::tick()
@@ -14,14 +14,15 @@ void TemperatureTask::tick()
     switch (this->getState())
     {
     case IDLE:
-        this->logOnce("[temp] : idle");
+        this->logOnce("[TEMP] : IDLE");
         if (this->elapsedTimeInState() >= frequency)
         {
             this->setState(SENDIG);
         }
+        Serial.println("end");
         break;
     case SENDIG:
-        this->logOnce("[temp] : sending temperature");
+        this->logOnce("[TEMP] : SENDING");
         agent->sendMessage((String)sensor->getTemperature());
         this->setState(IDLE);
         break;
