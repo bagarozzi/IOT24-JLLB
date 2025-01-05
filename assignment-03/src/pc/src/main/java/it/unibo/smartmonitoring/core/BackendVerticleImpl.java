@@ -57,7 +57,9 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                 break;
             case MANUAL_ARDUINO:
                 logOnce("state MANUAL_ARDUINO");
-                window.sendTemperatureUpdate(t);
+                if(elapsedTimeInState() % 500 == 0) {
+                    window.sendTemperatureUpdate(t);
+                }
                 break;
             case NORMAL:
                 if (justEnteredState) {
