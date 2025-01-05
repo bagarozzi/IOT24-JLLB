@@ -25,7 +25,7 @@ void TemperatureTask::tick()
         }
         break;
     case SENDIG:
-        this->logOnce("[TEMP] : SENDING" + (String)sensor->getTemperature());
+        this->logOnce("[TEMP] : SENDING : " + (String)sensor->getTemperature());
         agent->sendMessage((String)sensor->getTemperature());
         this->setState(IDLE);
         break;
