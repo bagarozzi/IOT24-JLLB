@@ -47,7 +47,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
             case MANUAL_DASHBOARD:
                 if(justEnteredState) {
                     window.sendModeUpdate();
-                    window.setAngle(window.getAngle());
+                    vertx.setTimer(200, delay -> window.setAngle(window.getAngle()));
                 }
                 logOnce("state MANUAL_DASHBOARD");
                 /**
@@ -57,7 +57,9 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                 break;
             case MANUAL_ARDUINO:
                 logOnce("state MANUAL_ARDUINO");
-                window.sendTemperatureUpdate(t);
+                if(elapsedTimeInState() % 2 == 0) {
+                    window.sendTemperatureUpdate(t);
+                }
                 break;
             case NORMAL:
                 if (justEnteredState) {
