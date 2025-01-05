@@ -55,7 +55,7 @@ public class HTTPVerticle extends AbstractVerticle {
         // Endpoint: Imposta l'apertura manuale della finestra
         router.post("/api/manual-mode").handler(ctx -> {
             JsonObject body = ctx.body().asJsonObject();
-            int windowOpening = body.getInteger("windowOpening", 0);
+            int windowOpening = body.getInteger("windowOpening", 9999);
 
             // Aggiorna lo stato del sistema
             systemState.setWindowOpening(windowOpening);
@@ -129,10 +129,6 @@ public class HTTPVerticle extends AbstractVerticle {
         private String mode;
         private int windowOpening;
         private String systemState;
-
-        public double getTemperature() {
-            return temperature;
-        }
 
         public void setTemperature(double temperature) {
             this.temperature = temperature;
