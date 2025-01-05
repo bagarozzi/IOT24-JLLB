@@ -33,23 +33,23 @@ public class MQTTClientVerticle extends AbstractVerticle {
 			if(c.succeeded()) {
 				log("Connected to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
 				log("Subscribing to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
+				client.publishHandler(message -> {
+					System.out.println("[MQTT-AGENT]: Received message from ESP32");
+					eb.send(Configuration.BACKEND_MQTT_EB_ADDR, toJson(message.payload().toString()));
+				})
+				.subscribe(Configuration.ESP_TOPIC_NAME, 0, s -> {
+					if(s.succeeded()) {
+						log("Subscribed to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
+					}
+					else if(s.failed()) {
+						log("Failed to subscribe to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
+					}
+				});
 			}
 			else if(c.failed()) {
 				log("Failed to connect to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
 				return;
 			}
-			client.publishHandler(message -> {
-                System.out.println("[MQTT-AGENT]: Received message from ESP32");
-                eb.send(Configuration.BACKEND_MQTT_EB_ADDR, toJson(message.payload().toString()));
-			})
-			.subscribe(Configuration.ESP_TOPIC_NAME, 2, s -> {
-				if(s.succeeded()) {
-					log("Subscribed to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
-				}
-				else if(s.failed()) {
-					log("Failed to subscribe to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
-				}
-			});
 		});
 
 		eb.consumer(Configuration.MQTT_EB_ADDR, message -> {
