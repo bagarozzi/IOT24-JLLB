@@ -20,7 +20,7 @@ String toString(uint8_t* data)
 }
 
 void callback(char* topic, uint8_t * payload, unsigned int length) {
-    Serial.println("arrivato");
+    Serial.println("arrivato json");
     String app;
     for( int i = 0; i< sizeof(payload); i++)
     {
@@ -67,13 +67,14 @@ void MQTT_agent::reconect(){
 }
 
 String MQTT_agent::reciveMessage() {
+    Serial.print("recieve");
     String app = buffer.front();
     buffer.pop_front();
     return app;
 }
 
 void MQTT_agent::sendMessage(String message){
-    client.publish("temperature", message.c_str());
+    client.publish(topic, message.c_str());
 }
 
 bool MQTT_agent::isMessageArrived()

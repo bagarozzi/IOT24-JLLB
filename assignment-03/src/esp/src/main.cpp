@@ -1,40 +1,41 @@
 #include <Arduino.h>
-#include "core/Scheduler.h"
 #include "model/SmartTemperatureSensor.h"
 #include "task/TemperatureTask.h"
 #include "task/ObserverTask.h"
-#include "core/Scheduler.h"
 #include <Wifi.h>
+#include "core/TaskQueue.h"
 
 // put function declarations here:
 int myFunction(int, int);
 
-Scheduler *scheduler;
+TaskHandle_t Task1;
+TaskHandle_t Task2;
+
+ObserverTask* observerTask;
+TemperatureTask* temperatureTask;
 
 void setup()
 {
+	TaskQueue<int>* queue = new TaskQueue<int> (sizeof(int), 10);
 	Serial.begin(115200);
 
-	// initialize the temperatureSensor, scheduler and mqttAgent
+	//initialize the temperatureSensor and mqttAgent
 	SmartTemperatureSensor *sensor = new SmartTemperatureSensor();
-	
-	scheduler = new Scheduler();
-	scheduler->init(100);
-	Serial.println("agent");
 	MQTT_agent *agent = new MQTT_agent("broker.hivemq.com", 1883, "it/unibo/smartmonitoring/temperature/smartwindow", "Luca", "luca1234");
 
-	ObserverTask* observerTask = new ObserverTask(sensor, agent);
+	observerTask = new ObserverTask(sensor, agent, queue);
 	observerTask->init(100);
 
-	TemperatureTask* temperatureTask = new TemperatureTask(agent, sensor);
+	temperatureTask = new TemperatureTask(agent, sensor, queue);
 	temperatureTask->init(100);
 
-	// initialize and add task to the scheduler
-	scheduler->addTask(observerTask);
-	scheduler->addTask(temperatureTask);
+	xTaskCreatePinnedToCore(TemperatureTask::tick, "Task1", 10000, temperatureTask, 1, &Task1,0);                         
+
+  	xTaskCreatePinnedToCore(ObserverTask::tick, "Task2", 10000, observerTask, 1, &Task2,1);
+
 }
 
 void loop()
 {
-	scheduler->schedule();
+	delay(1000);
 }

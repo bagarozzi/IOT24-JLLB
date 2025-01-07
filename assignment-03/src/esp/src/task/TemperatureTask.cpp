@@ -1,38 +1,48 @@
 
 #include "TemperatureTask.h"
 
-#define BASE_FREQUENCY 6000
+#define BASE_FREQUENCY 5000
 
-TemperatureTask::TemperatureTask(MQTT_agent* agent, SmartTemperatureSensor* sensor) : agent(agent), sensor(sensor)
+TemperatureTask::TemperatureTask(MQTT_agent *agent, SmartTemperatureSensor *sensor, TaskQueue<int> *queue) : frequencyQueue(queue), agent(agent), sensor(sensor)
 {
     frequency = BASE_FREQUENCY;
     this->setState(IDLE);
 }
 
-void TemperatureTask::tick()
+void TemperatureTask::tick(void *parameter)
 {
-    switch (this->getState())
+    Serial.println("inizio");
+    TemperatureTask *task = static_cast<TemperatureTask *>(parameter);
+
+    while (true)
     {
-    case IDLE:
-        this->logOnce("[TEMP] : IDLE");
-        if(sensor->isFrequecyChanged())
+        switch (task->getState())
         {
-            getFrequency();
+        case IDLE:
+            task->logOnce("[TEMP] : IDLE ");
+            task->getFrequency();
+            if (task->elapsedTimeInState() >= task->frequency)
+            {
+                task->setState(SENDIG);
+            }
+            break;
+        case SENDIG:
+            task->logOnce("[TEMP] : SENDING : " + (String)task->sensor->getTemperature());
+            task->agent->sendMessage((String)task->sensor->getTemperature());
+            Serial.println("ciao");
+            task->setState(IDLE);
+            break;
         }
-        if (this->elapsedTimeInState() >= frequency)
-        {
-            this->setState(SENDIG);
-        }
-        break;
-    case SENDIG:
-        this->logOnce("[TEMP] : SENDING : " + (String)sensor->getTemperature());
-        agent->sendMessage((String)sensor->getTemperature());
-        this->setState(IDLE);
-        break;
+        vTaskDelay(100);
     }
 }
 
 void TemperatureTask::getFrequency()
 {
-    frequency = sensor->getFrequency();
+    int freq = frequencyQueue->recieve();
+    if (freq == pdTRUE)
+    {
+        Serial.println("frequency arrived");
+        frequency = freq;
+    }
 }

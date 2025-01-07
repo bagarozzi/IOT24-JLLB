@@ -1,52 +1,58 @@
 #include "ObserverTask.h"
 #include <ArduinoJson.h>
 
-ObserverTask::ObserverTask(SmartTemperatureSensor *sensor, MQTT_agent *agent) : sensor(sensor), agent(agent)
+ObserverTask::ObserverTask(SmartTemperatureSensor *sensor, MQTT_agent *agent, TaskQueue<int> *queue) : frequencyQueue(queue), sensor(sensor), agent(agent)
 {
     this->setState(IDLE);
 }
 
-void ObserverTask::tick()
+void ObserverTask::tick(void *parameter)
 {
-    switch (this->getState())
+    ObserverTask *task = static_cast<ObserverTask *>(parameter);
+    if(task->agent->isConnected())
     {
-    case IDLE: {
-        if (this->isJustEntered() && agent->isConnected())
-        {
-            sensor->setLedsToNormal();
-        }
-        else if (!agent->isConnected())
-        {
-            this->setState(RECONNECTING);
-        }
-        this->logOnce("[OBSERVER] : IDLE");
-
-        if (agent->isMessageArrived())
-        {
-            this->setState(COMPUTING);
-        }
+        task->sensor->setLedsToNormal();
     }
-    break;
-    case COMPUTING: {
-        this->logOnce("[OBSERVER] : COMPUTING");
-        String msg = agent->reciveMessage();
-        JsonDocument doc;
-        deserializeJson(doc, msg);
-        sensor->setFrequency(doc["frequency"]);
-        this->setState(IDLE);
-    }
-    break;
-    case RECONNECTING: {
-        this->logOnce("[OBS] : RECONNECTING");
-        sensor->setLedsToError();
-        while (!agent->isConnected())
+    while (true)
+    {
+        switch (task->getState())
         {
-            Serial.println("connecting");
-            sensor->setLedsToError();
-            agent->reconect();
+        case IDLE:
+        {
+            task->logOnce("[OBSERVER] : IDLE");
+            if (!task->agent->isConnected())
+            {
+                task->setState(RECONNECTING);
+            }
+            if (task->agent->isMessageArrived())
+            {
+                task->setState(COMPUTING);
+            }
         }
-        this->setState(IDLE);
-    }
-    break;
+        break;
+        case COMPUTING:
+        {
+            task->logOnce("[OBSERVER] : COMPUTING");
+            String msg = task->agent->reciveMessage();
+            JsonDocument doc;
+            deserializeJson(doc, msg);
+            task->frequencyQueue->send(doc["frequency"]);
+            task->setState(IDLE);
+        }
+        break;
+        case RECONNECTING:
+        {
+            task->logOnce("[OBS] : RECONNECTING");
+            task->sensor->setLedsToError();
+            while (!task->agent->isConnected())
+            {
+                task->sensor->setLedsToError();
+                task->agent->reconect();
+            }
+            task->setState(IDLE);
+        }
+        break;
+        }
+        vTaskDelay(100);
     }
 }

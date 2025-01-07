@@ -6,6 +6,7 @@ class Task
 {
 	int myPeriod;
 	int timeElapsed;
+	long stateTime;
 	bool active;
 	int state;
 	bool justEntered;
@@ -16,9 +17,8 @@ public:
 		myPeriod = period;
 		timeElapsed = 0;
 		active = true;
+		stateTime = 0;
 	}
-
-	virtual void tick();
 
 	bool updateAndCheckTime(int basePeriod)
 	{
@@ -48,6 +48,7 @@ public:
 	{
 		this->state = state;
 		justEntered = true;
+		stateTime = millis();
 	}
 
 	int getState()
@@ -57,7 +58,7 @@ public:
 
 	long elapsedTimeInState()
 	{
-		return millis() - timeElapsed;
+		return millis() - stateTime;
 	}
 
 	void logOnce(const String &message)

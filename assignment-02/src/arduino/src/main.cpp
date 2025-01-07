@@ -12,7 +12,7 @@
 #include "kernel/Scheduler.h"
 #include "config.h"
 #include "kernel/MessageService.h"
-
+#include "core/TaskQueue.h"
 #include "tasks/MainTask.h"
 #include "tasks/TemperatureCheckTask.h"
 #include "tasks/WasteDisposalTask.h"
@@ -26,6 +26,7 @@ SmartWasteBin* wasteBin;
 DisplayService* displayService;
 
 void setup() {
+  frequencyQueue = new TaskQueue<int> (sizeof(int), 10);
   MSGService.init();
   
   scheduler.init(BASE_PERIOD);
