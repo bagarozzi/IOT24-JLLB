@@ -119,7 +119,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                     thermometer.setFrequency(Configuration.NORMAL_MODE_POLLING_FREQUENCY);
                 }
                 window.sendModeUpdate();
-                window.setAngle(0);
+                vertx.setTimer(200, delay -> window.setAngle(0));
                 logOnce("state IDLE");
                 if(t < Configuration.NORMAL_MODE_THRESHOLD) {
                     setState(State.NORMAL);
