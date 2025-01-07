@@ -29,11 +29,10 @@ void TemperatureTask::tick(void *parameter)
         case SENDIG:
             task->logOnce("[TEMP] : SENDING : " + (String)task->sensor->getTemperature());
             task->agent->sendMessage((String)task->sensor->getTemperature());
-            Serial.println("ciao");
             task->setState(IDLE);
             break;
         }
-        vTaskDelay(100);
+        vTaskDelay(1000);
     }
 }
 

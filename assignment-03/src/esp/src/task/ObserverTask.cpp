@@ -36,6 +36,8 @@ void ObserverTask::tick(void *parameter)
             String msg = task->agent->reciveMessage();
             JsonDocument doc;
             deserializeJson(doc, msg);
+            int freq = doc["frequency"];
+            Serial.println("frequenza arrivata" + freq);
             task->frequencyQueue->send(doc["frequency"]);
             task->setState(IDLE);
         }
@@ -53,6 +55,6 @@ void ObserverTask::tick(void *parameter)
         }
         break;
         }
-        vTaskDelay(100);
+        vTaskDelay(1000);
     }
 }

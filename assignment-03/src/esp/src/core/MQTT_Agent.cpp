@@ -40,7 +40,7 @@ MQTT_agent::MQTT_agent(const char* mqtt_server, int port, const char* topic, con
 }
 
 void MQTT_agent::setUpWiFi(){
-    Serial.println(String("tring to connect to: ") + "Luca");
+    Serial.println(String("tring to connect to: ") + ssid);
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
