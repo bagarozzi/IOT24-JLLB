@@ -20,6 +20,7 @@ void ObserverTask::tick(void *parameter)
         case IDLE:
         {
             task->logOnce("[OBSERVER] : IDLE");
+            task->frequencyQueue->send(100);
             if (!task->agent->isConnected())
             {
                 task->setState(RECONNECTING);
@@ -35,10 +36,9 @@ void ObserverTask::tick(void *parameter)
             task->logOnce("[OBSERVER] : COMPUTING");
             String msg = task->agent->reciveMessage();
             JsonDocument doc;
-            deserializeJson(doc, msg);
-            int freq = doc["frequency"];
-            Serial.println("frequenza arrivata" + freq);
-            task->frequencyQueue->send(doc["frequency"]);
+            DeserializationError error = deserializeJson(doc, msg);
+            int freq = (int) doc["frequency"];            
+            task->frequencyQueue->send(freq);
             task->setState(IDLE);
         }
         break;
@@ -55,6 +55,6 @@ void ObserverTask::tick(void *parameter)
         }
         break;
         }
-        vTaskDelay(1000);
+        vTaskDelay(100);
     }
 }

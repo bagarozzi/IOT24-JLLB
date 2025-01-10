@@ -11,7 +11,6 @@ TemperatureTask::TemperatureTask(MQTT_agent *agent, SmartTemperatureSensor *sens
 
 void TemperatureTask::tick(void *parameter)
 {
-    Serial.println("inizio");
     TemperatureTask *task = static_cast<TemperatureTask *>(parameter);
 
     while (true)
@@ -32,16 +31,15 @@ void TemperatureTask::tick(void *parameter)
             task->setState(IDLE);
             break;
         }
-        vTaskDelay(1000);
+        vTaskDelay(100);
     }
 }
 
 void TemperatureTask::getFrequency()
 {
     int freq = frequencyQueue->recieve();
-    if (freq == pdTRUE)
+    if(freq != pdFALSE)
     {
-        Serial.println("frequency arrived");
         frequency = freq;
     }
 }

@@ -14,6 +14,8 @@ TaskHandle_t Task2;
 ObserverTask* observerTask;
 TemperatureTask* temperatureTask;
 
+MQTT_agent* agent;
+
 void setup()
 {
 	TaskQueue<int>* queue = new TaskQueue<int> (sizeof(int), 10);
@@ -21,8 +23,10 @@ void setup()
 
 	//initialize the temperatureSensor and mqttAgent
 	SmartTemperatureSensor *sensor = new SmartTemperatureSensor();
-	MQTT_agent *agent = new MQTT_agent("broker.hivemq.com", 1883, "it/unibo/smartmonitoring/temperature/smartwindow", "Luca", "luca1234");
+	agent = new MQTT_agent("broker.hivemq.com", 1883, "it/unibo/smartmonitoring/temperature/smartwindow",
+		"it/unibo/smartmonitoring/frequency/smartwindow", "Luca", "luca1234");
 
+	Serial.println("superato");
 	observerTask = new ObserverTask(sensor, agent, queue);
 	observerTask->init(100);
 
@@ -37,4 +41,5 @@ void setup()
 
 void loop()
 {
+	agent->loop();
 }
