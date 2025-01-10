@@ -27,7 +27,7 @@ public class MQTTClientVerticle extends AbstractVerticle {
         EventBus eb = vertx.eventBus();
 
 		eb.consumer(Configuration.MQTT_EB_ADDR, message -> {
-			client.publish(Configuration.ESP_TOPIC_NAME, ((JsonObject)message.body()).toBuffer(), MqttQoS.AT_LEAST_ONCE, false, false);
+			client.publish(Configuration.ESP_FREQUENCY_TOPIC, ((JsonObject)message.body()).toBuffer(), MqttQoS.AT_LEAST_ONCE, false, false);
 		});
 
 		log("connecting to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
@@ -36,17 +36,17 @@ public class MQTTClientVerticle extends AbstractVerticle {
 
 			if(c.succeeded()) {
 				log("Connected to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
-				log("Subscribing to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
+				log("Subscribing to: \"" + Configuration.ESP_TEMPERATURE_TOPIC + "\"");
 				client.publishHandler(message -> {
 					System.out.println("[MQTT-AGENT]: Received message from ESP32");
 					eb.send(Configuration.BACKEND_MQTT_EB_ADDR, toJson(message.payload().toString()));
 				})
-				.subscribe(Configuration.ESP_TOPIC_NAME, 0, s -> {
+				.subscribe(Configuration.ESP_TEMPERATURE_TOPIC, 0, s -> {
 					if(s.succeeded()) {
-						log("Subscribed to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
+						log("Subscribed to: \"" + Configuration.ESP_TEMPERATURE_TOPIC + "\"");
 					}
 					else if(s.failed()) {
-						log("Failed to subscribe to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
+						log("Failed to subscribe to: \"" + Configuration.ESP_TEMPERATURE_TOPIC + "\"");
 					}
 				});
 			}
