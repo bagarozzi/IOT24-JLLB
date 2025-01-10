@@ -13,13 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const switchToAutomaticButton = document.getElementById('switch-to-automatic');
     const switchToManualButton = document.getElementById('switch-to-manual');
 
-    // Funzione per abilitare/disabilitare il controllo manuale
-    /*function updateManualControl(mode) {
-      const isManual = mode === 'MANUAL';
-      windowSlider.disabled = !isManual; // Disabilita lo slider in modalità AUTOMATIC
-      setOpeningButton.disabled = !isManual; // Disabilita il pulsante di apertura in modalità AUTOMATIC
-    }*/
-
     // Fetch system data
     function fetchSystemState() {
       fetch('/api/system-state')
@@ -31,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
           modeElem.textContent = data.mode;
           windowOpeningElem.textContent = data.windowOpening;
           systemStateElem.textContent = data.systemState;
-          //updateManualControl(data.mode); // Aggiorna i controlli manuali
         })
         .catch(error => console.error('Error fetching system state:', error));
     }
@@ -46,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
           if (data.status === 'success') {
             alert(`Switched to ${data.newMode} mode successfully!`);
-            //updateManualControl(data.newMode); // Aggiorna i controlli manuali
             fetchSystemState(); // Aggiorna lo stato del sistema
           }
         })
