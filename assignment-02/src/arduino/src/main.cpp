@@ -12,7 +12,6 @@
 #include "kernel/Scheduler.h"
 #include "config.h"
 #include "kernel/MessageService.h"
-
 #include "tasks/MainTask.h"
 #include "tasks/TemperatureCheckTask.h"
 #include "tasks/WasteDisposalTask.h"
