@@ -95,6 +95,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
             case TOO_HOT:
                 if (justEnteredState) {
                     window.setAngle(100);
+                    thermometer.setFrequency(Configuration.HOT_MODE_POLLING_FREQUENCY);
                 }
                 logOnce("state TOO HOT");
                 if(t < Configuration.HOT_MODE_THRESHOLD) {
@@ -119,7 +120,6 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                     thermometer.setFrequency(Configuration.NORMAL_MODE_POLLING_FREQUENCY);
                 }
                 window.sendModeUpdate();
-                vertx.setTimer(200, delay -> window.setAngle(0));
                 logOnce("state IDLE");
                 if(t < Configuration.NORMAL_MODE_THRESHOLD) {
                     setState(State.NORMAL);
