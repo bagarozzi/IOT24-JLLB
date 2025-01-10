@@ -24,4 +24,5 @@ public final class Configuration {
     public static final long ALARM_THRESHOLD_TIME = 10000;
     public static final int NORMAL_MODE_POLLING_FREQUENCY = 500;
     public static final int HOT_MODE_POLLING_FREQUENCY = 200;
+    public static final int TEMPERATURE_LOG_SIZE = 3000;
 }

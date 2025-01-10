@@ -42,7 +42,9 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
 
     @Override
     public void setTemperature(float temperature) {
-        temperatureLogs.removeFirst();
+        if(temperatureLogs.size() == Configuration.TEMPERATURE_LOG_SIZE) {
+            temperatureLogs.removeFirst();
+        }
         temperatureLogs.add(temperature);
     }
 
