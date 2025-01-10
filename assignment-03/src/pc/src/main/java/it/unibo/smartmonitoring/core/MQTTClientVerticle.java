@@ -26,6 +26,10 @@ public class MQTTClientVerticle extends AbstractVerticle {
 		MqttClient client = MqttClient.create(vertx);
         EventBus eb = vertx.eventBus();
 
+		eb.consumer(Configuration.MQTT_EB_ADDR, message -> {
+			client.publish(Configuration.ESP_TOPIC_NAME, ((JsonObject)message.body()).toBuffer(), MqttQoS.AT_LEAST_ONCE, false, false);
+		});
+
 		log("connecting to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
 		
 		client.connect(Configuration.MQTT_BROKER_PORT, Configuration.MQTT_BROKER_ADDRESS, c -> {
@@ -44,9 +48,6 @@ public class MQTTClientVerticle extends AbstractVerticle {
 					else if(s.failed()) {
 						log("Failed to subscribe to: \"" + Configuration.ESP_TOPIC_NAME + "\"");
 					}
-				});
-				eb.consumer(Configuration.MQTT_EB_ADDR, message -> {
-					client.publish(Configuration.ESP_TOPIC_NAME, ((JsonObject)message.body()).toBuffer(), MqttQoS.AT_LEAST_ONCE, false, false);
 				});
 			}
 			else if(c.failed()) {
