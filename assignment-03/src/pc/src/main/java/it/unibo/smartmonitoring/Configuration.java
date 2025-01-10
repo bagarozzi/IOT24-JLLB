@@ -5,7 +5,8 @@ public final class Configuration {
     /* MQTT Broker and client setup */
     public static final String MQTT_BROKER_ADDRESS = "broker.hivemq.com";
     public static final int MQTT_BROKER_PORT = 1883;
-    public static final String ESP_TOPIC_NAME = "it/unibo/smartmonitoring/temperature/smartwindow";
+    public static final String ESP_TEMPERATURE_TOPIC = "it/unibo/smartmonitoring/temperature/smartwindow";
+    public static final String ESP_FREQUENCY_TOPIC = "it/unibo/smartmonitoring/frequency/smartwindow";
 
     /* Event bus addresses: */
     public static final String BACKEND_MQTT_EB_ADDR = "mqtt.backend.com";
