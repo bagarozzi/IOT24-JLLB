@@ -29,24 +29,3 @@ float SmartTemperatureSensor::getTemperature()
 {
     return this->sensor->getTemperature();
 }
-
-void SmartTemperatureSensor::setFrequency(int frequency)
-{
-    frequency = frequency;
-    frequencyChanged = true;
-}
-
-bool SmartTemperatureSensor::isFrequecyChanged()
-{
-    return frequencyChanged;
-}
-
-void SmartTemperatureSensor::setFrequencyChanged(bool changed)
-{
-    frequencyChanged = changed;
-}
-
-int SmartTemperatureSensor::getFrequency()
-{
-    return frequency;
-}
