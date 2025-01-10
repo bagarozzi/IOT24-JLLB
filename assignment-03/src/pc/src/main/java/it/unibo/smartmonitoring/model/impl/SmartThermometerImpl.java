@@ -19,8 +19,7 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
 
     public SmartThermometerImpl(final BackendVerticle backendVerticle) {
         this.backend = backendVerticle;
-        temperatureLogs = new ArrayDeque<>();  
-        temperatureLogs.add(0.0f);
+        temperatureLogs = new ArrayDeque<>();
     }
 
     @Override
@@ -37,7 +36,7 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
 
     @Override
     public float getTemperature() {
-        return temperatureLogs.getLast();
+        return temperatureLogs.isEmpty() ? 0.0f : temperatureLogs.getLast();
     }
 
     @Override
@@ -50,12 +49,12 @@ public class SmartThermometerImpl extends AbstractVerticle implements SmartTherm
 
     @Override
     public float getMinTemperature() {
-        return Collections.min(temperatureLogs);
+        return temperatureLogs.isEmpty() ? 0.0f : Collections.min(temperatureLogs);
     }
 
     @Override
     public float getMaxTemperature() {
-        return Collections.max(temperatureLogs);
+        return temperatureLogs.isEmpty() ? 0.0f : Collections.max(temperatureLogs);
     }
 
     @Override
