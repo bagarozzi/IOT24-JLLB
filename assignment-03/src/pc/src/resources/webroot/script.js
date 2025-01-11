@@ -54,8 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
           systemStateElem.textContent = data.systemState;
 
           //Grafico
-          temperatureChart.data.labels = Array(data.temperatureHistory.length).fill('');
-          temperatureChart.data.datasets[0].data = data.temperatureHistory;
+          const temperatureHistory = data.temperatureHistory; // Array JSON
+          temperatureChart.data.labels = Array(temperatureHistory.length).fill('');
+          temperatureChart.data.datasets[0].data = temperatureHistory;
           temperatureChart.update();
         })
         .catch(error => console.error('Error fetching system state:', error));
