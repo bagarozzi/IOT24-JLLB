@@ -169,7 +169,7 @@ public class HTTPVerticle extends AbstractVerticle {
 				.put("temperature", temperature)
 				.put("minTemperature", minTemperature)
 				.put("maxTemperature", maxTemperature)
-        .put("avgTemperature", averageTemperature)
+        .put("averageTemperature", averageTemperature)
 				.put("mode", mode)
 				.put("windowOpening", windowOpening)
 				.put("systemState", systemState);

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const temperatureElem = document.getElementById('temperature');
     const minTemperatureElem = document.getElementById('min-temperature');
     const maxTemperatureElem = document.getElementById('max-temperature');
-    const avgTemperatureElem = document.getElementById('avg-temperature');
+    const avgTemperatureElem = document.getElementById('average-temperature');
 
     const modeElem = document.getElementById('mode');
     const windowOpeningElem = document.getElementById('window-opening');
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
           temperatureElem.textContent = data.temperature.toFixed(1);
           minTemperatureElem.textContent = data.minTemperature.toFixed(1);
           maxTemperatureElem.textContent = data.maxTemperature.toFixed(1);
-          avgTemperatureElem.textContent = data.avgTemperature.toFixed(1);
+          avgTemperatureElem.textContent = data.averageTemperature.toFixed(1);
           modeElem.textContent = data.mode;
           windowOpeningElem.textContent = data.windowOpening;
           systemStateElem.textContent = data.systemState;
