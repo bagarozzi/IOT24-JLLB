@@ -22,7 +22,7 @@ float TempSensorLM35::getTemperature()
 	for (int i = 0; i < 5; i++)
 	{
 		int value = analogRead(pin);
-		float valueInVolt = value * VCC / 1023;
+		float valueInVolt = value * VCC / 4095;
 		float valueInCelsius = valueInVolt / 0.01;
 		values[i] = valueInCelsius;
 		if (valueInCelsius < min)
