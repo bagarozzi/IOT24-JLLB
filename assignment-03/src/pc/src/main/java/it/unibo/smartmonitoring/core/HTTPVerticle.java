@@ -43,6 +43,7 @@ public class HTTPVerticle extends AbstractVerticle {
 					systemState.setTemperature(body.getDouble("temperature"));
 					systemState.setMinTemperature(body.getDouble("minTemperature"));
 					systemState.setMaxTemperature(body.getDouble("maxTemperature"));
+          systemState.setAverageTemperature(body.getDouble("averageTemperature"));
 					systemState.setMode(body.getString("mode"));
 					systemState.setWindowOpening(body.getInteger("windowOpening"));
 					systemState.setSystemState(body.getString("systemState"));
@@ -113,6 +114,7 @@ public class HTTPVerticle extends AbstractVerticle {
 			systemState.setTemperature(body.getDouble("temperature"));
 			systemState.setMinTemperature(body.getDouble("minTemperature"));
 			systemState.setMaxTemperature(body.getDouble("maxTemperature"));
+      systemState.setAverageTemperature(body.getDouble("averageTemperature"));
 			systemState.setMode(body.getString("mode"));
 			systemState.setWindowOpening(body.getInteger("windowOpening"));
 			systemState.setSystemState(body.getString("systemState"));
@@ -123,7 +125,7 @@ public class HTTPVerticle extends AbstractVerticle {
 		System.out.println("[HTTP-SERVER]: " + message);
 	}
 
-	//object with getter and setter that sostitute the systemstate JsonObject
+	//add average temperature
 	private class SystemState {
 		private double temperature;
 		private double minTemperature;
@@ -131,6 +133,7 @@ public class HTTPVerticle extends AbstractVerticle {
 		private String mode;
 		private int windowOpening;
 		private String systemState;
+    private double averageTemperature;
 
 		public void setTemperature(double temperature) {
 			this.temperature = temperature;
@@ -156,12 +159,17 @@ public class HTTPVerticle extends AbstractVerticle {
 			this.systemState = systemState;
 		}
 
+    public void setAverageTemperature(double averageTemperature) {
+      this.averageTemperature = averageTemperature;
+    }
+
 		//metodo che trasforma il SystemState in un JsonObject
 		public JsonObject toJson() {
 			return new JsonObject()
 				.put("temperature", temperature)
 				.put("minTemperature", minTemperature)
 				.put("maxTemperature", maxTemperature)
+        .put("averageTemperature", averageTemperature)
 				.put("mode", mode)
 				.put("windowOpening", windowOpening)
 				.put("systemState", systemState);
