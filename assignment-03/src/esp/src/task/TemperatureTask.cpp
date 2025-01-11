@@ -19,6 +19,10 @@ void TemperatureTask::tick(void *parameter)
         {
         case IDLE:
             task->logOnce("[TEMP] : IDLE ");
+            if(!task->agent->isConnected())
+            {
+                task->setState(CONNECTING);
+            }
             task->getFrequency();
             if (task->elapsedTimeInState() >= task->frequency)
             {
@@ -30,6 +34,12 @@ void TemperatureTask::tick(void *parameter)
             task->agent->sendMessage((String)task->sensor->getTemperature());
             task->setState(IDLE);
             break;
+        case CONNECTING:
+            task->logOnce("[TEMP] : RECONNECTING");
+            if(task->agent->isConnected())
+            {
+                task->setState(IDLE);
+            }
         }
         vTaskDelay(100);
     }

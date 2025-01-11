@@ -32,11 +32,11 @@ void callback(char* topic, uint8_t * payload, unsigned int length) {
 }
 
 
-MQTT_agent::MQTT_agent(const char* mqtt_server, int port, const char* publishTopic,  const char* reciveTopic, const char* ssid, const char* password) :
-    ssid(ssid), password(password), mqtt_server(mqtt_server)
+MQTT_agent::MQTT_agent(const char* mqtt_server, int port, const char* ssid, const char* password) :
+    mqtt_server(mqtt_server), port(port), ssid(ssid), password(password)
 {
-    this->recieveTopic = "it/unibo/smartmonitoring/frequency/smartwindow";
-    this->publishTopic = "it/unibo/smartmonitoring/temperature/smartwindow";
+    publishTopic = "it/unibo/smartmonitoring/temperature/smartwindow";
+    recieveTopic = "it/unibo/smartmonitoring/frequency/smartwindow";
     this->setUpWiFi();
     client.setServer(mqtt_server, port);
     client.subscribe(recieveTopic);

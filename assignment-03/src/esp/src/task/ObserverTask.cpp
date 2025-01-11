@@ -20,7 +20,6 @@ void ObserverTask::tick(void *parameter)
         case IDLE:
         {
             task->logOnce("[OBSERVER] : IDLE");
-            task->frequencyQueue->send(100);
             if (!task->agent->isConnected())
             {
                 task->setState(RECONNECTING);
@@ -44,14 +43,14 @@ void ObserverTask::tick(void *parameter)
         break;
         case RECONNECTING:
         {
-            task->logOnce("[OBS] : RECONNECTING");
+            task->logOnce("[OBSERVER] : RECONNECTING");
             task->sensor->setLedsToError();
-            while (!task->agent->isConnected())
+            task->sensor->setLedsToError();
+            task->agent->reconect();
+            if(task->agent->isConnected())
             {
-                task->sensor->setLedsToError();
-                task->agent->reconect();
+                task->setState(IDLE);
             }
-            task->setState(IDLE);
         }
         break;
         }

@@ -7,7 +7,7 @@
 class MQTT_agent {
 
     public :
-        MQTT_agent(const char* mqtt_server, int port, const char* publishTopic, const char* recieveTopic, const char* ssid, const char* password);
+        MQTT_agent(const char* mqtt_server, int port, const char* ssid, const char* password);
         bool isConnected();
         void reconect();
         String reciveMessage();
@@ -18,12 +18,11 @@ class MQTT_agent {
     
     private :
         const char* ssid;
+        int port;
         const char* password;
         const char* mqtt_server;
         const char* recieveTopic;
         const char* publishTopic;
-        const char* mqtt_username = "SmartTemperatureSensor";
-        const char* mqtt_password = "Luca1234";
         void setUpWiFi();
 };
 

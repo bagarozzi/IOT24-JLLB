@@ -17,7 +17,7 @@ private:
     enum State{
             IDLE,
             SENDIG,
-            ALARM,
+            CONNECTING,
         };
     void getFrequency();
 
