@@ -17,18 +17,14 @@ import it.unibo.smartmonitoring.Configuration;
  * With every new MQTT message, the client publishes it on the 
  * event bus.
  */
-public class MQTTClientVerticle extends AbstractVerticle {
+public class TestMQTTMessages extends AbstractVerticle {
 	
-	public MQTTClientVerticle() { }
+	public TestMQTTMessages() { }
 
 	@Override
 	public void start() {		
 		MqttClient client = MqttClient.create(vertx);
         EventBus eb = vertx.eventBus();
-
-		eb.consumer(Configuration.MQTT_EB_ADDR, message -> {
-			client.publish(Configuration.ESP_FREQUENCY_TOPIC, ((JsonObject)message.body()).toBuffer(), MqttQoS.AT_LEAST_ONCE, false, false);
-		});
 
 		log("connecting to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
 		
@@ -36,17 +32,17 @@ public class MQTTClientVerticle extends AbstractVerticle {
 
 			if(c.succeeded()) {
 				log("Connected to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
-				log("Subscribing to: \"" + Configuration.ESP_TEMPERATURE_TOPIC + "\"");
+				log("Subscribing to: \"" + Configuration.ESP_FREQUENCY_TOPIC + "\"");
 				client.publishHandler(message -> {
 					System.out.println("[MQTT-AGENT]: Received message from ESP32");
-					eb.send(Configuration.BACKEND_MQTT_EB_ADDR, toJson(message.payload().toString()));
+					System.out.println(message.payload().toString());
 				})
-				.subscribe(Configuration.ESP_TEMPERATURE_TOPIC, 0, s -> {
+				.subscribe(Configuration.ESP_FREQUENCY_TOPIC, 0, s -> {
 					if(s.succeeded()) {
-						log("Subscribed to: \"" + Configuration.ESP_TEMPERATURE_TOPIC + "\"");
+						log("Subscribed to: \"" + Configuration.ESP_FREQUENCY_TOPIC + "\"");
 					}
 					else if(s.failed()) {
-						log("Failed to subscribe to: \"" + Configuration.ESP_TEMPERATURE_TOPIC + "\"");
+						log("Failed to subscribe to: \"" + Configuration.ESP_FREQUENCY_TOPIC + "\"");
 					}
 				});
 			}
@@ -60,10 +56,6 @@ public class MQTTClientVerticle extends AbstractVerticle {
 
 	private void log(String msg) { 
 		System.out.println("[MQTT-AGENT]: " + msg);
-	}
-
-	private JsonObject toJson(String temperature) {
-		return new JsonObject().put("temperature", Float.valueOf(temperature));
 	}
 
 

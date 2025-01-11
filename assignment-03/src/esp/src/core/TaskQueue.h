@@ -21,12 +21,11 @@ public:
     T recieve()
     {   
         T item;
-        xQueueReceive(queue, &item, 0);
-        if(item == pdTRUE)
+        if(xQueueReceive(queue, &item, 0) == pdFALSE)
         {
-            Serial.println("frequency" + item);
+            return pdFALSE;
         }
-        return (T)item;
+        return item;
     }
 
     void send(T item)

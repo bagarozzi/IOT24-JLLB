@@ -20,10 +20,6 @@ class SmartTemperatureSensor
         void setLedsToNormal();
         void setLedsToError();
         float getTemperature();
-        void setFrequency(int frequency);
-        void setFrequencyChanged(bool changed);
-        bool isFrequecyChanged();
-        int getFrequency();
 };
 
 

@@ -1,5 +1,6 @@
 #include<WiFi.h>
 #include <WiFiClient.h>
+#include<ArduinoJson.h>
 #include<PubSubClient.h>
 #include "MQTT_Agent.h"
 
@@ -20,22 +21,25 @@ String toString(uint8_t* data)
 }
 
 void callback(char* topic, uint8_t * payload, unsigned int length) {
-    Serial.println("arrivato json");
+    Serial.println("arrivato");
     String app;
-    for( int i = 0; i< sizeof(payload); i++)
+    for(int i = 0; i < length; i++)
     {
-        app[i] = payload[i];
+        app += (char)payload[i];
     }
+
     buffer.push_back(app);
 }
 
 
-MQTT_agent::MQTT_agent(const char* mqtt_server, int port, const char* topic, const char* ssid, const char* password) :
-    ssid(ssid), password(password), mqtt_server(mqtt_server), topic(topic)
+MQTT_agent::MQTT_agent(const char* mqtt_server, int port, const char* ssid, const char* password) :
+    mqtt_server(mqtt_server), port(port), ssid(ssid), password(password)
 {
+    publishTopic = "it/unibo/smartmonitoring/temperature/smartwindow";
+    recieveTopic = "it/unibo/smartmonitoring/frequency/smartwindow";
     this->setUpWiFi();
     client.setServer(mqtt_server, port);
-    client.subscribe(topic);
+    client.subscribe(recieveTopic);
     client.setCallback(callback);
 }
 
@@ -58,7 +62,8 @@ void MQTT_agent::reconect(){
     while(!client.connected()){
         if(client.connect("SmartTemperatureSensor")) {
             Serial.println("isConnected\n");
-            client.subscribe(topic);
+            client.subscribe(recieveTopic);
+            client.setCallback(callback);
         } else {
             Serial.println("not connected");
             Serial.println(client.state() + "\n");
@@ -67,17 +72,21 @@ void MQTT_agent::reconect(){
 }
 
 String MQTT_agent::reciveMessage() {
-    Serial.print("recieve");
     String app = buffer.front();
     buffer.pop_front();
     return app;
 }
 
 void MQTT_agent::sendMessage(String message){
-    client.publish(topic, message.c_str());
+    client.publish(publishTopic, message.c_str());
 }
 
 bool MQTT_agent::isMessageArrived()
 {
     return !buffer.empty();
+}
+
+void MQTT_agent::loop()
+{
+    client.loop();
 }
