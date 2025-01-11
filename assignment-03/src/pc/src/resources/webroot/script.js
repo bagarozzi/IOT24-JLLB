@@ -15,6 +15,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const switchToAutomaticButton = document.getElementById('switch-to-automatic');
     const switchToManualButton = document.getElementById('switch-to-manual');
 
+    const ctx = document.getElementById('temperature-chart').getContext('2d');
+
+    const temperatureChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: Array(20).fill(''), // Placeholder per i label
+        datasets: [{
+          label: 'Temperature',
+          data: Array(20).fill(0), // Placeholder per i dati
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          tension: 0.4
+        }]
+      },
+      options: {
+        scales: {
+          x: { display: false },
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Temperature (°C)' }
+          }
+        }
+      }
+    });
+
     // Fetch system data
     function fetchSystemState() {
       fetch('/api/system-state')
@@ -27,6 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
           modeElem.textContent = data.mode;
           windowOpeningElem.textContent = data.windowOpening;
           systemStateElem.textContent = data.systemState;
+
+          //Grafico
+          temperatureChart.data.labels = Array(data.temperatureHistory.length).fill('');
+          temperatureChart.data.datasets[0].data = data.temperatureHistory;
+          temperatureChart.update();
         })
         .catch(error => console.error('Error fetching system state:', error));
     }

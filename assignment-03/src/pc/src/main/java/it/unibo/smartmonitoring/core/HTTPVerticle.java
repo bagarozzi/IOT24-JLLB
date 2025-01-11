@@ -110,14 +110,16 @@ public class HTTPVerticle extends AbstractVerticle {
 	private void setEventBusConsumer() {
 		vertx.eventBus().consumer(Configuration.HTTP_EB_ADDR, message -> {
 			JsonObject body = (JsonObject) message.body();
-
-			systemState.setTemperature(body.getDouble("temperature"));
+      double temperature = body.getDouble("temperature");
+			systemState.setTemperature(temperature);
 			systemState.setMinTemperature(body.getDouble("minTemperature"));
 			systemState.setMaxTemperature(body.getDouble("maxTemperature"));
       systemState.setAverageTemperature(body.getDouble("averageTemperature"));
 			systemState.setMode(body.getString("mode"));
 			systemState.setWindowOpening(body.getInteger("windowOpening"));
 			systemState.setSystemState(body.getString("systemState"));
+
+      systemState.addTemperatureMeasurement(temperature);
 		});
 	}
 
@@ -134,6 +136,9 @@ public class HTTPVerticle extends AbstractVerticle {
 		private int windowOpening;
 		private String systemState;
     private double averageTemperature;
+    private final int MAX_MEASUREMENTS = 20;
+    private final double[] temperatureHistory = new double[MAX_MEASUREMENTS];
+    private int currentIndex = 0;
 
 		public void setTemperature(double temperature) {
 			this.temperature = temperature;
@@ -170,10 +175,21 @@ public class HTTPVerticle extends AbstractVerticle {
 				.put("minTemperature", minTemperature)
 				.put("maxTemperature", maxTemperature)
         .put("averageTemperature", averageTemperature)
+        .put("temperatureHistory", getTemperatureHistory())
 				.put("mode", mode)
 				.put("windowOpening", windowOpening)
 				.put("systemState", systemState);
 		}
-	}
+
+    public void addTemperatureMeasurement(double temperature) {
+        temperatureHistory[currentIndex] = temperature;
+        currentIndex = (currentIndex + 1) % MAX_MEASUREMENTS; // Incrementa in modo circolare
+    }
+
+    public double[] getTemperatureHistory() {
+        // Restituisci una copia per evitare modifiche dirette
+        return temperatureHistory.clone();
+    }
+  }
 
 }
