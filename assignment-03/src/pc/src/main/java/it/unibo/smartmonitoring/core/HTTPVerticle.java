@@ -43,7 +43,9 @@ public class HTTPVerticle extends AbstractVerticle {
 					systemState.setTemperature(body.getDouble("temperature"));
 					systemState.setMinTemperature(body.getDouble("minTemperature"));
 					systemState.setMaxTemperature(body.getDouble("maxTemperature"));
-          systemState.setAverageTemperature(body.getDouble("averageTemperature"));
+          float ciao = body.getFloat("averageTemperature");
+          systemState.setAverageTemperature(ciao);
+          log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + ciao);
 					systemState.setMode(body.getString("mode"));
 					systemState.setWindowOpening(body.getInteger("windowOpening"));
 					systemState.setSystemState(body.getString("systemState"));
