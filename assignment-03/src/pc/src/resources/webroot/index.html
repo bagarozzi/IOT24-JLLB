@@ -14,9 +14,15 @@
         <p><strong>Temperature:</strong> <span id="temperature">--</span> °C</p>
         <p><strong>Min Temperature:</strong> <span id="min-temperature">--</span> °C</p>
         <p><strong>Max Temperature:</strong> <span id="max-temperature">--</span> °C</p>
+        <p><strong>Avg temperature:</strong> <span id="average-temperature">--</span> °C</p>
         <p><strong>Mode:</strong> <span id="mode">--</span></p>
         <p><strong>Window Opening:</strong> <span id="window-opening">--</span>%</p>
         <p><strong>System State:</strong> <span id="system-state">--</span></p>
+    </div>
+
+    <div id="temperature-chart-container">
+        <h2>Temperature Graph</h2>
+        <canvas id="temperature-chart" width="400" height="200"></canvas>
     </div>
 
     <div id="mode-switch">
@@ -24,7 +30,7 @@
         <button id="switch-to-automatic">Switch to AUTOMATIC</button>
         <button id="switch-to-manual">Switch to MANUAL</button>
     </div>
-    
+
     <div id="manual-control">
         <h2>Manual Control</h2>
         <label for="window-slider">Set Window Opening (%):</label>
@@ -38,5 +44,6 @@
     </div>
 
     <script src="/static/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

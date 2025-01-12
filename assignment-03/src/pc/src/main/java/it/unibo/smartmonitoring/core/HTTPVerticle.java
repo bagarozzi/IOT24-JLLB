@@ -1,6 +1,10 @@
 package it.unibo.smartmonitoring.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
@@ -43,6 +47,7 @@ public class HTTPVerticle extends AbstractVerticle {
 					systemState.setTemperature(body.getDouble("temperature"));
 					systemState.setMinTemperature(body.getDouble("minTemperature"));
 					systemState.setMaxTemperature(body.getDouble("maxTemperature"));
+          systemState.setAverageTemperature(body.getFloat("averageTemperature"));
 					systemState.setMode(body.getString("mode"));
 					systemState.setWindowOpening(body.getInteger("windowOpening"));
 					systemState.setSystemState(body.getString("systemState"));
@@ -109,13 +114,16 @@ public class HTTPVerticle extends AbstractVerticle {
 	private void setEventBusConsumer() {
 		vertx.eventBus().consumer(Configuration.HTTP_EB_ADDR, message -> {
 			JsonObject body = (JsonObject) message.body();
-
-			systemState.setTemperature(body.getDouble("temperature"));
+      double temperature = body.getDouble("temperature");
+			systemState.setTemperature(temperature);
 			systemState.setMinTemperature(body.getDouble("minTemperature"));
 			systemState.setMaxTemperature(body.getDouble("maxTemperature"));
+      systemState.setAverageTemperature(body.getDouble("averageTemperature"));
 			systemState.setMode(body.getString("mode"));
 			systemState.setWindowOpening(body.getInteger("windowOpening"));
 			systemState.setSystemState(body.getString("systemState"));
+
+      systemState.addTemperatureMeasurement(temperature);
 		});
 	}
 
@@ -123,7 +131,7 @@ public class HTTPVerticle extends AbstractVerticle {
 		System.out.println("[HTTP-SERVER]: " + message);
 	}
 
-	//object with getter and setter that sostitute the systemstate JsonObject
+	//add average temperature
 	private class SystemState {
 		private double temperature;
 		private double minTemperature;
@@ -131,6 +139,9 @@ public class HTTPVerticle extends AbstractVerticle {
 		private String mode;
 		private int windowOpening;
 		private String systemState;
+    private double averageTemperature;
+    private final int MAX_MEASUREMENTS = 20;
+    private final List<Double> temperatureHistory = new ArrayList<>();
 
 		public void setTemperature(double temperature) {
 			this.temperature = temperature;
@@ -156,16 +167,34 @@ public class HTTPVerticle extends AbstractVerticle {
 			this.systemState = systemState;
 		}
 
+    public void setAverageTemperature(double averageTemperature) {
+      this.averageTemperature = averageTemperature;
+    }
+
 		//metodo che trasforma il SystemState in un JsonObject
 		public JsonObject toJson() {
 			return new JsonObject()
 				.put("temperature", temperature)
 				.put("minTemperature", minTemperature)
 				.put("maxTemperature", maxTemperature)
+        .put("averageTemperature", averageTemperature)
+        .put("temperatureHistory", getTemperatureHistoryAsJson())
 				.put("mode", mode)
 				.put("windowOpening", windowOpening)
 				.put("systemState", systemState);
 		}
-	}
+
+    public void addTemperatureMeasurement(double temperature) {
+      // Aggiungi il valore allo storico
+      if (temperatureHistory.size() >= MAX_MEASUREMENTS) {
+        temperatureHistory.remove(0); // Rimuovi il valore più vecchio
+      }
+      temperatureHistory.add(temperature);
+    }
+
+    public JsonArray getTemperatureHistoryAsJson() {
+      return new JsonArray(temperatureHistory);
+    }
+  }
 
 }

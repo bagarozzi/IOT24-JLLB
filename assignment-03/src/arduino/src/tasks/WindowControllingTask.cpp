@@ -12,13 +12,13 @@ WindowControllingTask::WindowControllingTask(WindowController* pController, Oper
         pController->setAutomaticMode();
         setState(AUTOMATIC);
     }
-  
-void WindowControllingTask::tick(){    
+
+void WindowControllingTask::tick() {    
     pPanel->sync();
-    checkIfModeChanged();
+    checkIfModeChangedAndUpdate();
     switch (state){
         case MANUAL: {
-            if (this->checkAndSetJustEntered()){
+            if (this->checkAndSetJustEntered()) {
                 Logger.log(F("[WC] manual mode"));
             }
             if (pPanel->pressedButton()) { // if the button is pressed then switch to automatic mode
@@ -29,12 +29,13 @@ void WindowControllingTask::tick(){
                 previousState = this->state;
                 setState(WINDOW_OPENING);
             }
-            // if the temperature changes
+            /* out of the if because the information must be displayed even if the window is not adjusted;
+            there could be a change in the temperature */
             pPanel->displayInfoManualMode(pController->getCurrentOpeningPercentage(), pController->getCurrentTemperature());
             break;
         }
         case AUTOMATIC: {
-            if (this->checkAndSetJustEntered()){
+            if (this->checkAndSetJustEntered()) {
                 Logger.log(F("[WC] automatic mode"));
                 pPanel->displayInfoAutomaticMode(pController->getCurrentOpeningPercentage());
             }
@@ -50,10 +51,10 @@ void WindowControllingTask::tick(){
             break;
         }
         case WINDOW_OPENING: {        
-            if (this->checkAndSetJustEntered()){
+            if (this->checkAndSetJustEntered()) {
                 Logger.log(F("[WC] opening"));
             }
-            if (elapsedTimeInState() > WINDOW_TIME){ // waits for the window to be opened
+            if (elapsedTimeInState() > WINDOW_TIME) { // waits for the window to be opened
                 pController->stopAdjustingWindow();
                 setState(previousState);
             }
@@ -62,7 +63,10 @@ void WindowControllingTask::tick(){
     }
 }
 
-void WindowControllingTask::checkIfModeChanged() {
+/**
+ * Checks if the mode has changed and updates the state
+ */
+void WindowControllingTask::checkIfModeChangedAndUpdate() {
     checkIfAutomaticMode();
     checkIfManualMode();
 }
@@ -100,9 +104,9 @@ long WindowControllingTask::elapsedTimeInState() {
 }
 
 bool WindowControllingTask::checkAndSetJustEntered() {
-    bool bak = justEntered;
+    bool entered = justEntered;
     if (justEntered) {
       justEntered = false;
     }
-    return bak;
+    return entered;
 }
