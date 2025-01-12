@@ -50,6 +50,7 @@ void ObserverTask::tick(void *parameter)
                 task->sensor->setLedsToError();
             }
             task->logOnce("[OBSERVER] : RECONNECTING");
+            //try to reconnect to the server
             task->agent->reconect();
             if(task->agent->isConnected())
             {
