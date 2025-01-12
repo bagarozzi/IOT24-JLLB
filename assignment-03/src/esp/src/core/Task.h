@@ -20,30 +20,6 @@ public:
 		stateTime = 0;
 	}
 
-	bool updateAndCheckTime(int basePeriod)
-	{
-		timeElapsed += basePeriod;
-		if (timeElapsed >= myPeriod)
-		{
-			timeElapsed = 0;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	bool isActive()
-	{
-		return active;
-	}
-
-	void setActive(bool active)
-	{
-		this->active = active;
-	}
-
 	void setState(int state)
 	{
 		this->state = state;
