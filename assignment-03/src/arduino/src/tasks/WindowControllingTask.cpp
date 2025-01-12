@@ -29,7 +29,8 @@ void WindowControllingTask::tick() {
                 previousState = this->state;
                 setState(WINDOW_OPENING);
             }
-            // if the temperature changes
+            /* out of the if because the information must be displayed even if the window is not adjusted;
+            there could be a change in the temperature */
             pPanel->displayInfoManualMode(pController->getCurrentOpeningPercentage(), pController->getCurrentTemperature());
             break;
         }
