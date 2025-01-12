@@ -54,5 +54,6 @@ void TemperatureTask::getFrequency()
     if(freq != pdFALSE)
     {
         frequency = freq;
+        logOnce("[TEMP] : Frequency updated to: " + String(frequency));
     }
 }
