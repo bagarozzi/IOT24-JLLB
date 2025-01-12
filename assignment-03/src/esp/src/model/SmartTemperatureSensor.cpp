@@ -9,7 +9,7 @@ SmartTemperatureSensor::SmartTemperatureSensor()
 {
     greenLed = new Led(GREEN_LED);
     redLed = new Led(RED_LED);
-    sensor = new TempSensorLM35(TEMPERATURE_SENSOR);
+    sensor = new TempSensorLM35(ADC1_CHANNEL_6,TEMPERATURE_SENSOR);
 }
 
 void SmartTemperatureSensor::setLedsToNormal()

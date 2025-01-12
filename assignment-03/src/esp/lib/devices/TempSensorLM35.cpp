@@ -1,10 +1,20 @@
 #include "TempSensorLM35.h"
 #include "Arduino.h"
 
-#define VCC ((float)5)
+#define ADC_WIDTH ADC_WIDTH_BIT_12
+#define ADC_ATTEN ADC_ATTEN_DB_12
+#define DEFAULT_VREF 1100
+#define VCC ((float)3.3)
 
-TempSensorLM35::TempSensorLM35(int p) : pin(p)
+TempSensorLM35::TempSensorLM35(adc1_channel_t adcChannel, int pin) : adcChannel(adcChannel), pin(pin)
 {
+	adc1_config_width(ADC_WIDTH_BIT_12); // set the adc1 withd to vale from 0 to 4095
+
+	adc1_config_channel_atten(adcChannel, ADC_ATTEN); //set the attenuation of the adc channel for tension up to 3.3V
+	uint32_t adc_reading = adc1_get_raw(ADC1_CHANNEL_0);
+  	float vref = (1.1 * 4095.0) / adc_reading;
+    adc_chars = (esp_adc_cal_characteristics_t *)calloc(1, sizeof(esp_adc_cal_characteristics_t));
+    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN, ADC_WIDTH, vref, adc_chars);
 	pinMode(pin, INPUT);
 }
 
@@ -21,9 +31,9 @@ float TempSensorLM35::getTemperature()
 
 	for (int i = 0; i < 5; i++)
 	{
-		int value = analogRead(pin);
-		float valueInVolt = value * VCC / 4095;
-		float valueInCelsius = valueInVolt / 0.01;
+		uint32_t raw_adc = adc1_get_raw(adcChannel); // Use adc1_get_raw for more precise readings
+        uint32_t voltage = esp_adc_cal_raw_to_voltage(raw_adc, adc_chars); // cConvert into tension
+		float valueInCelsius = (float)voltage / 10.0; // LM35: 10 mV/°C
 		values[i] = valueInCelsius;
 		if (valueInCelsius < min)
 		{
