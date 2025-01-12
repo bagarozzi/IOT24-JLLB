@@ -1,14 +1,14 @@
-#ifndef __OPERATOR_MAIN_TASK__
-#define __OPERATOR_MAIN_TASK__
+#ifndef __MESSAGE_TASK__
+#define __MESSAGE_TASK__
 
 #include "kernel/Task.h"
 #include "model/WindowController.h"
 #include "model/Dashboard.h"
 
-class OperatorMainTask: public Task {
+class MessageTask: public Task {
 
 public:
-  OperatorMainTask(WindowController* pController, Dashboard* pDashboard); 
+  MessageTask(WindowController* pController, Dashboard* pDashboard); 
   void tick();
 
 private:  

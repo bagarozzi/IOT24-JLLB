@@ -103,9 +103,9 @@ long WindowControllingTask::elapsedTimeInState() {
 }
 
 bool WindowControllingTask::checkAndSetJustEntered() {
-    bool bak = justEntered;
+    bool entered = justEntered;
     if (justEntered) {
       justEntered = false;
     }
-    return bak;
+    return entered;
 }

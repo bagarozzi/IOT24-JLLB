@@ -1,20 +1,20 @@
-#include "tasks/OperatorMainTask.h"
+#include "tasks/MessageTask.h"
 #include <Arduino.h>
 #include "config.h"
 #include "kernel/Logger.h"
 
-OperatorMainTask::OperatorMainTask(WindowController* pController, Dashboard* pDashboard): 
+MessageTask::MessageTask(WindowController* pController, Dashboard* pDashboard): 
     pController(pController), pDashboard(pDashboard) {
     setState(AUTOMATIC);
 }
   
-void OperatorMainTask::tick() {
+void MessageTask::tick() {
     pDashboard->sync();
     pDashboard->notifyNewState();
     switch (state){
         case AUTOMATIC: {
             if (this->checkAndSetJustEntered()) {
-                Logger.log(F("[OM] automatic"));
+                Logger.log(F("[M] automatic"));
             }
             if (pController->isInManualMode()) {
                 setState(MANUAL);
@@ -23,7 +23,7 @@ void OperatorMainTask::tick() {
         }
         case MANUAL: {
             if (this->checkAndSetJustEntered()) {
-                Logger.log(F("[OM] manual"));
+                Logger.log(F("[M] manual"));
             }
             if (pController->isInAutomaticMode()) {
                 setState(AUTOMATIC);
@@ -33,20 +33,20 @@ void OperatorMainTask::tick() {
     }
 }
 
-void OperatorMainTask::setState(State s) {
+void MessageTask::setState(State s) {
     state = s;
     stateTimestamp = millis();
     justEntered = true;
 }
 
-long OperatorMainTask::elapsedTimeInState() {
+long MessageTask::elapsedTimeInState() {
     return millis() - stateTimestamp;
 }
 
-bool OperatorMainTask::checkAndSetJustEntered() {
-    bool bak = justEntered;
+bool MessageTask::checkAndSetJustEntered() {
+    bool entered = justEntered;
     if (justEntered){
       justEntered = false;
     }
-    return bak;
+    return entered;
 }

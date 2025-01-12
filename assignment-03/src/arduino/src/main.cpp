@@ -18,7 +18,7 @@
 #include "model/Dashboard.h"
 #include "tasks/TestHWTask.h"
 #include "tasks/WindowControllingTask.h"
-#include "tasks/OperatorMainTask.h"
+#include "tasks/MessageTask.h"
 
 // #define __TESTING_HW__
 
@@ -48,13 +48,13 @@ void setup() {
   pDashboard = new Dashboard(pWindowController);
   pDashboard->init();
 
-  Task *pOperatorMainTask = new OperatorMainTask(pWindowController, pDashboard);
-  pOperatorMainTask->init(100);
+  Task *pMessageTask = new MessageTask(pWindowController, pDashboard);
+  pMessageTask->init(100);
 
   Task *pWindowControllingTask = new WindowControllingTask(pWindowController, pOperatorPanel, pDashboard);
   pWindowControllingTask->init(100);
 
-  sched.addTask(pOperatorMainTask);
+  sched.addTask(pMessageTask);
   sched.addTask(pWindowControllingTask);
 #endif
 
