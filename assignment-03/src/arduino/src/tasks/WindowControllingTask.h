@@ -16,7 +16,7 @@ public:
 private:  
   enum State{ AUTOMATIC, MANUAL, WINDOW_OPENING } state;
 
-  void checkIfModeChanged();
+  void checkIfModeChangedAndUpdate();
   void checkIfManualMode();
   void checkIfAutomaticMode();
 
