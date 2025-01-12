@@ -45,8 +45,11 @@ void ObserverTask::tick(void *parameter)
         break;
         case RECONNECTING:
         {
+            if(task->isJustEntered())
+            {
+                task->sensor->setLedsToError();
+            }
             task->logOnce("[OBSERVER] : RECONNECTING");
-            task->sensor->setLedsToError();
             task->agent->reconect();
             if(task->agent->isConnected())
             {
