@@ -45,6 +45,9 @@ void TemperatureTask::tick(void *parameter)
     }
 }
 
+/*
+* try to get the temperature from the queue
+*/
 void TemperatureTask::getFrequency()
 {
     int freq = frequencyQueue->recieve();

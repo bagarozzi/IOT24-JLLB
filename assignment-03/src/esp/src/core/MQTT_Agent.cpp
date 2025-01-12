@@ -7,19 +7,12 @@
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+//buffer to keep the messages that are published into the reciveTopic
 std::list<String> buffer;
-        
 
-String toString(uint8_t* data)
-{
-    String* app;
-    for( int i = 0; i< sizeof(data); i++)
-    {
-        app[i] = data[i];
-    }
-    return *app;
-}
-
+/*
+* method called when a message is published on the topic where it is subscribed
+*/
 void callback(char* topic, uint8_t * payload, unsigned int length) {
     Serial.println("arrivato");
     String app;
