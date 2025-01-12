@@ -50,6 +50,7 @@ void ObserverTask::tick(void *parameter)
             if(task->agent->isConnected())
             {
                 task->setState(IDLE);
+                task->sensor->setLedsToNormal();
             }
         }
         break;

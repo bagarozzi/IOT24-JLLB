@@ -1,7 +1,7 @@
 
 #include "TemperatureTask.h"
 
-#define BASE_FREQUENCY 5000
+#define BASE_FREQUENCY 500
 
 TemperatureTask::TemperatureTask(MQTT_agent *agent, SmartTemperatureSensor *sensor, TaskQueue<int> *queue) : frequencyQueue(queue), agent(agent), sensor(sensor)
 {
