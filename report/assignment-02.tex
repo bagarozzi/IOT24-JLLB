@@ -50,7 +50,7 @@ L'architettura prevede 6 tasks:
     \textbf{Main task}: il task principale del sistema di gestione intelligente dei rifiuti (detto nella codebase \textbf{Smart Waste Disposal System}) che ne controlla il comportamento generale. Essa esegue un ciclo continuo (tick()), monitorando gli stati e coordinando le azioni tra vari componenti, come il rilevamento dell'utente, l'apertura del contenitore, la gestione dello smaltimento e la manutenzione.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=\linewidth]{assignment-02/img/Diagrammi per IOT - MainTask.png}
+        \includegraphics[width=\linewidth]{img/assignment-02/Diagrammi per IOT - MainTask.png}
         \caption{diagramma degli stati di \textit{Main task}}
         \label{fig:main-task}
     \end{figure}
@@ -59,7 +59,7 @@ L'architettura prevede 6 tasks:
     \textbf{User detection task}: effettua la rilevazione della \textbf{presenza dell'utente}. Si occupa di monitorare periodicamente se un utente è vicino al bidone e aggiornare lo stato del sistema di conseguenza.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7\linewidth]{assignment-02/img/Diagrammi per IOT - User DetectionTask.png}
+        \includegraphics[width=0.7\linewidth]{img/assignment-02/Diagrammi per IOT - User DetectionTask.png}
         \caption{diagramma degli stati di \textit{User detection task}}
         \label{fig:detection-task}
     \end{figure}
@@ -68,7 +68,7 @@ L'architettura prevede 6 tasks:
     \textbf{Maintenance task}: gestisce le operazioni di manutenzione. Si occupa di coordinare le azioni necessarie per la \textbf{manutenzione del sistema} in modo sicuro, come la chiusura del coperchio, la gestione dei messaggi di manutenzione, lo svuotamento del contenitore e il reset dello stato operativo da parte degli operatori.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=\linewidth]{assignment-02/img/Diagrammi per IOT - MaintenanceTask.png}
+        \includegraphics[width=\linewidth]{img/assignment-02/Diagrammi per IOT - MaintenanceTask.png}
         \caption{diagramma degli stati di \textit{Maintenance task}}
         \label{fig:maintenance-task}
     \end{figure}
@@ -77,7 +77,7 @@ L'architettura prevede 6 tasks:
     \textbf{Waste disposal task}: gestisce il \textbf{ciclo di smaltimento dei rifiuti}, coordinando le azioni del bidone dalla fase di apertura fino alla chiusura, verificando anche il riempimento del contenitore rispetto alla soglia critica oltre cui non si può inserire più liquido.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7\linewidth]{assignment-02/img/Diagrammi per IOT - User DetectionTask.png}
+        \includegraphics[width=1.2\linewidth]{img/assignment-02/Diagrammi per IOT - WasteDisposalTask.png}
         \caption{diagramma degli stati di \textit{Waste disposal task}}
         \label{fig:waste-task}
     \end{figure}
@@ -86,7 +86,7 @@ L'architettura prevede 6 tasks:
     \textbf{Telemetry task}: è responsabile della \textbf{raccolta e dell'invio periodico dei dati telemetrici} dal sistema verso un applicativo remoto o un servizio di monitoraggio.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.6\linewidth]{assignment-02/img/Diagrammi per IOT - Telemetry Task.png}
+        \includegraphics[width=0.6\linewidth]{img/assignment-02/Diagrammi per IOT - Telemetry Task.png}
         \caption{diagramma degli stati di \textit{Telemetry task}}
         \label{fig:telemetry-task}
     \end{figure}
@@ -95,7 +95,7 @@ L'architettura prevede 6 tasks:
     \textbf{Temperature check task}: si occupa di monitorare costantemente la temperatura interna del fluido, per prevenire situazioni pericolose dovute al surriscaldamento ed avvisando gli operatori del raggiungimento della temperatura \textit{critica}.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.9\linewidth]{assignment-02/img/Diagrammi per IOT - Temperature Check Task.png}
+        \includegraphics[width=0.9\linewidth]{img/assignment-02/Diagrammi per IOT - Temperature Check Task.png}
         \caption{diagramma degli stati di \textit{Telemetry task}}
         \label{fig:temperature-task}
     \end{figure}
@@ -141,7 +141,7 @@ Da questo stato, il sistema può tornare allo stato iniziale solo dopo aver rice
 Di seguito viene riportato lo schema del circuito utilizzato. Si rammenta che potrebbero esserci delle discrepanze tra il circuito realmente realizzato e quello rappresentato in immagine a causa di differenze funzionali nel software di disegno.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{assignment-02/img/wiring.png}
+    \includegraphics[width=\linewidth]{img/assignment-02/wiring.png}
     \caption{wiring del progetto}
     \label{fig:wiring}
 \end{figure}
