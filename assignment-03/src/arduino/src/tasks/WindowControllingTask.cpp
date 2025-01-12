@@ -12,7 +12,7 @@ WindowControllingTask::WindowControllingTask(WindowController* pController, Oper
         pController->setAutomaticMode();
         setState(AUTOMATIC);
     }
-  
+
 void WindowControllingTask::tick() {    
     pPanel->sync();
     checkIfModeChangedAndUpdate();
