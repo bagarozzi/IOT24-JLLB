@@ -19,7 +19,7 @@ public:
         queue = xQueueCreate(queueSize, itemSize);
     }
 
-    //return the item if it present
+    //return the item if it is present
     T recieve()
     {   
         T item;
