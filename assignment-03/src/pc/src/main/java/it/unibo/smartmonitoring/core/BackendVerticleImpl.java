@@ -89,7 +89,9 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
                     break;
                 }
                 else {
-                    window.setAngle(computeWindowAperture(t));
+                    if(elapsedTimeInState() % 4 == 0) {
+                        window.setAngle(computeWindowAperture(t));
+                    }
                 }
                 break;
             case TOO_HOT:
