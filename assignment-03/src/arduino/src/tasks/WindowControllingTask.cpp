@@ -58,7 +58,7 @@ void WindowControllingTask::tick() {
                 pController->stopAdjustingWindow();
                 setState(previousState);
             }
-            break;       
+            break;
         }
     }
 }

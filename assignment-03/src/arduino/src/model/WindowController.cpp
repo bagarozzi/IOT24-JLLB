@@ -104,7 +104,7 @@ bool WindowController::adjustWindowBasedOnPotentiometer() {
  */
 bool WindowController::adjustWindowAutomatically() {
   bool adjusted = false;
-   int fixedPercentage = checkAndFixPercentage(getFutureOpeningPercentage());
+  int fixedPercentage = checkAndFixPercentage(getFutureOpeningPercentage());
   adjusted = getCurrentOpeningPercentage() != fixedPercentage;
   if (adjusted) {
     adjustWindowToPercentage(fixedPercentage);
