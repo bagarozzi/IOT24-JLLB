@@ -71,6 +71,9 @@ Questa soluzione permette isolamento e maggiore utilizzo di interfacce che contr
     \item {
     \textbf{Smart Dashboard Verticle}: rappresenta la dashboard web in cui vengono visualizzati i dati. Questa non è particolarmente complicata perché i dati vengono richiesti e forniti tramite l'utilizzo di funzionalità del framework quindi non vi è nessuna particolare astrazione. 
     }
+    \item{   
+    \textbf{Mqtt Client Verticle}: Questo verticle gestisce la connessione al broker MQTT e funge da ponte tra il sistema di monitoraggio della temperatura e l'unita di controllo. La sua funzione principale `e inoltrare i messaggi di temperatura ricevuti dall'ESP32 al backend tramite l'Event Bus di Vert.x e inviare le frequenze di aggiornamento dal backend all'ESP32 tramite MQTT.
+    }
 \end{itemize}
 
 \section{La Macchina a Stati Finiti}
@@ -118,5 +121,85 @@ Questa GUI comunica con il sistema Arduino tramite una connessione seriale per g
 
 
 \chapter{Sottosistema finestra}
-\chapter{Sottosistema termometro}
+\chapter{Sistema di monitoraggio della temperatura}
+\par{
+    Questa unità consiste in un sistema di monitoraggio della temperatura basato su un'architettura di comunicazione MQTT e su un design software strutturato come una macchina a stati finiti. L'obiettivo principale è quello di acquisire dati da un sensore di temperatura ed inviarli a un broker MQTT per l'elaborazione remota.
+}
+
+\section{Architettura}
+
+\par{
+    Il sistema si basa su una architettura \textbf{task based} ovvero che il lavoro viene suddiviso in due task \textbf{TemperatureTask} e \textbf{ObserverTask}, entrambe implementano una \textbf{final state machine} per gestire le diverse condizioni operative e le transizioni tra stati. 
+}
+\subsection{Temperature Task}
+
+\par{
+    Questa task si occupa di leggere i dati dal sensore ed inviarli ad un broker Mqtt ad una frequenza configurabile tramite l'inserimento di dati all'interno di una coda che permette la comunicazione tra i task. Questa separazione logica consente una maggiore modularità e una gestione indipendente delle funzionalità.\newline
+}
+\par{\textbf{Stati}:}
+\begin{itemize}
+    \item \textbf{IDLE}: Stato di attesa, verifica il tempo trascorso rispetto alla frequenza configurata.
+    \item \textbf{SENDING}: Invia il valore di temperatura corrente al broker MQTT.
+    \item \textbf{CONNECTING}: Aspetta che la connessione al broker venga ristabilita.
+\end{itemize}
+\par{
+    \textbf{Transizioni} :
+}
+\begin{itemize}
+    \item Da \textbf{IDLE} a \textbf{SENDING} se è trascorso il tempo configurato.
+    \item Da \textbf{IDLE} a \textbf{CONNECTING} se il broker MQTT non è connesso.
+    \item Da \textbf{CONNECTING} a \textbf{IDLE} se la connessione viene ristabilita.
+\end{itemize}
+
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{report/img/temperatureTask.png}
+    \caption{Diagramma di temperature task}
+    \label{fig:stati}
+\end{figure}
+
+\subsection{Observer Task}
+
+\par{
+    Questa task ha la funzione di ricevere i messaggi contenenti la frequenza con cui viene richiesta la temperatura, nterpretarli e comunicarli alla Temperature Task tramite una coda condivisa.
+    .\newline
+}
+\par{\textbf{Stati}:}
+\begin{itemize}
+    \item \textbf{IDLE}:Stato di attesa, verifica la connessione al broker MQTT e la presenza di nuovi messaggi
+    \item \textbf{COMPUTIG}: Riceve il messaggio, lo elabora e inserisce la frequenza ricevuta nella coda condivisa.
+    \item \textbf{RECONNECTING}: Tenta di ristabilire la connessione al broker Mqtt.
+\end{itemize}
+\par{
+    \textbf{Transizioni} :
+}
+\begin{itemize}
+    \item Da \textbf{IDLE} a \textbf{COMPUTING} se è stato ricevuto un messaggio.
+    \item Da \textbf{IDLE} a \textbf{RECONNECTING} se il broker MQTT non è connesso.
+    \item Da \textbf{RECONNECTING} a \textbf{IDLE} se la connessione viene ristabilita.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{report/img/ObserverTask.png}
+    \caption{diagramma di Observer task}
+    \label{fig:stati}
+\end{figure}
+
+\section{Funzionamento specifico}
+\par{
+Il sistema opera acquisendo i dati di temperatura da un sensore tramite la \textbf{Temperature Task}, che si occupa anche di inviare i valori letti al broker MQTT con una frequenza configurabile. Questa frequenza viene dinamicamente aggiornata dalla \textbf{Observer Task}, che monitora un topic MQTT specifico per ricevere istruzioni. In caso di perdita di connessione, sarà la \textbf{Observer Task} che gestirà la riconnessione con il server mentre la \textbf{Temperature Task} rimarrà in uno stato di attesa.
+}
+
+\section{Implementazione}
+\subsection{Task}
+\par{
+    Le nostre task sono state sviluppate a partire dal funzionamento delle task in FreeRTOS che permette di gestire diverse attività in modo concorrente, dandole anche la possibilita di farle comunicare tra di loro. Ogni task infatti presenta un metodo statico \textbf{tick} il quale viene inserito in una xTaskCreate che permette di registrare questa funzione come una task di FreeRTOS, assegnandole uno stack, una priorità e un handle per gestirla, questo metodo è implementato attraverso un loop infinito contente il funzionamento della task stessa. Il passaggio tra le task viene gestito automaticamente dallo scheduler di FreeRTOS in base alle priorità delle task e ai ritardi definiti con vTaskDelay.
+}
+\subsection{Connessione Mqtt}
+\par{
+    Per la connessione al broker Mqtt invece è stata utilizzat la libreria \textbf{PubSubClient} la quale permette di implementare il protocollo Mqtt grazie ad un client che da la possibilita di connettersi ad un server, sottoscriversi ad uno o più topic, gestire messaggi pubblicati su questi e pubblicare messaggi.Nel nostro caso utilizziamo due topic, uno dove questo sottosistema riceve la frequenza che deve utilizzare ed uno dove viene pubblicata la temperatura rilevata.
+}
+
 \end{document}
