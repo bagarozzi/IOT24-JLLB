@@ -1,3 +1,13 @@
+/*
+ * ASSIGNMENT #3
+ *
+ * Author:
+ * Bagattoni Federico
+ * Ponseggi Luca
+ * Turchi Jacopo
+ * Venturini Luca
+ *
+ */
 package it.unibo.smartmonitoring.core;
 
 import io.vertx.core.AbstractVerticle;

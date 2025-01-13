@@ -1,3 +1,13 @@
+/*
+ * ASSIGNMENT #3
+ *
+ * Author:
+ * Bagattoni Federico
+ * Ponseggi Luca
+ * Turchi Jacopo
+ * Venturini Luca
+ *
+ */
 #include <Arduino.h>
 #include "model/SmartTemperatureSensor.h"
 #include "task/TemperatureTask.h"
