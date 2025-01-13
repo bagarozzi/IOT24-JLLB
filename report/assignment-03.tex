@@ -48,7 +48,9 @@ Il modello conserva i dati in apposite classi ed un vertice implementato come un
 \section{Task del sistema}
 
 \par{
-L'architettura prevede x tasks: 
+I \textit{verticles} all'interno dell'unità di controllo possono essere visti come delle task indipendenti che vengono eseguite dal framework e che discorrono tra di loro. \\
+Potrebbe sembrare esagerata la scelta di avere così tanti thread attivi ma è importante evidenziare come ciascun componente ha bisongo di una sua esecuzione indipendente al fine di potersi aggiornare dall'esterno e di isolare il comportamento di trasmissione e ricezione dall'unità principale.\\ Inoltre la comunicazione con \textit{Event Bus} ferma l'esecuzione del thread quindi è necessario che il loop principale non venga mai fermato da comunicazioni in arrivo. \\
+Questa soluzione permette isolamento e maggiore utilizzo di interfacce che contribuiscono a snellire il codice e renderlo maggiormente leggibile.\\
 }
 \begin{itemize}
     \item {
@@ -62,21 +64,9 @@ L'architettura prevede x tasks:
     }
     \item {
     \textbf{Smart Thermometer Verticle}: contenuto in BackendVerticle esso funge da endpoint per i valori di temperatura che arrivano, attraverso l'Event Bus, dal componente deputato alla comunicazione MQTT. Questa classe è l'astrazione locale del sistema di misurazione di temperatura ESP-32.
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.7\linewidth]{assignment-02/img/Diagrammi per IOT - User DetectionTask.png}
-        \caption{diagramma degli stati di \textit{User detection task}}
-        \label{fig:detection-task}
-    \end{figure}
     }
     \item {
     \textbf{Smart Window Verticle}: questa classe è l'astrazione del sistema di controllo della finestra Arduino. Conserva ampiezza della finestra ed invia il nuovo parametro quando viene modificato. Questo vertice fa anch'esso parte di BackendVerticle.
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=\linewidth]{assignment-02/img/Diagrammi per IOT - MaintenanceTask.png}
-        \caption{diagramma degli stati di \textit{Maintenance task}}
-        \label{fig:maintenance-task}
-    \end{figure}
     }
     \item {
     \textbf{Smart Dashboard Verticle}: rappresenta la dashboard web in cui vengono visualizzati i dati. Questa non è particolarmente complicata perché i dati vengono richiesti e forniti tramite l'utilizzo di funzionalità del framework quindi non vi è nessuna particolare astrazione. 
@@ -85,11 +75,10 @@ L'architettura prevede x tasks:
 
 \section{La Macchina a Stati Finiti}
 Come indicato nel capitolo precedente la \hyperref[fig:main-task]{Main task} gestisce il funzionamento dell'intero sistema. Questa è una macchina a stati finiti che reagisce alla variazione dei parametri del sistema e cambia il suo stato di conseguenza. 
-
-\section{Funzionamento specifico}
-\par {
+\\
+\\
 La MSF ha 6 stati. All'avvio è posizionata nello stato \textbf{IDLE}, questo stato è usato come passaggio sia all'inizializzazione sia quando si passa da manuale ad automatico. Infatti questo stato permette di decidere in che stato posizionarsi.
-}
+
 \subsection{La modalità automatica}
 
 \par{
@@ -105,9 +94,6 @@ Gli stati sono \textbf{MANUAL ARDUINO} e \textbf{MANUAL DASHBOARD} che rappresen
     \item Quando il sistema è in \textbf{MANUAL DASHBOARD} il sotto sistema della dashboard web è in controllo dell'apertura della finestra. Analogamente al punto precedente il sistema Arduino è ignaro della situazione e si comporta come se fosse in modalità automatica. 
 \end{itemize}
 L'implementazione che abbiamo fornito è la nostra interpretazione delle specifiche permettendo la massima fedeltà per i due sottisistemi Web e Arduino aggiungendo un solo stato al sistema senza violare nessuna altra regola. 
-
-\section{Schema dell'unità di controllo}
-Di seguito viene fornito lo schema dell'unità di controllo.
 %
 %
 \chapter{Dashboard}
@@ -131,13 +117,6 @@ Questa GUI comunica con il sistema Arduino tramite una connessione seriale per g
 \end{figure}
 
 
-\chapter{Circuito}
-Di seguito viene riportato lo schema del circuito utilizzato. Si rammenta che potrebbero esserci delle discrepanze tra il circuito realmente realizzato e quello rappresentato in immagine a causa di differenze funzionali nel software di disegno.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{assignment-02/img/wiring.png}
-    \caption{wiring del progetto}
-    \label{fig:wiring}
-\end{figure}
-
+\chapter{Sottosistema finestra}
+\chapter{Sottosistema termometro}
 \end{document}
