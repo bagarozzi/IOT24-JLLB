@@ -35,7 +35,7 @@ void TemperatureTask::tick(void *parameter)
             task->setState(IDLE);
             break;
         case CONNECTING:
-            task->logOnce("[TEMP] : RECONNECTING");
+            task->logOnce("[TEMP] : CONNECTING");
             if(task->agent->isConnected())
             {
                 task->setState(IDLE);
