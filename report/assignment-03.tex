@@ -120,7 +120,73 @@ Questa GUI comunica con il sistema Arduino tramite una connessione seriale per g
 \end{figure}
 
 
-\chapter{Sottosistema finestra}
+\chapter{Window Controller Subsystem}
+\par {
+Il Window Controller Subsystem è stato implementato su una scheda Arduino UNO. Rappresenta il cuore del controllo meccanico della finestra, consentendone l'apertura e la chiusura in due modalità: automatica e manuale. Garantisce il controllo da parte degli operatori tramite uno schermo LCD, un bottone che consente il passaggio di modalità e un potenziometro per regolare l'apertura della finestra.
+}
+
+\section{Model}
+
+\par{
+Sono presenti 4 oggetti:
+}
+\begin{itemize}
+    \item {
+    \textbf{HWPlatform}: incapsula e nasconde dettagli dell'implementazione hardware.
+    }
+    \item {
+    \textbf{OperatorPanel}: permette l'uso dell'LCD e la rivelazione della pressione dei pulsanti.
+    }
+    \item {
+    \textbf{Dashboard}: Permette la comunicazione tramite seriale con il Serial Verticle. E' usato per notificare il verticle di nuove informazioni e per processare i messaggi che riceve da esso.
+    }
+    \item {
+    \textbf{WindowController}: Rappresenta il controller. Permette di controllare l'apertura della finestra agendo sul suo motore e di cambiare la modalità di operazione del controller (Automatica o Manuale).
+    }
+\end{itemize}
+
+\section{Task del sistema}
+
+\par{
+L'architettura prevede 2 tasks: 
+}
+\begin{itemize}
+    \item {
+    \textbf{WindowControllingTask}: 
+    \begin{itemize}
+        \item {Task per controllare la finestra in base alla modalità selezionata.
+        }
+        \item {Usa il WindowController, l'OperatorPanel e la Dashboard.
+        }
+        \item {Period: 100ms
+        }
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1.2\linewidth]{img/assignment-03/Diagrammi per IOT - Window Controller subsystem.png}
+        \caption{diagramma degli stati di \textit{Window Controlling Task}}
+        \label{fig:window-controlling-task}
+    \end{figure}
+    }
+    \item {
+    \textbf{MessageTask}: 
+    \begin{itemize}
+        \item {Task per regolare la ricezione e l'invio dei messaggi. Tiene inoltre traccia della modalità corrente del sistema.
+        }
+        \item {Usa il WindowController e la Dashboard.
+        }
+        \item {Period: 100ms
+        }
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{img/assignment-03/MessageTask.png}
+        \caption{diagramma degli stati di \textit{Message Task}}
+        \label{fig:message-task}
+    \end{figure}
+    }
+\end{itemize}
+%
 \chapter{Sistema di monitoraggio della temperatura}
 \par{
     Questa unità consiste in un sistema di monitoraggio della temperatura basato su un'architettura di comunicazione MQTT e su un design software strutturato come una macchina a stati finiti. L'obiettivo principale è quello di acquisire dati da un sensore di temperatura ed inviarli a un broker MQTT per l'elaborazione remota.
