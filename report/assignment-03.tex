@@ -45,6 +45,13 @@ Infatti ogni vertice rappresenta una task o un componente del modello.
 Il modello conserva i dati in apposite classi ed un vertice implementato come una macchina a stati finiti prende decisioni riguardo al comportamento del sistema. Altri vertici servono solo per scambiare comunicazioni tra le altre unità del sistema ed il backend.
 }
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{img/assignment-03/Control Unit Diagram.png}
+    \caption{diagramma di funzionamento dell'unità di controllo con comunicazione con i componenti esterni.}
+    \label{fig:main-task}
+\end{figure}
+
 \section{Task del sistema}
 
 \par{
@@ -57,8 +64,8 @@ Questa soluzione permette isolamento e maggiore utilizzo di interfacce che contr
     \textbf{Backend verticle}: questo vertice è l'automa principale dell'unità di controllo. Esso prende decisioni e cambia il suo stato in base alla temperatura rilevata e modifica conseguentemente anche l'apertura della finestra. E' implementato come una macchina a stati finiti di cui si può vedere il comportamento dettagliato nell'immagine.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=\linewidth]{assignment-03/img/Diagrammi per IOT - MainTask.png}
-        \caption{diagramma degli stati di \textit{Main task}}
+        \includegraphics[width=\linewidth]{img/assignment-03/Backend Verticle.png}
+        \caption{diagramma degli stati di \textit{Backend verticle}}
         \label{fig:main-task}
     \end{figure}
     }
@@ -71,8 +78,17 @@ Questa soluzione permette isolamento e maggiore utilizzo di interfacce che contr
     \item {
     \textbf{Smart Dashboard Verticle}: rappresenta la dashboard web in cui vengono visualizzati i dati. Questa non è particolarmente complicata perché i dati vengono richiesti e forniti tramite l'utilizzo di funzionalità del framework quindi non vi è nessuna particolare astrazione. 
     }
-    \item{   
-    \textbf{Mqtt Client Verticle}: Questo verticle gestisce la connessione al broker MQTT e funge da ponte tra il sistema di monitoraggio della temperatura e l'unita di controllo. La sua funzione principale `e inoltrare i messaggi di temperatura ricevuti dall'ESP32 al backend tramite l'Event Bus di Vert.x e inviare le frequenze di aggiornamento dal backend all'ESP32 tramite MQTT.
+\end{itemize}
+Oltre ai vertici del backend sono stati implementati altri vertici che garantiscono la comunicazione con le unità esterne ed il cui funzionamento verrà spiegato nel dettaglio nei capitoli successivi:
+\begin{itemize}
+    \item {   
+    \textbf{MQTT Client Verticle}: questo verticle gestisce la connessione al broker MQTT e funge da ponte tra il sistema di monitoraggio della temperatura e l'unita di controllo. La sua funzione principale `e inoltrare i messaggi di temperatura ricevuti dall'ESP32 al backend tramite l'Event Bus di Vert.x e inviare le frequenze di aggiornamento dal backend all'ESP32 tramite MQTT.
+    }
+    \item {
+    \textbf{HTTP Verticle}: questo vertice è l'effettiva implementazione del web server che rende disponibile la dashboard. Comunica tramite event bus con \textit{Smart Dashboard Verticle} richiedendo nuovi parametri da visualizzare e inviando i dati nella modalità manuale.
+    }
+    \item {
+    \textbf{Serial Verticle}: comunica via seriale con Arduino e tramite event bus con \textit{Smart Window Verticle} trasformando i messaggi da un formato ad un altro.
     }
 \end{itemize}
 
@@ -100,24 +116,6 @@ L'implementazione che abbiamo fornito è la nostra interpretazione delle specifi
 %
 %
 \chapter{Dashboard}
-Nel seguente capitolo viene mostrata la dashboard realizzata in Java visualizzata al computer. L'interfaccia mostra tre informazioni principali:
-\begin{itemize}
-    \item \textbf{Status}: indica lo stato corrente del sistema (ad esempio, \textit{Waiting}, ossia in attesa di nuovi rifiuti).
-    \item \textbf{Temperature}: visualizza la temperatura interna del contenitore per verificare che sia entro i limiti di sicurezza.
-    \item \textbf{Fill level}: mostra il livello di riempimento del contenitore, utile per sapere quando è necessario svuotarlo.
-\end{itemize}
-La dashboard presenta anche due pulsanti funzionali:
-\begin{itemize}
-    \item \textbf{Empty}: utilizzato per svuotare il contenitore una volta che è pieno.
-    \item \textbf{Restore}: serve a ripristinare il sistema dopo che è stato rilevato un problema, come una temperatura elevata.
-\end{itemize}
-Questa GUI comunica con il sistema Arduino tramite una connessione seriale per gestire in tempo reale le operazioni di controllo e monitoraggio del sistema.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{assignment-03/img/javaGui.png}
-    \caption{Interfaccia utente}
-    \label{fig:GUI}
-\end{figure}
 
 
 \chapter{Window Controller Subsystem}
@@ -228,7 +226,7 @@ L'architettura prevede 2 tasks:
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.8\linewidth]{report/img/temperatureTask.png}
+    \includegraphics[width=0.8\linewidth]{img/assignment-03/temperatureTask.png}
     \caption{Diagramma di temperature task}
     \label{fig:stati}
 \end{figure}
@@ -256,7 +254,7 @@ L'architettura prevede 2 tasks:
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\linewidth]{report/img/ObserverTask.png}
+    \includegraphics[width=0.8\linewidth]{img/assignment-03/ObserverTask.png}
     \caption{diagramma di Observer task}
     \label{fig:stati}
 \end{figure}
