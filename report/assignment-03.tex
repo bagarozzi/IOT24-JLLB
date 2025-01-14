@@ -116,8 +116,48 @@ L'implementazione che abbiamo fornito è la nostra interpretazione delle specifi
 %
 %
 \chapter{Dashboard}
+\par {
+La Dashboard racchiude un backend in Java e un frontend dinamico che utilizza JavaScript. Il sistema è progettato per offrire un’interfaccia interattiva per il monitoraggio della temperatura  in tempo reale ed il controllo da remoto.
+}
 
+\section{Il Backend: Architettura in Vert.x}
+Il backend del progetto è stato implementato in Java utilizzando la libreria Vert.x.
 
+\subsection{Router e gestione delle rotte}
+L'oggetto \texttt{HTTPVerticle} definisce un Router che gestisce diverse richieste HTTP:
+\begin{itemize}
+    \item \textbf{GET /api/system-state}: Fornisce lo stato attuale del sistema, in modo da aggiornare i dati nell'interfaccia.
+    \item \textbf{POST /api/manual-mode}: Permette di impostare manualmente il livello di apertura della finestra.
+    \item \textbf{POST /api/switch-mode}: Serve per cambiare la modalità operativa tra manuale e automatica.
+    \item \textbf{POST /api/resolve-alarm}: Risolve lo stato di allarme del sistema.
+\end{itemize}
+Negli ultimi tre endpoint sono state utilizzate richieste POST e non GET in quanto gestiscono meglio l'invio di strutture dati al server (JSON) in quanto sono contenute nel body.
+
+\subsection{Gestione dello stato del sistema}
+L'oggetto \texttt{SystemState} rappresenta il cuore del backend, fungendo da modello dati. Include tutti i gli attributi che vengono visualizzati nella Dashboard, come ad esempio la temperatura, la modalità operativa della finestra e la percentuale di apertura.
+
+\subsection{Comunicazione asincrona con l’event bus}
+Vert.x utilizza un Event Bus, un meccanismo di comunicazione per gestire eventi in modo asincrono. Nell'Event Bus il sistema riceve i messaggi dallo \textit{Smart Dashboard Verticle} e ne aggiorna lo stato, i dati elaborati vengono poi inoltrati al frontend per l'aggiornamento in tempo reale.
+
+\section{IL Frontend: Interfaccia Grafica con JavaScript}
+Il frontend è responsabile della visualizzazione dei dati e dell’interazione con l’utente. È costruito utilizzando \textbf{HTML} e \textbf{CSS} per la struttura e lo stile e \textbf{JavaScript} per la logica dinamica e l’aggiornamento del contenuto.
+
+\subsection{Aggiornamento Dinamico dello Stato}
+La funzione \texttt{fetchSystemState} nel file JavaScript invia una richiesta GET al backend per recuperare lo stato del sistema e aggiornare la dashboard
+
+\subsection{Grafico delle Temperature}
+Per rappresentare graficamente lo storico delle temperature, viene utilizzata la libreria Chart.js. Il grafico si aggiorna con le ultime 20 misurazioni ricevute dal backend.
+
+\subsection{Interazione con l’Utente}
+L’interfaccia consente di:
+\begin{itemize}
+    \item Visualizzare i dati principali ed il grafico delle temperature
+    \item Cambiare modalità operativa (manuale o automatica).
+    \item Impostare manualmente l’apertura della finestra.
+    \item Risolvere stati di allarme.
+\end{itemize}
+%
+%
 \chapter{Window Controller Subsystem}
 \par {
 Il Window Controller Subsystem è stato implementato su una scheda Arduino UNO. Rappresenta il cuore del controllo meccanico della finestra, consentendone l'apertura e la chiusura in due modalità: automatica e manuale. Garantisce il controllo da parte degli operatori tramite uno schermo LCD, un bottone che consente il passaggio di modalità e un potenziometro per regolare l'apertura della finestra.
