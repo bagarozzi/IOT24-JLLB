@@ -29,7 +29,7 @@
 L'obbiettivo del progetto finale del corso è costruire ed implementare un sistema di monitoraggio della temperatura che cambia in autonomia l'apertura di una finestra controllata da servo motore. Il sistema consente all'utente di aprire manualmente la finestra e fornisce un interfacia web per la visualizzazione dei dati.
 }
 \par{
-Per lo sviluppo verrà utilizzata la piattaforma \textbf{Arduno Uno} e \textbf{ESP-32} con sensore di temperatura. Per quanto riguarda il backend viene utilizzato il framework \href{https://vertx.io/}{Vertx.io} consigliato a lezione.
+Per lo sviluppo verrà utilizzata la piattaforma \textbf{Arduino Uno} e \textbf{ESP-32} con sensore di temperatura. Per quanto riguarda il backend viene utilizzato il framework \href{https://vertx.io/}{Vertx.io} consigliato a lezione.
 }
 
 \chapter{Unità di controllo}
@@ -82,7 +82,7 @@ Questa soluzione permette isolamento e maggiore utilizzo di interfacce che contr
 Oltre ai vertici del backend sono stati implementati altri vertici che garantiscono la comunicazione con le unità esterne ed il cui funzionamento verrà spiegato nel dettaglio nei capitoli successivi:
 \begin{itemize}
     \item {   
-    \textbf{MQTT Client Verticle}: questo verticle gestisce la connessione al broker MQTT e funge da ponte tra il sistema di monitoraggio della temperatura e l'unita di controllo. La sua funzione principale `e inoltrare i messaggi di temperatura ricevuti dall'ESP32 al backend tramite l'Event Bus di Vert.x e inviare le frequenze di aggiornamento dal backend all'ESP32 tramite MQTT.
+    \textbf{MQTT Client Verticle}: questo verticle gestisce la connessione al broker MQTT e funge da ponte tra il sistema di monitoraggio della temperatura e l'unita di controllo. La sua funzione principale è inoltrare i messaggi di temperatura ricevuti dall'ESP32 al backend tramite l'Event Bus di Vert.x e inviare le frequenze di aggiornamento dal backend all'ESP32 tramite MQTT.
     }
     \item {
     \textbf{HTTP Verticle}: questo vertice è l'effettiva implementazione del web server che rende disponibile la dashboard. Comunica tramite event bus con \textit{Smart Dashboard Verticle} richiedendo nuovi parametri da visualizzare e inviando i dati nella modalità manuale.
@@ -109,10 +109,10 @@ Rimane indefinitvamente nello stato \textbf{ALARM} di finché il sistema non vie
 La modalità manuale consiste di due stati in quanto \textit{una discrepanza con la descrizione delle specifiche creava un conflitto di interessi tra i componenti del sistema}. 
 Gli stati sono \textbf{MANUAL ARDUINO} e \textbf{MANUAL DASHBOARD} che rappresentano la modalità manuale per ciascun componente che può abilitarla. Questo facilita la sincronizzazione ed evita che i sistemi, entrambi in manuale, abbiamo comportamenti non indicati nelle specifiche. \\
 \begin{itemize}
-    \item Quando il sistema è in \textbf{MANUAL ARDUINO} il sotto sistema Arduino è in controllo dell'apertura della finestra e la dashboard web si comporterà come fosse in modalità automatica (esattamente come prima  che Arduino entrasse in modalità manuale)
-    \item Quando il sistema è in \textbf{MANUAL DASHBOARD} il sotto sistema della dashboard web è in controllo dell'apertura della finestra. Analogamente al punto precedente il sistema Arduino è ignaro della situazione e si comporta come se fosse in modalità automatica. 
+    \item Quando il sistema è in \textbf{MANUAL ARDUINO} il sotto-sistema Arduino è in controllo dell'apertura della finestra e la dashboard web si comporterà come fosse in modalità automatica (esattamente come prima  che Arduino entrasse in modalità manuale)
+    \item Quando il sistema è in \textbf{MANUAL DASHBOARD} il sotto-sistema della dashboard web è in controllo dell'apertura della finestra. Analogamente al punto precedente il sistema Arduino è ignaro della situazione e si comporta come se fosse in modalità automatica. 
 \end{itemize}
-L'implementazione che abbiamo fornito è la nostra interpretazione delle specifiche permettendo la massima fedeltà per i due sottisistemi Web e Arduino aggiungendo un solo stato al sistema senza violare nessuna altra regola. 
+L'implementazione che abbiamo fornito è la nostra interpretazione delle specifiche permettendo la massima fedeltà per i due sotto-sistemi Web e Arduino aggiungendo un solo stato al sistema senza violare nessuna altra regola. 
 %
 %
 \chapter{Dashboard}
