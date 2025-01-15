@@ -1,14 +1,11 @@
 package it.unibo.smartmonitoring;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import it.unibo.smartmonitoring.core.BackendVerticleImpl;
 import it.unibo.smartmonitoring.core.api.BackendVerticle;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

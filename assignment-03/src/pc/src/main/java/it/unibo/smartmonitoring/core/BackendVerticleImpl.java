@@ -1,7 +1,6 @@
 package it.unibo.smartmonitoring.core;
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.json.JsonObject;
 import it.unibo.smartmonitoring.Configuration;
 import it.unibo.smartmonitoring.core.api.BackendVerticle;
 import it.unibo.smartmonitoring.model.api.SmartDashboard;
@@ -10,7 +9,6 @@ import it.unibo.smartmonitoring.model.api.SmartWindow;
 import it.unibo.smartmonitoring.model.impl.SmartDashboardImpl;
 import it.unibo.smartmonitoring.model.impl.SmartThermometerImpl;
 import it.unibo.smartmonitoring.model.impl.SmartWindowImpl;
-import it.unibo.smartmonitoring.utils.MessageParser;
 
 public class BackendVerticleImpl extends AbstractVerticle implements BackendVerticle {
 
@@ -23,7 +21,7 @@ public class BackendVerticleImpl extends AbstractVerticle implements BackendVert
     private final SmartDashboard dashboard;
 
     public BackendVerticleImpl() {
-        thermometer = new SmartThermometerImpl(this);
+        thermometer = new SmartThermometerImpl();
         window = new SmartWindowImpl(this);
         dashboard = new SmartDashboardImpl(this);
     }

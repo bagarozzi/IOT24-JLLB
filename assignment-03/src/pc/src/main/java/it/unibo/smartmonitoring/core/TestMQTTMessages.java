@@ -1,11 +1,6 @@
 package it.unibo.smartmonitoring.core;
 
-import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.json.Json;
-import io.vertx.core.json.JsonObject;
 import io.vertx.mqtt.MqttClient;
 
 import it.unibo.smartmonitoring.Configuration;
@@ -24,7 +19,6 @@ public class TestMQTTMessages extends AbstractVerticle {
 	@Override
 	public void start() {		
 		MqttClient client = MqttClient.create(vertx);
-        EventBus eb = vertx.eventBus();
 
 		log("connecting to \"" + Configuration.MQTT_BROKER_ADDRESS + "\"");
 		

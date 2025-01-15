@@ -1,7 +1,6 @@
 package it.unibo.smartmonitoring.model.impl;
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import it.unibo.smartmonitoring.Configuration;
 import it.unibo.smartmonitoring.core.api.BackendVerticle;
