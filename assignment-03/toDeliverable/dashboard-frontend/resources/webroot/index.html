@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Monitoring Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Temperature Monitoring Dashboard</h1>
+
+    <div id="system-info">
+        <h2>System Information</h2>
+        <p><strong>Temperature:</strong> <span id="temperature">--</span> °C</p>
+        <p><strong>Min Temperature:</strong> <span id="min-temperature">--</span> °C</p>
+        <p><strong>Max Temperature:</strong> <span id="max-temperature">--</span> °C</p>
+        <p><strong>Avg temperature:</strong> <span id="average-temperature">--</span> °C</p>
+        <p><strong>Mode:</strong> <span id="mode">--</span></p>
+        <p><strong>Window Opening:</strong> <span id="window-opening">--</span>%</p>
+        <p><strong>System State:</strong> <span id="system-state">--</span></p>
+    </div>
+
+    <div id="temperature-chart-container">
+        <h2>Temperature Graph</h2>
+        <canvas id="temperature-chart" width="400" height="200"></canvas>
+    </div>
+
+    <div id="mode-switch">
+        <h2>Switch Mode</h2>
+        <button id="switch-to-automatic">Switch to AUTOMATIC</button>
+        <button id="switch-to-manual">Switch to MANUAL</button>
+    </div>
+
+    <div id="manual-control">
+        <h2>Manual Control</h2>
+        <label for="window-slider">Set Window Opening (%):</label>
+        <input type="range" id="window-slider" min="0" max="100" value="50">
+        <button id="set-opening">Set Opening</button>
+    </div>
+
+    <div id="alarm-management">
+        <h2>Alarm Management</h2>
+        <button id="resolve-alarm">Resolve Alarm</button>
+    </div>
+
+    <script src="/static/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
